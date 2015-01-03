@@ -1,0 +1,16 @@
+# ignore pyc-files
+*.pyc
+
+# ignore build of documentation (to build latest documentation on your own)
+doc/_build*
+
+fontdemo.py
+
+# ignore highlighted files: no checkin
+*NOCI*
+
+# ignore individual config-files
+wordclock_config.cfg
+
+# ignore swap-files
+*.swp
