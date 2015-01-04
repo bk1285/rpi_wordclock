@@ -15,7 +15,7 @@ class plugin:
         Initializations for the startup of the weather forecast
         '''
         self.name = 'sunrise'
-        self.city = Astral()[config.get('plugin_sunrise', 'location')]
+        self.astral_at_location = Astral()[config.get('plugin_sunrise', 'location')]
         self.time_german = wcp_time_german.time_german()
         self.bg_color_index     = 0 # default background color: black
         self.word_color_index   = 2 # default word color: warm white
@@ -26,7 +26,7 @@ class plugin:
         Displaying current time for sunrise/sunset
         '''
         # Get data of sunrise
-        sun_data = self.city.sun(date=datetime.datetime.now(), local=True)
+        sun_data = self.astral_at_location.sun(date=datetime.datetime.now(), local=True)
         # Display data of sunrise
         wcd.animate(self.name, 'sunrise', invert=True)
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
@@ -40,5 +40,10 @@ class plugin:
         time_german_indices = self.time_german.get_time(sun_data['sunset'], withPrefix=False)
         wcd.wcl.setColorBy1DCoordinates(wcd.strip, time_german_indices, wcc.colors[self.word_color_index])
         wcd.show()
+        time.sleep(3)
+        moon_phase = self.astral_at_location.moon_phase(datetime.datetime.now())
+        for i in range(0, moon_phase):
+            wcd.showIcon('sunrise', 'moon_'+str(i).zfill(2))
+            time.sleep(0.1)
         time.sleep(3)
 
