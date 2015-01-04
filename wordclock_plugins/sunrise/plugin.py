@@ -41,6 +41,7 @@ class plugin:
         wcd.wcl.setColorBy1DCoordinates(wcd.strip, time_german_indices, wcc.colors[self.word_color_index])
         wcd.show()
         time.sleep(3)
+        # Display current moon phase
         moon_phase = self.astral_at_location.moon_phase(datetime.datetime.now())
         for i in range(0, moon_phase):
             wcd.showIcon('sunrise', 'moon_'+str(i).zfill(2))
