@@ -19,6 +19,7 @@ class wordclock:
     The class, which makes the wordclock run...
     '''
 
+
     def __init__(self):
         '''
         Initializations, executed at every startup of the wordclock
@@ -58,19 +59,20 @@ class wordclock:
             except:
                 print('Failed to import plugin ' + plugin + '!')
 
+
     def startup(self):
         '''
         Startup behavior
         '''
         if self.config.getboolean('wordclock', 'show_startup_message'):
-            startup_message = self.config.get('wordclock', 'startup_message')
-            self.wcd.showText(startup_message)
+            self.wcd.showText(self.config.get('wordclock', 'startup_message'))
+
 
     def run(self):
         '''
         Makes the wordclock run... :)
         '''
-        # start wordclock in plugin 0
+        # start wordclock with the plugin of your choice
         plugin_index = 4
 
         # The main menu
@@ -103,6 +105,7 @@ class wordclock:
                     if plugin_index == len(self.plugins):
                         plugin_index = 0
                     time.sleep(0.1)
+
 
 if __name__ == '__main__':
     word_clock = wordclock()
