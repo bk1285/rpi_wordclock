@@ -29,9 +29,25 @@ class plugin:
             print('Choosing default: german')
             self.taw = time_german.time_german()
 
-        self.bg_color_index     = 0 # default background color: black
-        self.word_color_index   = 2 # default word color: warm white
-        self.minute_color_index = 2 # default minute color: warm white
+        self.bg_color     = wcc.BLACK  # default background color
+        self.word_color   = wcc.WWHITE # default word color
+        self.minute_color = wcc.WWHITE # default minute color
+
+        # Other color modes...
+        self.color_modes = \
+               [[wcc.BLACK, wcc.WWHITE, wcc.WWHITE],
+                [wcc.BLACK, wcc.WHITE, wcc.WHITE],
+                [wcc.BLACK, wcc.PINK, wcc.GREEN],
+                [wcc.BLACK, wcc.RED, wcc.YELLOW],
+                [wcc.BLACK, wcc.BLUE, wcc.RED],
+                [wcc.BLACK, wcc.RED, wcc.BLUE],
+                [wcc.YELLOW, wcc.RED, wcc.BLUE],
+                [wcc.RED, wcc.BLUE, wcc.BLUE],
+                [wcc.GREEN, wcc.YELLOW, wcc.PINK],
+                [wcc.WWHITE, wcc.BLACK, wcc.BLACK],
+                [wcc.BLACK, wcc.Color(30,30,30), wcc.Color(30,30,30)]]
+        self.color_mode_pos = 0
+        self.rb_pos = 0 # index position for "rainbow"-mode
 
     def run(self, wcd):
         '''
@@ -39,23 +55,44 @@ class plugin:
         '''
         while True:
             # Set background color
-            wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
+            wcd.setColorToAll(self.bg_color, includeMinutes=True)
             # Set current time
             now = datetime.datetime.now()
             # Returns indices, which represent the current time, when beeing illuminated
             taw_indices = self.taw.get_time(now)
             #TODO: Improve rendering of time during while-loop: Render array only once per 5 minutes...
-            wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
-            wcd.setMinutes(now, wcc.colors[self.minute_color_index])
+            wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setMinutes(now, self.minute_color)
             wcd.show()
             event = wcd.waitSecondsForEvent([wcb.button_left, wcb.button_return, wcb.button_right], 10)
             # Switch display color, if button_left is pressed
             if (event == wcb.button_left):
-                self.word_color_index +=1
-                if self.word_color_index == wcc.num_of_colors:
-                    self.word_color_index = 0
-                self.minute_color_index = self.word_color_index
+                self.color_mode_pos += 1
+                if self.color_mode_pos == len(self.color_modes):
+                    self.color_mode_pos = 0
+                self.bg_color     = self.color_modes[self.color_mode_pos][0]
+                self.word_color   = self.color_modes[self.color_mode_pos][1]
+                self.minute_color = self.color_modes[self.color_mode_pos][2]
                 time.sleep(0.2)
             # Return to main menu, if button_return is pressed
             if (event == wcb.button_return):
                 return
+            if (event == wcb.button_right):
+                self.bg_color = wcc.BLACK
+                wcd.setColorToAll(self.bg_color, includeMinutes=True)
+                while wcd.getPinState(wcb.button_right):
+                    # BEGIN: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
+                    if self.rb_pos < 85:
+                        self.word_color = self.minute_color = wcc.Color(3*self.rb_pos, 255-3*self.rb_pos, 0)
+                    elif self.rb_pos < 170:
+                        self.word_color = self.minute_color = wcc.Color(255-3*(self.rb_pos-85), 0, 3*(self.rb_pos-85))
+                    else:
+                        self.word_color = self.minute_color = wcc.Color(0, 3*(self.rb_pos-170), 255-3*(self.rb_pos-170))
+                    # END: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
+                    wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+                    wcd.setMinutes(now, self.minute_color)
+                    wcd.show()
+                    self.rb_pos += 1
+                    if self.rb_pos == 256: self.rb_pos = 0
+                    time.sleep(0.02)
+

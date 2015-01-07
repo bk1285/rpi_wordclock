@@ -47,6 +47,13 @@ class wordclock_display:
         '''
         return str(self.wcl.WCA_WIDTH) + 'x' + str(self.wcl.WCA_HEIGHT)
 
+    def getPinState(self, pin):
+        '''
+        Return state of a given pin
+        '''
+        # Return "not" since triggered GPIOs go to ground (low)
+        return not GPIO.input(pin)
+
     def waitForEvent(self, pinrange_to_listen, cps=10):
         '''
         Waits forever for event on a given set of pin (events such as user interaction, button press, etc.)
