@@ -18,7 +18,7 @@ class plugin:
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
 
-        self.astral_at_location = Astral()[config.get('plugin_sunrise', 'location')]
+        self.astral_at_location = Astral()[config.get('plugin_' + self.name, 'location')]
 
         # Choose language to display sunrise
         language = config.get('plugin_time_default', 'language')

@@ -21,7 +21,7 @@ class plugin:
         self.name = os.path.dirname(__file__).split('/')[-1]
 
         # Choose language
-        language = config.get('plugin_time_default', 'language')
+        language = config.get('plugin_' + self.name, 'language')
         if language == 'german':
             self.taw = time_german.time_german()
         else:
