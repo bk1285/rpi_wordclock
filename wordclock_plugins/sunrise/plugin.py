@@ -2,7 +2,7 @@ from astral import Astral
 import datetime
 import time
 import wordclock_tools.wordclock_colors as wcc
-import wordclock_plugins.time_german.time_german as wcp_time_german
+import wordclock_plugins.time_default.time_german as wcp_time_german
 
 class plugin:
     '''
@@ -16,7 +16,16 @@ class plugin:
         '''
         self.name = 'sunrise'
         self.astral_at_location = Astral()[config.get('plugin_sunrise', 'location')]
-        self.time_german = wcp_time_german.time_german()
+
+        # Choose language to display sunrise
+        language = config.get('plugin_time_default', 'language')
+        if language == 'german':
+            self.taw = wcp_time_german.time_german()
+        else:
+            print('Could not detect language: ' + language + '.')
+            print('Choosing default: german')
+            self.taw = wcp_time_german.time_german()
+
         self.bg_color_index     = 0 # default background color: black
         self.word_color_index   = 2 # default word color: warm white
         self.minute_color_index = 2 # default minute color: warm white
@@ -30,15 +39,15 @@ class plugin:
         # Display data of sunrise
         wcd.animate(self.name, 'sunrise', invert=True)
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
-        time_german_indices = self.time_german.get_time(sun_data['sunrise'], withPrefix=False)
-        wcd.wcl.setColorBy1DCoordinates(wcd.strip, time_german_indices, wcc.colors[self.word_color_index])
+        taw_indices = self.taw.get_time(sun_data['sunrise'], withPrefix=False)
+        wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         time.sleep(3)
         # Display data of sunset
         wcd.animate(self.name, 'sunrise')
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
-        time_german_indices = self.time_german.get_time(sun_data['sunset'], withPrefix=False)
-        wcd.wcl.setColorBy1DCoordinates(wcd.strip, time_german_indices, wcc.colors[self.word_color_index])
+        taw_indices = self.taw.get_time(sun_data['sunset'], withPrefix=False)
+        wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         time.sleep(3)
         # Display current moon phase

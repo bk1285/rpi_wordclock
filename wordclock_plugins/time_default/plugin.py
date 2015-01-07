@@ -6,15 +6,27 @@ import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
     '''
-    A class displaying the current time on a german WCA
+    A class to display the current time (default mode).
+    This default mode needs to be adapted to the hardware
+    layout of the wordclock (the choosen stancil) and is
+    the most essential time display mode of the wordclock.
     '''
 
     def __init__(self, config):
         '''
         Initializations for the startup of the current wordclock plugin
         '''
-        self.name = 'time_german'
-        self.taw = time_german.time_german()
+        self.name = 'time_default'
+
+        # Choose language
+        language = config.get('plugin_time_default', 'language')
+        if language == 'german':
+            self.taw = time_german.time_german()
+        else:
+            print('Could not detect language: ' + language + '.')
+            print('Choosing default: german')
+            self.taw = time_german.time_german()
+
         self.bg_color_index     = 0 # default background color: black
         self.word_color_index   = 2 # default word color: warm white
         self.minute_color_index = 2 # default minute color: warm white
