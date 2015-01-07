@@ -10,7 +10,7 @@ fontdemo.py
 *NOCI*
 
 # ignore individual config-files
-wordclock_config.cfg
+wordclock_config/wordclock_config.cfg
 
 # ignore swap-files
 *.swp
