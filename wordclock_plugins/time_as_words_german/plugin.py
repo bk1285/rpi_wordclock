@@ -1,4 +1,5 @@
 import datetime
+import os
 import time_as_words_german
 import wordclock_tools.wordclock_colors as wcc
 
@@ -11,7 +12,8 @@ class plugin:
         '''
         Initializations for the startup of the current wordclock plugin
         '''
-        self.name = 'time_as_words_german'
+        # Get plugin name (according to the folder, it is contained in)
+        self.name = os.path.dirname(__file__).split('/')[-1]
         self.taw = time_as_words_german.time_as_words_german()
         self.bg_color_index     = 0 # default background color: black
         self.word_color_index   = 2 # default word color: warm white

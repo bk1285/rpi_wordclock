@@ -1,6 +1,5 @@
 import datetime as dt
 
-
 class time_as_words_german():
     '''
     This class returns a given time as words (string)::

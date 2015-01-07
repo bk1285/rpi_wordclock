@@ -1,5 +1,6 @@
 from astral import Astral
 import datetime
+import os
 import time
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_plugins.time_default.time_german as wcp_time_german
@@ -14,7 +15,9 @@ class plugin:
         '''
         Initializations for the startup of the weather forecast
         '''
-        self.name = 'sunrise'
+        # Get plugin name (according to the folder, it is contained in)
+        self.name = os.path.dirname(__file__).split('/')[-1]
+
         self.astral_at_location = Astral()[config.get('plugin_sunrise', 'location')]
 
         # Choose language to display sunrise

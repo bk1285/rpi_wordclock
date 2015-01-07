@@ -9,7 +9,8 @@ class plugin:
         '''
         Initializations for the startup of the current wordclock plugin
         '''
-        self.name = 'restart'
+        # Get plugin name (according to the folder, it is contained in)
+        self.name = os.path.dirname(__file__).split('/')[-1]
 
     def run(self, wcd):
         '''

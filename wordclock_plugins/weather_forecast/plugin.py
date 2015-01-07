@@ -1,3 +1,4 @@
+import os
 import pywapi
 import time
 
@@ -11,7 +12,8 @@ class plugin:
         '''
         Initializations for the startup of the weather forecast
         '''
-        self.name = 'weather_forecast'
+        # Get plugin name (according to the folder, it is contained in)
+        self.name = os.path.dirname(__file__).split('/')[-1]
         self.location_id = config.get('plugin_weather_forecast', 'location_id')
         self.weather_service = config.get('plugin_weather_forecast', 'weather_service')
 

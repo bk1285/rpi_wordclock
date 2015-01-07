@@ -1,4 +1,5 @@
 import datetime
+import os
 import time
 import time_german
 import wordclock_tools.buttons as wcb
@@ -16,7 +17,8 @@ class plugin:
         '''
         Initializations for the startup of the current wordclock plugin
         '''
-        self.name = 'time_default'
+        # Get plugin name (according to the folder, it is contained in)
+        self.name = os.path.dirname(__file__).split('/')[-1]
 
         # Choose language
         language = config.get('plugin_time_default', 'language')

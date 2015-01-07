@@ -53,11 +53,11 @@ class wordclock:
             # Check, if plugin is valid (if the plugin.py is provided)
             if not os.path.isfile(os.path.join(plugin_dir, plugin, 'plugin.py')):
                 continue
-            try:
-                print('Importing plugin ' + plugin + '...')
-                self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
-            except:
-                print('Failed to import plugin ' + plugin + '!')
+#            try:
+            print('Importing plugin ' + plugin + '...')
+            self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
+            #except:
+             #   print('Failed to import plugin ' + plugin + '!')
 
 
     def startup(self):
