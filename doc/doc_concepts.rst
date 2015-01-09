@@ -12,7 +12,6 @@ Concepts
 * Coordinates (or: WCA-coordinates): Can be 1d or 2d, used to adress a LED on the word clock array
 * Index (or: strip index): Used to adress a LED depending on the position on the LED-strip
 
-... To be expanded to explain further important concepts within this library.
 
 .. figure:: _images/wiring_concept.png
     :scale: 100 %
