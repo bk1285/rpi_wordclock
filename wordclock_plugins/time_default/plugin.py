@@ -43,6 +43,7 @@ class plugin:
                 [wcc.BLACK, wcc.RED, wcc.BLUE],
                 [wcc.YELLOW, wcc.RED, wcc.BLUE],
                 [wcc.RED, wcc.BLUE, wcc.BLUE],
+                [wcc.RED, wcc.WHITE, wcc.WHITE],
                 [wcc.GREEN, wcc.YELLOW, wcc.PINK],
                 [wcc.WWHITE, wcc.BLACK, wcc.BLACK],
                 [wcc.BLACK, wcc.Color(30,30,30), wcc.Color(30,30,30)]]
