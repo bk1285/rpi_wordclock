@@ -1,6 +1,8 @@
+.. _hardware_setup:
 Hardware setup
 ==============
 
+.. _exemplary_wiring:
 Exemplary wiring layout
 +++++++++++++++++++++++
 
@@ -10,7 +12,7 @@ Exemplary wiring layout
 
     Exemplary wiring layout (backside of bernds_wiring, WCA_WIDTH*WCA_HEIGHT=11*10, WCA=Word Clock Array)
 
-
+.. _video_documentation:
 Video documentation on the wiring layout
 ++++++++++++++++++++++++++++++++++++++++
 

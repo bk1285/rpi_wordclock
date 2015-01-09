@@ -3,6 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. _toc:
 This is the documentation for rpi_wordclock
 ===========================================
 
@@ -15,11 +16,13 @@ This is the documentation for rpi_wordclock
     doc_how_to_install
     doc_troubleshooting
 
+.. _further_doc:
 Further documentation
 +++++++++++++++++++++
 
 A youtube video, which outlines the main functionalities and features is available `here <https://www.youtube.com/watch?v=V9TwvranJnY>`_.
 
+.. _indices:
 Indices and tables
 ==================
 
@@ -27,9 +30,11 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+.. _ acknowledgements:
 Acknowledgements
 ================
 
 * Christian (idea and first efforts for realization)
 * Daniel and Markus (technical support and hints to make the project advance)
 * Jeremy (providing the great `rpi_ws281x-library <https://github.com/jgarff/rpi_ws281x>`_)
+

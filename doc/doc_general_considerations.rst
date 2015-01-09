@@ -1,14 +1,15 @@
+.. _general_considerations:
 General considerations
 ======================
 
-
+.. _building_a_wordclock:
 If you want to build a wordclock...
 +++++++++++++++++++++++++++++++++++
 
-.. note:: The state of this project is currently still in experimental mode:
+.. note:: The this project is currently still in an experimental state:
 
-  * Documentation contains the main steps, but might not guide you through all steps in greatest detail
-  * Depending on your wordclock/stancil layout, you might need to adapt the LED-mapping.
+  * The documentation contains the main steps of building a wordclock, but might not guide you through all steps in greatest detail
+  * Depending on your stancil layout, you might need to adapt the LED-mapping.
     Feel free to contribute here!
     Currently available:
 
@@ -17,19 +18,26 @@ If you want to build a wordclock...
 * Hardware requirements:
 
   * A (wooden) sceleton to hold LEDs, stancil, RPi, etc...
-  * A stancil providing the letters, ...
+  * A stancil providing the letters
+
+    * You can order them online or create your own layout: Special plotters can produce adhesive stancils, which you can glue onto a glas plane .
+    * Consider, that you might need to invert the layout to have the adhesive surface on top to attach to the glas plate.
+
   * A frame to enframe the wordclock
-  * A LED-strip (e.g. WS2812 B Stripe 5m 150 LED)
-  
-    * Assure, that the spacing of the LEDs on the strip is equal or greater than the spacing of the letters 
-      of your stancil! If the spacing is smaller, you will not be able to get your LEDs into the correct position.
-      ... However: You could cut all LEDs apart, adding wires of a few millimeters in between and start soldering:
-      With 110 LEDs, you'll end up with 330 wires and 660 times soldering! Enjoy! ;)
-      
+
+    * Possible materials: Wood, alumnium, etc.
+
+  * A LED-strip running at 5V (e.g. WS2812 B Stripe 5m 150 LED)
+
+    * Assure, that the spacing of the LEDs on the strip is equal or greater than the spacing of the letters
+      of your stancil. If the spacing is smaller, you will not be able to get your LEDs into the correct position.
 
   * A Raspberry Pi (e.g. Review B, including SD-card)
   * A wifi-dongle to connect your RPi wireless to your local network
   * A power supply (e.g. 5V 10A 50W LED Power Supply)
+
+    * 5V are required. The current, which needs to be provided at max depends on the number and power consumption of you LEDs.
+
   * A user-interface to run the wordclock
 
     * e.g. 3 buttons (requiring resistors, etc.)
@@ -57,7 +65,7 @@ If you want to build a wordclock...
 
     * by sharing your implementations/improvements/enhancements/... ;)
 
-
+.. _expanding_the_wordclock:
 Expanding the functionality of the wordclock
 ++++++++++++++++++++++++++++++++++++++++++++
 
