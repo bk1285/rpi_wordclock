@@ -4,7 +4,9 @@ Concepts
 * WCA (Word Clock Array): The center matrix, without minute-LEDs and other stuff
 * WCA_WIDTH, WCA_HEIGHT: Height and width of the WCA.
 
-  * Part of the wordclock software are png-files, which need to fit to these values. Currently supported: 11x10 arrays.
+  * Part of the wordclock software are png-files, which need to fit to these values.
+  * Currently available: 11x10 png-files.
+  * Support for wordclocks with other resolution available (untested).
 
 * WCD (Word Clock Display): Includes any led attached to the wordclock (such as minutes, possible/future ambilights/etc.)
 * Coordinates (or: WCA-coordinates): Can be 1d or 2d, used to adress a LED on the word clock array
