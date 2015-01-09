@@ -2,8 +2,6 @@
 Software installation
 =====================
 
-.. note:: `~` indicates the path to the users home-directory (default on a RPi: /home/pi)
-
 .. _3rd_party_deps_packages:
 3rd party dependencies (packages)
 +++++++++++++++++++++++++++++++++
