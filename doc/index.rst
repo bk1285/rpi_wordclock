@@ -6,9 +6,6 @@
 This is the documentation for rpi_wordclock
 ===========================================
 
-
-`Video, outlining general features <http://youtu.be/V9TwvranJnY?t=1m53s>`_
-
 .. toctree::
     :maxdepth: 2
 
