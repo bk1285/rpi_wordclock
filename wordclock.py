@@ -73,7 +73,7 @@ class wordclock:
         Makes the wordclock run... :)
         '''
         # start wordclock with the plugin of your choice
-        plugin_index = 2
+        plugin_index = 3
 
         # The main menu
         # If we are here, a user interaction has been triggered

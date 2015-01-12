@@ -37,9 +37,12 @@ Link the file fontdemo.py to ~/rpi_wordclock using a softlink::
 
 Install pywapi as indicated on https://code.google.com/p/python-weather-api/#Weather.com
 
-Install astral (to get moon/sun information)::
+Install
 
-    sudo pip install pytz astral
+  * astral (to get moon/sun information)
+  * feedparser (to get access to latest feeds)
+
+    sudo pip install pytz astral feedparser
 
 .. _wordclock_software:
 The wordclock software
