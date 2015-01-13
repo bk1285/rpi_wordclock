@@ -42,6 +42,7 @@ clean:
 	-rm -rf $(BUILDDIR)/*
 
 html:
+	which sphinx-apidoc
 	sphinx-apidoc -o _apidoc ..
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
