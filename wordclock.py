@@ -3,6 +3,7 @@ from importlib import import_module
 import inspect
 import os
 import time
+import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.buttons as wcb
 import wordclock_tools.wordclock_display as wcd
 
@@ -44,6 +45,9 @@ class wordclock:
         # Its implementation depends on your (individual) wordclock layout/wiring
         self.wcd = wcd.wordclock_display(self.config)
 
+        # Define path to general icons (not plugin-specific)
+        self.pathToGeneralIcons = os.path.join(self.basePath, 'icons', self.wcd.dispRes())
+
         # Import plugins, which can be operated by the wordclock:
         plugin_dir = os.path.join(self.basePath, 'wordclock_plugins')
         self.plugins = []
@@ -80,7 +84,13 @@ class wordclock:
         # depending on further user input, a new plugin is selected
         while True:
             # Run selected plugin
-            self.plugins[plugin_index].run(self.wcd)
+            try:
+                self.plugins[plugin_index].run(self.wcd)
+            except:
+                print('Error in plugin ' + self.plugins[plugin_index].name + '.')
+                self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+                time.sleep(1)
+                self.wcd.showText('Error in ' + self.plugins[plugin_index].name, fg_color=wcc.RED, fps = 15)
 
             # Cleanup display after exiting plugin
             self.wcd.resetDisplay()
