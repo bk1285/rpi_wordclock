@@ -62,7 +62,7 @@ class wordclock_display:
         while True:
             for i in pinrange_to_listen:
                 if not GPIO.input(i):
-                    print('Event detected on pin ' + str(i))
+                    print('Pin ' + str(i) + ' pressed.')
                     return i
             time.sleep(1.0/cps)
 
@@ -74,7 +74,7 @@ class wordclock_display:
         for _ in range(seconds*cps):
             for i in pinrange_to_listen:
                 if not GPIO.input(i):
-                    print('Event detected on pin ' + str(i))
+                    print('Pin ' + str(i) + ' pressed.')
                     return i
             time.sleep(1.0/cps)
         return -1

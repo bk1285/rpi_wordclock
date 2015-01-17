@@ -51,17 +51,19 @@ class wordclock:
         # Import plugins, which can be operated by the wordclock:
         plugin_dir = os.path.join(self.basePath, 'wordclock_plugins')
         self.plugins = []
-        for plugin in os.listdir(plugin_dir):
-
+        for index, plugin in enumerate(os.listdir(plugin_dir)):
             # Perform a minimal (!) validity check
             # Check, if plugin is valid (if the plugin.py is provided)
             if not os.path.isfile(os.path.join(plugin_dir, plugin, 'plugin.py')):
                 continue
-#            try:
-            print('Importing plugin ' + plugin + '...')
-            self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
-            #except:
-             #   print('Failed to import plugin ' + plugin + '!')
+            try:
+                print('Importing plugin ' + plugin + '...')
+                self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
+            except:
+                print('Failed to import plugin ' + plugin + '!')
+            if plugin == 'time_default':
+                print('  Selected ' + plugin + ' as default plugin')
+                self.default_plugin = index
 
 
     def startup(self):
@@ -72,50 +74,62 @@ class wordclock:
             self.wcd.showText(self.config.get('wordclock', 'startup_message'))
 
 
+    def runPlugin(self, plugin_index):
+        '''
+        Runs a selected plugin
+        '''
+        print('Running plugin ' + self.plugins[plugin_index].name + '.')
+        try:
+            self.plugins[plugin_index].run(self.wcd)
+        except:
+            print('Error in plugin ' + self.plugins[plugin_index].name + '.')
+            self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+            time.sleep(1)
+            self.wcd.showText('Error in ' + self.plugins[plugin_index].name, fg_color=wcc.RED, fps = 15)
+
+        # Cleanup display after exiting plugin
+        self.wcd.resetDisplay()
+
+
     def run(self):
         '''
         Makes the wordclock run... :)
         '''
-        # start wordclock with the plugin of your choice
-        plugin_index = 3
+        plugin_index = self.default_plugin
 
-        # The main menu
-        # If we are here, a user interaction has been triggered
-        # depending on further user input, a new plugin is selected
+        # Run the wordclock forever
         while True:
-            # Run selected plugin
-            try:
-                self.plugins[plugin_index].run(self.wcd)
-            except:
-                print('Error in plugin ' + self.plugins[plugin_index].name + '.')
-                self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
-                time.sleep(1)
-                self.wcd.showText('Error in ' + self.plugins[plugin_index].name, fg_color=wcc.RED, fps = 15)
-
-            # Cleanup display after exiting plugin
-            self.wcd.resetDisplay()
 
             # Wait for user input to select the next plugin
             while True:
-                # The showIcon-command expects to have a plugin logo available
-                self.wcd.showIcon(plugin=self.plugins[plugin_index].name, iconName='logo')
-                pin = self.wcd.waitForEvent([wcb.button_left, wcb.button_return, wcb.button_right], cps=10)
-                if pin == wcb.button_left:
-                    plugin_index -=1
-                    if plugin_index == -1:
-                        plugin_index = len(self.plugins)-1
-                    time.sleep(0.1)
-                if pin == wcb.button_return:
-                    print('Selected plugin .....: ' + str(plugin_index) +
-                            ' (' + str(self.plugins[plugin_index].name) + ')')
-                    time.sleep(0.1)
-                    break
-                if pin == wcb.button_right:
-                    plugin_index +=1
-                    if plugin_index == len(self.plugins):
-                        plugin_index = 0
-                    time.sleep(0.1)
+                # Run the default plugin
+                self.runPlugin(self.default_plugin)
 
+                # If plugin exits, go to menu to select next plugin
+                plugin_selected = False
+                while not plugin_selected:
+                    # The showIcon-command expects to have a plugin logo available
+                    self.wcd.showIcon(plugin=self.plugins[plugin_index].name, iconName='logo')
+                    pin = self.wcd.waitForEvent([wcb.button_left, wcb.button_return, wcb.button_right], cps=10)
+                    if pin == wcb.button_left:
+                        plugin_index -=1
+                        if plugin_index == -1:
+                            plugin_index = len(self.plugins)-1
+                        time.sleep(0.1)
+                    if pin == wcb.button_return:
+                        time.sleep(0.1)
+                        plugin_selected = True
+                    if pin == wcb.button_right:
+                        plugin_index +=1
+                        if plugin_index == len(self.plugins):
+                            plugin_index = 0
+                        time.sleep(0.1)
+
+                # Run selected plugin
+                self.runPlugin(plugin_index)
+
+                # After leaving selected plugin, we start over at the while loop
+                # with the default plugin...
 
 if __name__ == '__main__':
     word_clock = wordclock()
