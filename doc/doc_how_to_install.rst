@@ -14,9 +14,26 @@ To install 3rd party dependencies (packages) enter in a terminal/commandline::
     sudo apt-get install python-pip scons git
 
 
+.. _3rd_party_deps_python:
+
+3rd party dependencies (python packages)
++++++++++++++++++++++++++++++++++++++++++
+
+Required python dependencies:
+
+  * astral (to get moon/sun information)
+  * feedparser (to get access to latest feeds)
+  * scipy
+  * pil
+
+To install use::
+
+    sudo pip install pytz astral feedparser scipy pil
+
+
 .. _3rd_party_deps_git:
 
-3rd party dependencies (git-repositories)
+3rd party dependencies (git repositories)
 +++++++++++++++++++++++++++++++++++++++++
 
 Install 3rd-party dependencies (compiled on your own).
@@ -39,20 +56,7 @@ Install fontdemo to your home-directory (to render strings)::
 
 This installs fontdemo.py to ~/5488053.
 
-Link the file fontdemo.py to ~/rpi_wordclock using a softlink::
-
-    ln -s ~/5488053/fontdemo.py ~/rpi_wordclock/fontdemo.py
-
 Install pywapi as indicated on https://code.google.com/p/python-weather-api/#Weather.com
-
-Install
-
-  * astral (to get moon/sun information)
-  * feedparser (to get access to latest feeds)
-  * scipy
-  * pil
-
-    sudo pip install pytz astral feedparser scipy pil
 
 
 .. _wordclock_software:
@@ -70,6 +74,10 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
 
     cd ~
     git clone https://gitub.com/bk1285/rpi_wordclock.git
+
+Link the previously installed file fontdemo.py to ~/rpi_wordclock using a softlink::
+
+    ln -s ~/5488053/fontdemo.py ~/rpi_wordclock/fontdemo.py
 
 
 .. _adopt_software:
