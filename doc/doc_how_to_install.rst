@@ -29,6 +29,9 @@ Install rpi_ws281x to your home-directory (to access leds)::
     cd rpi_ws281x
     sudo scons
 
+.. note:: Since this library is continiously updated: A version, which is tested to work with the wordclock is commit 6cffc95:
+https://github.com/jgarff/rpi_ws281x/tree/6cffc954a3fc25f0d741d03b575ad9cdf3068103
+
 Install fontdemo to your home-directory (to render strings)::
 
     cd ~
