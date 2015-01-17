@@ -1,8 +1,11 @@
 .. _software_installation:
+
 Software installation
 =====================
 
+
 .. _3rd_party_deps_packages:
+
 3rd party dependencies (packages)
 +++++++++++++++++++++++++++++++++
 
@@ -10,7 +13,9 @@ To install 3rd party dependencies (packages) enter in a terminal/commandline::
 
     sudo apt-get install python-pip scons git
 
+
 .. _3rd_party_deps_git:
+
 3rd party dependencies (git-repositories)
 +++++++++++++++++++++++++++++++++++++++++
 
@@ -41,14 +46,20 @@ Install
 
   * astral (to get moon/sun information)
   * feedparser (to get access to latest feeds)
+  * scipy
+  * pil
 
-    sudo pip install pytz astral feedparser
+    sudo pip install pytz astral feedparser scipy pil
+
 
 .. _wordclock_software:
+
 The wordclock software
 ++++++++++++++++++++++
 
+
 .. _download_software:
+
 Download software
 -----------------
 
@@ -57,7 +68,9 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
     cd ~
     git clone https://gitub.com/bk1285/rpi_wordclock.git
 
+
 .. _adopt_software:
+
 Adopt software
 --------------
 
@@ -70,7 +83,9 @@ Note: Each plugin of the wordclock project has its own section in the config-fil
 .. note:: If your wordclock has a stancil layout or display resolution, which is not supported yet, you might need to adopt the
   software by providing your own `wiring`-class (to the file wordclock_tools/wiring.py)
 
+
 .. _run_software:
+
 Run software
 ------------
 
@@ -81,7 +96,9 @@ To run the wordclock software (with adapted wiring and config-file) do::
 
 In case, the whole thing is not working as expected: Maybe the section :ref:`trouble-shooting` might help...
 
+
 .. _run_software_on_startup:
+
 Make software run on every startup
 ----------------------------------
 
