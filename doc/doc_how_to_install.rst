@@ -11,7 +11,7 @@ Software installation
 
 To install 3rd party dependencies (packages) enter in a terminal/commandline::
 
-    sudo apt-get install python-pip scons git
+    sudo apt-get install python-pip python-scipy scons git
 
 
 .. _3rd_party_deps_python:
@@ -28,7 +28,7 @@ Required python dependencies:
 
 To install use::
 
-    sudo pip install pytz astral feedparser scipy pil
+    sudo pip install pytz astral feedparser pillow
 
 
 .. _3rd_party_deps_git:
@@ -74,7 +74,7 @@ Download software
 Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual wordclock)::
 
     cd ~
-    git clone https://gitub.com/bk1285/rpi_wordclock.git
+    git clone https://github.com/bk1285/rpi_wordclock.git
 
 Link the previously installed file fontdemo.py to ~/rpi_wordclock using a softlink::
 
