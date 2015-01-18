@@ -48,22 +48,30 @@ class wordclock:
         # Define path to general icons (not plugin-specific)
         self.pathToGeneralIcons = os.path.join(self.basePath, 'icons', self.wcd.dispRes())
 
-        # Import plugins, which can be operated by the wordclock:
+        # Assemble path to plugin directory
         plugin_dir = os.path.join(self.basePath, 'wordclock_plugins')
+
+        # Assemble list of all available plugins
+        plugins = (plugin for plugin in os.listdir(plugin_dir) if os.path.isdir(os.path.join(plugin_dir, plugin)))
+
+        # Import plugins, which can be operated by the wordclock:
+        index = 0 # A helper variable (only incremeted on successful import)
         self.plugins = []
-        for index, plugin in enumerate(os.listdir(plugin_dir)):
-            # Perform a minimal (!) validity check
-            # Check, if plugin is valid (if the plugin.py is provided)
-            if not os.path.isfile(os.path.join(plugin_dir, plugin, 'plugin.py')):
-                continue
+        for plugin in plugins:
             try:
-                print('Importing plugin ' + plugin + '...')
+                # Perform a minimal (!) validity check
+                # Check, if plugin is valid (if the plugin.py is provided)
+                if not os.path.isfile(os.path.join(plugin_dir, plugin, 'plugin.py')):
+                    raise
                 self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
+                # Search for default plugin to display the time
+                if plugin == 'time_default':
+                    print('  Selected ' + plugin + ' as default plugin')
+                    self.default_plugin = index
+                print('Imported as plugin #' + str(index) + ': ' + plugin + '.')
+                index +=1
             except:
                 print('Failed to import plugin ' + plugin + '!')
-            if plugin == 'time_default':
-                print('  Selected ' + plugin + ' as default plugin')
-                self.default_plugin = index
 
 
     def startup(self):
