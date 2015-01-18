@@ -6,7 +6,7 @@ General considerations
 If you want to build a wordclock...
 +++++++++++++++++++++++++++++++++++
 
-.. note:: The this project is currently still in an experimental state:
+.. note:: This project is currently still in an experimental state:
 
   * The documentation contains the main steps of building a wordclock, but might not guide you through all steps in greatest detail
   * Depending on your stancil layout, you might need to adapt the LED-mapping.
