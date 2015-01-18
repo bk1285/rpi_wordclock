@@ -44,8 +44,10 @@ If you want to build a wordclock...
     * e.g. a capacitive touch sensor
     * ...
 
- * Some plugs to connect cables to the Raspberry Pis GPIO-pins
- * A micro-usb cable to connect the Raspberry Pi to the power supply
+  * Some plugs to connect cables to the Raspberry Pis GPIO-pins
+  * A micro-usb cable to connect the Raspberry Pi to the power supply
+  * Optionally: Consider hardware for levelshifting as oulined in https://learn.adafruit.com/neopixels-on-raspberry-pi/wiring and http://youtu.be/V9TwvranJnY?t=23m08s
+
 
 * You need to setup the software on your own
 
