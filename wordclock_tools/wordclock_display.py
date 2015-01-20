@@ -3,7 +3,6 @@ import fontdemo
 from neopixel import *
 import os
 from PIL import Image
-import RPi.GPIO as GPIO
 from scipy import misc
 import time
 import wordclock_colors as wcc
@@ -46,38 +45,6 @@ class wordclock_display:
         E.g. to choose the correct resolution of animations and icons
         '''
         return str(self.wcl.WCA_WIDTH) + 'x' + str(self.wcl.WCA_HEIGHT)
-
-    def getPinState(self, pin):
-        '''
-        Return state of a given pin
-        '''
-        # Return "not" since triggered GPIOs go to ground (low)
-        return not GPIO.input(pin)
-
-    def waitForEvent(self, pinrange_to_listen, cps=10):
-        '''
-        Waits forever for event on a given set of pin (events such as user interaction, button press, etc.)
-        cps: Checks per second
-        '''
-        while True:
-            for i in pinrange_to_listen:
-                if not GPIO.input(i):
-                    print('Pin ' + str(i) + ' pressed.')
-                    return i
-            time.sleep(1.0/cps)
-
-    def waitSecondsForEvent(self, pinrange_to_listen, seconds, cps=10):
-        '''
-        Waits for number of seconds for event on a given set of pin (events such as user interaction, button press, etc.)
-        cps: Checks per second
-        '''
-        for _ in range(seconds*cps):
-            for i in pinrange_to_listen:
-                if not GPIO.input(i):
-                    print('Pin ' + str(i) + ' pressed.')
-                    return i
-            time.sleep(1.0/cps)
-        return -1
 
     def setColorToAll(self, color, includeMinutes=True):
         '''

@@ -33,7 +33,7 @@ class plugin:
         self.word_color_index   = 2 # default word color: warm white
         self.minute_color_index = 2 # default minute color: warm white
 
-    def run(self, wcd):
+    def run(self, wcd, wci):
         '''
         Displaying current time for sunrise/sunset
         '''

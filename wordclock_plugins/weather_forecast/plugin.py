@@ -17,7 +17,7 @@ class plugin:
         self.location_id = config.get('plugin_' + self.name, 'location_id')
         self.weather_service = config.get('plugin_weather_forecast', 'weather_service')
 
-    def run(self, wcd):
+    def run(self, wcd, wci):
         '''
         Displaying expected temperature
         '''

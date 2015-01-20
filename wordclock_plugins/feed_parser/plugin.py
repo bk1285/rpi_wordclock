@@ -14,7 +14,7 @@ class plugin:
         self.name = os.path.dirname(__file__).split('/')[-1]
         self.rss_url = config.get('plugin_' + self.name, 'rss_url')
 
-    def run(self, wcd):
+    def run(self, wcd, wci):
         '''
         Displaying expected temperature
         '''

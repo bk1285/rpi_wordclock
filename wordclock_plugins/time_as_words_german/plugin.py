@@ -18,7 +18,7 @@ class plugin:
         self.bg_color_index     = 0 # default background color: black
         self.word_color_index   = 2 # default word color: warm white
 
-    def run(self, wcd):
+    def run(self, wcd, wci):
         '''
         Displays time in words.
         User interaction on pin button_return needs to be implemented on demand.

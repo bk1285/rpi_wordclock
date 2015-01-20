@@ -2,7 +2,6 @@ import datetime
 import os
 import time
 import time_german
-import wordclock_tools.buttons as wcb
 import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
@@ -50,7 +49,7 @@ class plugin:
         self.color_mode_pos = 0
         self.rb_pos = 0 # index position for "rainbow"-mode
 
-    def run(self, wcd):
+    def run(self, wcd, wci):
         '''
         Displays time until aborted by user interaction on pin button_return
         '''
@@ -65,9 +64,9 @@ class plugin:
             wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
             wcd.show()
-            event = wcd.waitSecondsForEvent([wcb.button_left, wcb.button_return, wcb.button_right], 10)
+            event = wci.waitSecondsForEvent([wci.button_left, wci.button_return, wci.button_right], 10)
             # Switch display color, if button_left is pressed
-            if (event == wcb.button_left):
+            if (event == wci.button_left):
                 self.color_mode_pos += 1
                 if self.color_mode_pos == len(self.color_modes):
                     self.color_mode_pos = 0
@@ -76,12 +75,12 @@ class plugin:
                 self.minute_color = self.color_modes[self.color_mode_pos][2]
                 time.sleep(0.2)
             # Return to main menu, if button_return is pressed
-            if (event == wcb.button_return):
+            if (event == wci.button_return):
                 return
-            if (event == wcb.button_right):
+            if (event == wci.button_right):
                 self.bg_color = wcc.BLACK
                 wcd.setColorToAll(self.bg_color, includeMinutes=True)
-                while wcd.getPinState(wcb.button_right):
+                while wci.getPinState(wci.button_right):
                     # BEGIN: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
                     if self.rb_pos < 85:
                         self.word_color = self.minute_color = wcc.Color(3*self.rb_pos, 255-3*self.rb_pos, 0)
