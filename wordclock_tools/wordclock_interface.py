@@ -31,6 +31,8 @@ class wordclock_interface:
         print('  Mapping button "return" to pin ' + str(interface.button_return) + '.')
         self.button_right  = interface.button_right
         print('  Mapping button "right" to pin ' + str(interface.button_right) + '.')
+        self.lock_time = float(config.get('wordclock_interface', 'lock_time'))
+        print('  Lock time of buttons is ' + str(self.lock_time) + ' seconds')
 
     def getPinState(self, pin):
         '''

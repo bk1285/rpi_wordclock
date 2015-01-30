@@ -118,15 +118,15 @@ class wordclock:
                     plugin_index -=1
                     if plugin_index == -1:
                         plugin_index = len(self.plugins)-1
-                    time.sleep(0.1)
+                    time.sleep(self.wci.lock_time)
                 if pin == self.wci.button_return:
-                    time.sleep(0.1)
+                    time.sleep(self.wci.lock_time)
                     plugin_selected = True
                 if pin == self.wci.button_right:
                     plugin_index +=1
                     if plugin_index == len(self.plugins):
                         plugin_index = 0
-                    time.sleep(0.1)
+                    time.sleep(self.wci.lock_time)
 
             # Run selected plugin
             self.runPlugin(plugin_index)
