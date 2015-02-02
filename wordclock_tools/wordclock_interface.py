@@ -58,7 +58,7 @@ class wordclock_interface:
         Waits for number of seconds for event on a given set of pin (events such as user interaction, button press, etc.)
         cps: Checks per second
         '''
-        for _ in range(seconds*cps):
+        for _ in range(int(seconds*cps)):
             for i in pinrange_to_listen:
                 if not GPIO.input(i):
                     print('Pin ' + str(i) + ' pressed.')
