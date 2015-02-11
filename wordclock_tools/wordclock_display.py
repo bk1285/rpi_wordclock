@@ -1,9 +1,7 @@
-import ConfigParser
 import fontdemo
 from neopixel import *
 import os
 from PIL import Image
-from scipy import misc
 import time
 import wordclock_colors as wcc
 import wiring
@@ -18,17 +16,8 @@ class wordclock_display:
         '''
         Initalization
         '''
-        # Choose the wordclocks wiring-layout
-        wiring_layout = config.get('wordclock_display', 'wiring_layout')
-        if wiring_layout == 'bernds_wiring':
-            self.wcl = wiring.bernds_wiring()
-        elif wiring_layout == 'christians_wiring':
-            self.wcl = wiring.christians_wiring()
-        elif wiring_layout == 'timos_wiring':
-            self.wcl = wiring.timos_wiring()
-        else:
-            print('Warning: No valid wiring layout found. Falling back to default!')
-            self.wcl = wiring.bernds_wiring()
+        # Get the wordclocks wiring-layout
+        self.wcl = wiring.wiring(config)
 
         # Create NeoPixel object with appropriate configuration.
         self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ, self.wcl.LED_DMA, self.wcl.LED_INVERT)

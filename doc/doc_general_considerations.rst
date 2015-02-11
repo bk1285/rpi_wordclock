@@ -9,11 +9,23 @@ If you want to build a wordclock...
 .. note:: This project is currently still in an experimental state:
 
   * The documentation contains the main steps of building a wordclock, but might not guide you through all steps in greatest detail
-  * Depending on your stancil layout, you might need to adapt the LED-mapping.
+  * Depending on your language-dependent stancil-layout, you might need to adapt the software.
     Feel free to contribute here!
     Currently available:
 
-    * German stancil layout
+      * Stancil layout and software:
+
+          * german (including swabian: Thanks to Timo)
+
+      * Stancil layout only (requiring some python-implementations: See wordclock_plugins/time_default):
+
+          * english
+          * french
+          * italian
+          * spanish
+          * turkish
+
+      * Further languages/stancil layouts can be created using the ''config-file'' and the script ''create_layout.py''
 
 * Hardware requirements:
 

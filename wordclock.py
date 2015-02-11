@@ -13,7 +13,6 @@ class wordclock:
     The class, which makes the wordclock run...
     '''
 
-
     def __init__(self):
         '''
         Initializations, executed at every startup of the wordclock

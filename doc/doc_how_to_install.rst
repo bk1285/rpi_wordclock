@@ -3,6 +3,20 @@
 Software installation
 =====================
 
+Set locales
++++++++++++
+
+Since the config-file contains layouts for multiple languages, assure to have a utf-8 compatible locale::
+
+    echo $LANG
+
+should return something, containing utf-8 at the end.
+E.g.::
+
+    en_US.UTF-8
+
+If not, check this website, to adjust it: http://perlgeek.de/en/article/set-up-a-clean-utf8-environment
+
 
 .. _3rd_party_deps_packages:
 
@@ -25,10 +39,11 @@ Required python dependencies:
   * feedparser (to get access to latest feeds)
   * scipy
   * pil
+  * svgwrite (to plot stancil/wiring layouts)
 
 To install use::
 
-    sudo pip install pytz astral feedparser pillow
+    sudo pip install pytz astral feedparser pillow svgwrite
 
 
 .. _3rd_party_deps_git:
