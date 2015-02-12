@@ -55,9 +55,8 @@ class plugin:
         '''
         Displays interactive tetris until gameover
         '''
-
-        H = wcd.wcl.WCA_HEIGHT
-        W = wcd.wcl.WCA_WIDTH
+        H = wcd.get_wca_height()
+        W = wcd.get_wca_width()
 
         # Reset game
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
@@ -148,9 +147,9 @@ class plugin:
                 for r,row in enumerate(self.field):
                     for c,cell in enumerate(row):
                         if k % 2 == 0 and r in rows:
-                            wcd.wcl.setColorBy2DCoordinates(wcd.strip, c, r, self.bg_color)
+                            wcd.setColorBy2DCoordinates(wcd.strip, c, r, self.bg_color)
                         else:
-                            wcd.wcl.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
+                            wcd.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
                 # redraw
                 wcd.show()
                 sleep(0.3)
@@ -165,9 +164,9 @@ class plugin:
             for r,row in enumerate(self.field):
                 for c,cell in enumerate(row):
                     if k % 2 == 0:
-                        wcd.wcl.setColorBy2DCoordinates(wcd.strip, c, r, self.bg_color)
+                        wcd.setColorBy2DCoordinates(wcd.strip, c, r, self.bg_color)
                     else:
-                        wcd.wcl.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
+                        wcd.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
             wcd.show()
             sleep(0.3)
 
@@ -175,7 +174,7 @@ class plugin:
         # redraw field
         for r,row in enumerate(self.field):
             for c,cell in enumerate(row):
-                wcd.wcl.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
+                wcd.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
         wcd.show()
 
     def carve(self, brick, x, y):

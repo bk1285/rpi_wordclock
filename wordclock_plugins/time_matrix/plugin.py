@@ -63,7 +63,7 @@ class plugin:
             # Returns indices, which represent the current time, when beeing illuminated
             taw_indices = self.taw.get_time(now)
 
-            wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
 
             for x,y in enumerate(rain):
@@ -78,7 +78,7 @@ class plugin:
                     ci = y0 - (y - 10);
                     for yi,yn in enumerate(range(y0, y1 + 1)):
                         color = self.colors[ci + yi]
-                        wcd.wcl.setColorBy2DCoordinates(wcd.strip, x, yn, color)
+                        wcd.setColorBy2DCoordinates(wcd.strip, x, yn, color)
                     # advance y coordinate
                     rain[x] = y + 1
 

@@ -39,6 +39,30 @@ class wordclock_display:
         self.default_bg_color=wcc.BLACK
         self.base_path=config.get('wordclock', 'base_path')
 
+    def setColorBy1DCoordinates(self, *args, **kwargs):
+        '''
+        Sets a pixel at given 1D coordinates
+        '''
+        return self.wcl.setColorBy1DCoordinates(*args, **kwargs)
+
+    def setColorBy2DCoordinates(self, *args, **kwargs):
+        '''
+        Sets a pixel at given 2D coordinates
+        '''
+        return self.wcl.setColorBy2DCoordinates(*args, **kwargs)
+
+    def get_wca_height(self):
+        '''
+        Returns the height of the WCA
+        '''
+        return self.wcl.WCA_HEIGHT
+
+    def get_wca_width(self):
+        '''
+        Returns the height of the WCA
+        '''
+        return self.wcl.WCA_WIDTH
+
     def dispRes(self):
         '''
         Returns the resolution of the wordclock array as string

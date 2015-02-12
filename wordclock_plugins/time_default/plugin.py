@@ -61,7 +61,7 @@ class plugin:
             # Returns indices, which represent the current time, when beeing illuminated
             taw_indices = self.taw.get_time(now)
             #TODO: Improve rendering of time during while-loop: Render array only once per 5 minutes...
-            wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
             wcd.show()
             event = wci.waitSecondsForEvent([wci.button_left, wci.button_return, wci.button_right], 10)
@@ -89,7 +89,7 @@ class plugin:
                     else:
                         self.word_color = self.minute_color = wcc.Color(0, 3*(self.rb_pos-170), 255-3*(self.rb_pos-170))
                     # END: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
-                    wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+                    wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
                     wcd.setMinutes(now, self.minute_color)
                     wcd.show()
                     self.rb_pos += 1

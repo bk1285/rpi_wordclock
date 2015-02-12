@@ -43,14 +43,14 @@ class plugin:
         wcd.animate(self.name, 'sunrise', invert=True)
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
         taw_indices = self.taw.get_time(sun_data['sunrise'], withPrefix=False)
-        wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
+        wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         time.sleep(3)
         # Display data of sunset
         wcd.animate(self.name, 'sunrise')
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
         taw_indices = self.taw.get_time(sun_data['sunset'], withPrefix=False)
-        wcd.wcl.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
+        wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         time.sleep(3)
         # Display current moon phase
