@@ -10,14 +10,14 @@ class bernds_wiring:
     def __init__(self):
 
         # LED strip configuration:
-        self.LED_COUNT   = 114     # Number of LED pixels.
+        self.LED_COUNT   = 125     # Number of LED pixels.
         self.LED_PIN     = 18      # GPIO pin connected to the pixels (must support PWM!).
         self.LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
         self.LED_DMA     = 5       # DMA channel to use for generating signal (try 5)
         self.LED_INVERT  = False   # True to invert the signal (when using NPN transistor level shift)
 
         self.WCA_WIDTH   = 11      # Wordclock array width
-        self.WCA_HEIGHT  = 10      # Wordclock array height
+        self.WCA_HEIGHT  = 11      # Wordclock array height
 
     def setColorBy1DCoordinates(self, strip, ledCoordinates, color):
         '''
@@ -48,11 +48,11 @@ class bernds_wiring:
         This implementation assumes the minutes to be wired as first and last two leds of the led-strip
         '''
         if min == 1:
-            return 113
+            return 124
         elif min == 2:
             return 1
         elif min == 3:
-            return 112
+            return 123
         elif min == 4:
             return 0
         else:
