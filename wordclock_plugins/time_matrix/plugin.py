@@ -3,7 +3,7 @@
 import datetime
 import os
 import wordclock_plugins.time_default.time_dutch as time_dutch
-import wordclock_tools.buttons as wcb
+import wordclock_tools.wordclock_interface as wcb
 import wordclock_tools.wordclock_colors as wcc
 import random
 from ConfigParser import NoSectionError
