@@ -20,8 +20,8 @@ class wordclock_display:
         '''
         # Choose the wordclocks wiring-layout
         wiring_layout = config.get('wordclock_display', 'wiring_layout')
-        if wiring_layout == 'bernds_wiring':
-            self.wcl = wiring.bernds_wiring()
+        if wiring_layout == 'svens_wiring':
+            self.wcl = wiring.svens_wiring()
         elif wiring_layout == 'christians_wiring':
             self.wcl = wiring.christians_wiring()
         else:
