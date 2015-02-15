@@ -2,8 +2,8 @@
 
 import datetime
 import os
-import wordclock_plugins.time_default.time_german as time_german
-import wordclock_tools.buttons as wcb
+import wordclock_plugins.time_default.time_dutch as time_dutch
+import wordclock_tools.wordclock_interface as wcb
 import wordclock_tools.wordclock_colors as wcc
 import random
 from ConfigParser import NoSectionError
@@ -28,12 +28,12 @@ class plugin:
             language = config.get('plugin_' + self.name, 'language')
         except NoSectionError:
             language = ''
-        if language == 'german':
-            self.taw = time_german.time_german()
+        if language == 'dutch':
+            self.taw = time_dutch.time_dutch()
         else:
             print('Could not detect language: ' + language + '.')
-            print('Choosing default: german')
-            self.taw = time_german.time_german()
+            print('Choosing default: dutch')
+            self.taw = time_dutch.time_dutch()
 
         self.bg_color     = wcc.BLACK  # default background color
         self.word_color   = wcc.WHITE # default word color

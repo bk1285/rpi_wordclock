@@ -1,7 +1,7 @@
 # Authored by Markus E.
 
 import os
-import wordclock_tools.buttons as wcb
+import wordclock_tools.wordclock_interface as wcb
 import wordclock_tools.wordclock_colors as wcc
 import random
 import time
