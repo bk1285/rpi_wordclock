@@ -24,6 +24,8 @@ class wordclock_display:
             self.wcl = wiring.bernds_wiring()
         elif wiring_layout == 'christians_wiring':
             self.wcl = wiring.christians_wiring()
+        elif wiring_layout == 'timos_wiring':
+            self.wcl = wiring.timos_wiring()
         else:
             print('Warning: No valid wiring layout found. Falling back to default!')
             self.wcl = wiring.bernds_wiring()
