@@ -95,7 +95,7 @@ class plugin:
                 event = wci.waitSecondsForEvent([wcb.button_return,wcb.button_left,wcb.button_right], 0.01, 1000)
                 # check the time
                 d = time.time() - t
-                timeout = d > max(0.2, (0.5 - 0.05 * lines)) # make game harder over time
+                timeout = d > max(0.2, (0.5 - 0.02 * lines)) # make game harder over time
                 if timeout and H - brick.innerHeight - brick.padTop == y:
                     # at end of field: settle brick and move on
                     lines += self.clear_lines(wcd)
