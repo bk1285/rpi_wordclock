@@ -3,7 +3,6 @@
 import datetime
 import os
 import wordclock_plugins.time_default.time_german as time_german
-#import wordclock_tools.buttons as wcb
 import wordclock_tools.wordclock_colors as wcc
 import random
 from ConfigParser import NoSectionError
