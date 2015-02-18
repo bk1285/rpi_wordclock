@@ -3,7 +3,7 @@
 import datetime
 import os
 import wordclock_plugins.time_default.time_german as time_german
-import wordclock_tools.buttons as wcb
+#import wordclock_tools.buttons as wcb
 import wordclock_tools.wordclock_colors as wcc
 import random
 from ConfigParser import NoSectionError
@@ -84,12 +84,12 @@ class plugin:
 
             wcd.show()
 
-            event = wci.waitSecondsForEvent([wcb.button_return, wcb.button_left, wcb.button_right], 0.1)
-            if event == wcb.button_return:
+            event = wci.waitSecondsForEvent([wci.button_return, wci.button_left, wci.button_right], 0.1)
+            if event == wci.button_return:
                 return
-            elif event == wcb.button_left:
+            elif event == wci.button_left:
                 self.threshold = min(0.95, self.threshold + 0.05)
-            elif event == wcb.button_right:
+            elif event == wci.button_right:
                 self.threshold = max(0.7, self.threshold - 0.05)
 
 

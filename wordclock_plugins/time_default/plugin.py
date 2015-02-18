@@ -24,6 +24,8 @@ class plugin:
         language = config.get('plugin_' + self.name, 'language')
         if language == 'german':
             self.taw = time_german.time_german()
+        elif language == 'swabian':
+            self.taw = time_swabian.time_swabian()
         else:
             print('Could not detect language: ' + language + '.')
             print('Choosing default: german')
