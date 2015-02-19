@@ -1,7 +1,6 @@
 # Authored by Markus E.
 
 import os
-import wordclock_tools.buttons as wcb
 import wordclock_tools.wordclock_colors as wcc
 import random
 import time
@@ -92,7 +91,7 @@ class plugin:
                 self.carve(brick, x, y)
                 self.draw(wcd)
 
-                event = wci.waitSecondsForEvent([wcb.button_return,wcb.button_left,wcb.button_right], 0.01, 1000)
+                event = wci.waitSecondsForEvent([wci.button_return,wci.button_left,wci.button_right], 0.01, 1000)
                 # check the time
                 d = time.time() - t
                 timeout = d > max(0.2, (0.5 - 0.02 * lines)) # make game harder over time
@@ -114,7 +113,7 @@ class plugin:
 
                 lastevent = event
 
-                if event == wcb.button_return:
+                if event == wci.button_return:
                     brickr = brick.rotate_cw()
                     # simple wall bounce
                     if not self.collision(brickr, x, y):
@@ -128,12 +127,12 @@ class plugin:
                     # adjust x and y
                     x = min(max(-brick.padLeft, x), W - brick.innerWidth - brick.padLeft)
                     y = max(-brick.padTop - brick.innerHeight + 1, y)
-                elif event == wcb.button_left:
+                elif event == wci.button_left:
                     # move brick to the left
                     nx = max(-brick.padLeft, x - 1)
                     if not self.collision(brick, nx, y):
                         x = nx
-                elif event == wcb.button_right:
+                elif event == wci.button_right:
                     # move brick to the right
                     nx = min(x + 1, W - brick.innerWidth - brick.padLeft)
                     if not self.collision(brick, nx, y):

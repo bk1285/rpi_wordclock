@@ -35,7 +35,7 @@ class time_swabian():
         range(49,54)]
     self.full_hour= range(107,110)
 
-def get_time(self, time, withPrefix=True):
+ def get_time(self, time, withPrefix=True):
     hour=time.hour%12+(1 if time.minute/5 > 2 else 0)
     minute=time.minute/5
     # Assemble indices
