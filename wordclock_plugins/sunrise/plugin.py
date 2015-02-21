@@ -4,6 +4,7 @@ import os
 import time
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_plugins.time_default.time_german as wcp_time_german
+import wordclock_plugins.time_default.time_dutch as wcp_time_dutch
 
 class plugin:
     '''
@@ -24,6 +25,8 @@ class plugin:
         language = config.get('plugin_time_default', 'language')
         if language == 'german':
             self.taw = wcp_time_german.time_german()
+        elif language == 'dutch':
+            self.taw = wcp_time_dutch.time_dutch()
         else:
             print('Could not detect language: ' + language + '.')
             print('Choosing default: german')
