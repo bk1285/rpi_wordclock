@@ -6,11 +6,21 @@ Hardware setup
 Exemplary wiring layout
 +++++++++++++++++++++++
 
+Exemplary wiring layout (backside of bernds_wiring, WCA_WIDTH*WCA_HEIGHT=11*10, WCA=Word Clock Array)
+
 .. figure:: _images/bernds_wiring.png
     :scale: 100 %
     :alt: Examplary wirng layout
 
-    Exemplary wiring layout (backside of bernds_wiring, WCA_WIDTH*WCA_HEIGHT=11*10, WCA=Word Clock Array)
+
+.. figure:: _images/wiring_back_bernds_wiring.png
+    :scale: 40 %
+    :alt: Examplary wirng layout (back side)
+
+.. figure:: _images/wiring_front_bernds_wiring.png
+    :scale: 40 %
+    :alt: Examplary wirng layout (front side)
+
 
 .. _video_documentation:
 Video documentation on the wiring layout

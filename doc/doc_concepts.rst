@@ -19,7 +19,11 @@ Concepts
 * Index (or: strip index): Used to adress a LED depending on the position on the LED-strip
 
 .. _concept_exemplary_wiring_layout:
-.. figure:: _images/wiring_concept.png
-    :scale: 100 %
-    :alt: Examplary wirng layout
+.. figure:: _images/wiring_back_bernds_wiring.png
+    :scale: 40 %
+    :alt: Examplary wirng layout (back side)
+
+.. figure:: _images/wiring_front_bernds_wiring.png
+    :scale: 40 %
+    :alt: Examplary wirng layout (front side)
 
