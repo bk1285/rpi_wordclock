@@ -25,7 +25,7 @@ If not, check this website, to adjust it: http://perlgeek.de/en/article/set-up-a
 
 To install 3rd party dependencies (packages) enter in a terminal/commandline::
 
-    sudo apt-get install python-pip python-scipy scons git
+    sudo apt-get install python-pip python-scipy scons git swig
 
 
 .. _3rd_party_deps_python:
@@ -43,7 +43,7 @@ Required python dependencies:
 
 To install use::
 
-    sudo pip install pytz astral feedparser pillow svgwrite
+    sudo pip install pytz astral feedparser pillow svgwrite freetype-py
 
 
 .. _3rd_party_deps_git:
@@ -60,6 +60,8 @@ Install rpi_ws281x to your home-directory (to access leds)::
     git clone https://github.com/jgarff/rpi_ws281x.git
     cd rpi_ws281x
     sudo scons
+    cd ~/rpi_ws281x/python
+    sudo python setup.py install
 
 .. note::
     Since this library is continiously updated: A version, which is tested to work with the wordclock is commit 6cffc95: 
@@ -72,8 +74,17 @@ Install fontdemo to your home-directory (to render strings)::
 
 This installs fontdemo.py to ~/5488053.
 
-Install pywapi as indicated on https://code.google.com/p/python-weather-api/#Weather.com
+Install pywapi::
 
+    cd ~
+    wget https://launchpad.net/python-weather-api/trunk/0.3.8/+download/pywapi-0.3.8.tar.gz
+    tar -zxf pywapi-0.3.8.tar.gz
+    rm pywapi-0.3.8.tar.gz
+    cd pywapi-0.3.8
+    sudo python setup.py build
+    sudo python setup.py install
+
+Further details: https://code.google.com/p/python-weather-api/#Weather.com
 
 .. _wordclock_software:
 
