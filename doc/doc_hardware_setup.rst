@@ -33,6 +33,10 @@ Assembling steps
     :scale: 40%
     :alt: After Soldering
 
+.. figure:: _images/software_update.jpg
+    :scale: 40%
+    :alt: Software Update
+
 .. figure:: _images/components.jpg
     :scale: 40%
     :alt: Components
@@ -52,12 +56,6 @@ Assembling steps
 .. figure:: _images/final_backside_detail.jpg
     :scale: 40%
     :alt: Final backside detail
-
-.. figure:: _images/software_update.jpg
-    :scale: 40%
-    :alt: Software Update
-
-
 
 .. _video_documentation:
 Video documentation on the wiring layout
