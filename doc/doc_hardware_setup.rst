@@ -8,11 +8,6 @@ Exemplary wiring layout
 
 Exemplary wiring layout (backside of bernds_wiring, WCA_WIDTH*WCA_HEIGHT=11*10, WCA=Word Clock Array)
 
-.. figure:: _images/bernds_wiring.png
-    :scale: 100 %
-    :alt: Examplary wirng layout
-
-
 .. figure:: _images/wiring_back_bernds_wiring.png
     :scale: 40 %
     :alt: Examplary wirng layout (back side)
@@ -20,6 +15,48 @@ Exemplary wiring layout (backside of bernds_wiring, WCA_WIDTH*WCA_HEIGHT=11*10, 
 .. figure:: _images/wiring_front_bernds_wiring.png
     :scale: 40 %
     :alt: Examplary wirng layout (front side)
+
+
+.. _hardware_setup_steps:
+Assembling steps
+++++++++++++++++
+
+.. figure:: _images/drilling.jpg
+    :scale: 40%
+    :alt: Drilling
+
+.. figure:: _images/sawing.jpg
+    :scale: 40%
+    :alt: Sawing
+
+.. figure:: _images/after_soldering.jpg
+    :scale: 40%
+    :alt: After Soldering
+
+.. figure:: _images/components.jpg
+    :scale: 40%
+    :alt: Components
+
+.. figure:: _images/wiring_detail.jpg
+    :scale: 40%
+    :alt: Wiring detail
+
+.. figure:: _images/wiring_button.jpg
+    :scale: 40%
+    :alt: Wiring button
+
+.. figure:: _images/final_backside.jpg
+    :scale: 40%
+    :alt: Final backside
+
+.. figure:: _images/final_backside_detail.jpg
+    :scale: 40%
+    :alt: Final backside detail
+
+.. figure:: _images/software_update.jpg
+    :scale: 40%
+    :alt: Software Update
+
 
 
 .. _video_documentation:
