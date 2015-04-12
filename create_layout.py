@@ -99,7 +99,7 @@ def create_svg(lang, config, side='front', mode='stancil'):
             'text-anchor:middle;'\
             'fill:'+fg+';'\
             'font-family:'+font_type+';'\
-            'font-size:'+str(font_size if mode=='stancil' else 3))
+            'font-size:'+str(font_size if mode=='stancil' else 6))
 
     # Process letters
     wca_top_left = [(width-wca_width)/2, (height-wca_height)/2]

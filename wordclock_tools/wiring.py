@@ -74,6 +74,7 @@ class bernds_wiring:
     def __init__(self, WCA_WIDTH, WCA_HEIGHT):
         self.WCA_WIDTH   = WCA_WIDTH
         self.WCA_HEIGHT  = WCA_HEIGHT
+        self.LED_COUNT   = self.WCA_WIDTH*self.WCA_HEIGHT+4
 
     def getStripIndexFrom2D(self, x, y):
         '''
@@ -96,11 +97,11 @@ class bernds_wiring:
         This implementation assumes the minutes to be wired as first and last two leds of the led-strip
         '''
         if min == 1:
-            return 113
+            return self.LED_COUNT-1
         elif min == 2:
             return 1
         elif min == 3:
-            return 112
+            return self.LED_COUNT-2
         elif min == 4:
             return 0
         else:
@@ -120,6 +121,7 @@ class christians_wiring:
     def __init__(self, WCA_WIDTH, WCA_HEIGHT):
         self.WCA_WIDTH   = WCA_WIDTH
         self.WCA_HEIGHT  = WCA_HEIGHT
+        self.LED_COUNT   = self.WCA_WIDTH*self.WCA_HEIGHT+4
 
     def getStripIndexFrom2D(self, x, y):
         '''
@@ -142,13 +144,13 @@ class christians_wiring:
         This implementation assumes the minutes to be wired as first and last two leds of the led-strip
         '''
         if min == 1:
-            return 110
+            return self.LED_COUNT-4
         elif min == 2:
-            return 111
+            return self.LED_COUNT-3
         elif min == 3:
-            return 112
+            return self.LED_COUNT-2
         elif min == 4:
-            return 113
+            return self.LED_COUNT-1
         else:
             print('WARNING: Out of range, when mapping minutes...')
             print(min)
@@ -167,6 +169,7 @@ class timos_wiring:
     def __init__(self, WCA_WIDTH, WCA_HEIGHT):
         self.WCA_WIDTH   = WCA_WIDTH
         self.WCA_HEIGHT  = WCA_HEIGHT
+        self.LED_COUNT   = self.WCA_WIDTH*self.WCA_HEIGHT+4
 
     def getStripIndexFrom2D(self, x, y):
         '''
@@ -191,9 +194,9 @@ class timos_wiring:
         if min == 1:
             return 1
         elif min == 2:
-            return 113
+            return self.LED_COUNT-1
         elif min == 3:
-            return 112
+            return self.LED_COUNT-2
         elif min == 4:
             return 0
         else:
