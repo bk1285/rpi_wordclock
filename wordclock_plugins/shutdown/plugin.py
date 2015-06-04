@@ -1,4 +1,5 @@
 import os
+import time
 
 class plugin:
     '''
@@ -19,5 +20,7 @@ class plugin:
         Shutdown wordclock
         '''
         wcd.showText('Shutting down...    ')
+        wcd.showIcon(plugin=self.name, iconName='logo')
         os.system('shutdown now -h')
+        time.sleep(10)
         return

@@ -1,4 +1,5 @@
 import os
+import time
 
 class plugin:
     '''
@@ -17,5 +18,7 @@ class plugin:
         Restart wordclock
         '''
         wcd.showText("Restarting...    ")
+        wcd.showIcon(plugin=self.name, iconName='logo')
         os.system("shutdown now -r")
+        time.sleep(10)
         return

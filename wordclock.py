@@ -99,13 +99,13 @@ class wordclock:
         '''
         Makes the wordclock run...
         '''
-        plugin_index = self.default_plugin
 
         # Run the wordclock forever
         while True:
 
             # Run the default plugin
             self.runPlugin(self.default_plugin)
+            plugin_index = self.default_plugin
 
             # If plugin.run exits, loop through menu to select next plugin
             plugin_selected = False
