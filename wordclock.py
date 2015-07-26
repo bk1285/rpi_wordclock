@@ -112,6 +112,7 @@ class wordclock:
             while not plugin_selected:
                 # The showIcon-command expects to have a plugin logo available
                 self.wcd.showIcon(plugin=self.plugins[plugin_index].name, iconName='logo')
+                time.sleep(self.wci.lock_time)
                 pin = self.wci.waitForEvent([self.wci.button_left, self.wci.button_return, self.wci.button_right], cps=10)
                 if pin == self.wci.button_left:
                     plugin_index -=1
@@ -119,8 +120,8 @@ class wordclock:
                         plugin_index = len(self.plugins)-1
                     time.sleep(self.wci.lock_time)
                 if pin == self.wci.button_return:
-                    time.sleep(self.wci.lock_time)
                     plugin_selected = True
+                    time.sleep(self.wci.lock_time)
                 if pin == self.wci.button_right:
                     plugin_index +=1
                     if plugin_index == len(self.plugins):
