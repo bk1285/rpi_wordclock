@@ -27,6 +27,11 @@ If you want to build a wordclock...
 
       * Further languages/stancil layouts can be created using the ''config-file'' and the script ''create_layout.py''
 
+  * A collection of the main hardware components -- except sceleton and stancil -- are available for
+      * Germany: http://astore.amazon.de/araspbepibase-21
+      * UK: http://astore.amazon.co.uk/araspbepiba0c-21
+
+
 * Hardware requirements:
 
   * A (wooden) sceleton to hold LEDs, stancil, RPi, etc...
