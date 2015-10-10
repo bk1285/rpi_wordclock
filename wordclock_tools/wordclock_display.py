@@ -129,6 +129,8 @@ class wordclock_display:
         if fg_color == None: fg_color=self.default_fg_color
         if bg_color == None: bg_color=self.default_bg_color
 
+        text = '    '+text+'    '
+
         fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
         text_as_pixel = fnt.render_text(text)

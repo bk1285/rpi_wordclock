@@ -30,5 +30,5 @@ class plugin:
             print('Warning: No valid weather_forecast found!')
             return
         temp=current_weather_forecast['current_conditions']['temperature']
-        wcd.showText('    ' + temp + '*   ' + temp + '*   ' + temp + '*   ', count=1, fps=8)
+        wcd.showText(temp + '*   ' + temp + '*   ' + temp + '*', count=1, fps=8)
         time.sleep(1)
