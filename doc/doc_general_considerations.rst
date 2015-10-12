@@ -57,7 +57,7 @@ If you want to build a wordclock
 
   * A user-interface to run the wordclock
 
-    * e.g. 3 buttons (requiring resistors, ... as outlined here in the background-section: https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/robot/buttons_and_switches/)
+    * e.g. 3 buttons (each requiring a 1k and a 10k resistor)
     * e.g. a capacitive touch sensor
     * ...
 

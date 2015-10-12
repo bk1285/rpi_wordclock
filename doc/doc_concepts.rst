@@ -21,8 +21,8 @@ Concepts
 
 .. _exemplary_wiring:
 .. _concept_exemplary_wiring_layout:
-Exemplary wiring layout
-+++++++++++++++++++++++
+Exemplary display wiring
+++++++++++++++++++++++++
 
 Exemplary wiring layout (backside of bernds_wiring, WCA_WIDTH*WCA_HEIGHT=11*10, WCA=Word Clock Array)
 
@@ -33,4 +33,15 @@ Exemplary wiring layout (backside of bernds_wiring, WCA_WIDTH*WCA_HEIGHT=11*10, 
 .. figure:: _images/wiring_front_bernds_wiring.png
     :scale: 40 %
     :alt: Examplary wiring layout (front side)
+
+
+.. _exemplary_button_wiring:
+Exemplary button wiring
+++++++++++++++++++++++++
+
+Exemplary wiring layout to connect RPi, buttons, etc.
+
+.. figure:: _images/wiring.png
+    :scale: 40 %
+    :alt: Examplary wiring layout for RPi-buttons
 
