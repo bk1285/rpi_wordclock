@@ -18,12 +18,19 @@ Concepts
 .. _concept_index:
 * Index (or: strip index): Used to adress a LED depending on the position on the LED-strip
 
+
+.. _exemplary_wiring:
 .. _concept_exemplary_wiring_layout:
+Exemplary wiring layout
++++++++++++++++++++++++
+
+Exemplary wiring layout (backside of bernds_wiring, WCA_WIDTH*WCA_HEIGHT=11*10, WCA=Word Clock Array)
+
 .. figure:: _images/wiring_back_bernds_wiring.png
     :scale: 40 %
-    :alt: Examplary wirng layout (back side)
+    :alt: Examplary wiring layout (back side)
 
 .. figure:: _images/wiring_front_bernds_wiring.png
     :scale: 40 %
-    :alt: Examplary wirng layout (front side)
+    :alt: Examplary wiring layout (front side)
 

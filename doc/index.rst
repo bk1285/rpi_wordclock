@@ -20,7 +20,7 @@ This is the documentation for rpi_wordclock
 Further documentation
 +++++++++++++++++++++
 
-A youtube video, which outlines the main functionalities and features is available `here <https://www.youtube.com/watch?v=V9TwvranJnY>`_.
+Two  youtube videos, which outline the main functionalities and features are available `here <https://www.youtube.com/watch?v=V9TwvranJnY>`_and `here <https://www.youtube.com/watch?v=wcLQDykRBbM>`.
 
 .. _indices:
 Indices and tables

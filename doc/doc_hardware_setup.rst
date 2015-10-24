@@ -2,20 +2,6 @@
 Hardware setup
 ==============
 
-.. _exemplary_wiring:
-Exemplary wiring layout
-+++++++++++++++++++++++
-
-Exemplary wiring layout (backside of bernds_wiring, WCA_WIDTH*WCA_HEIGHT=11*10, WCA=Word Clock Array)
-
-.. figure:: _images/wiring_back_bernds_wiring.png
-    :scale: 40 %
-    :alt: Examplary wirng layout (back side)
-
-.. figure:: _images/wiring_front_bernds_wiring.png
-    :scale: 40 %
-    :alt: Examplary wirng layout (front side)
-
 
 .. _hardware_setup_steps:
 Assembling steps
