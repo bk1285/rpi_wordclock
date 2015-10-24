@@ -3,12 +3,12 @@ General considerations
 ======================
 
 .. _building_a_wordclock:
-If you want to build a wordclock...
-+++++++++++++++++++++++++++++++++++
+If you want to build a wordclock
+++++++++++++++++++++++++++++++++
 
 .. note:: This project is currently still in an experimental state:
 
-  * The documentation contains the main steps of building a wordclock, but might not guide you through all steps in greatest detail
+  * The documentation contains the main steps to build a wordclock, but might not guide you through all steps in greatest detail
   * Depending on your language-dependent stancil-layout, you might need to adapt the software.
     Feel free to contribute here!
     Currently available:
