@@ -40,10 +40,10 @@ def get_min_coords(width, height, minute_margin, min_num, side):
 
 def create_svg(lang, config, side='front', mode='stancil'):
     if not mode == 'stancil':
-        wiring_type='_' + config.get('wordclock_display','wiring_layout')
+        wiring_type= config.get('wordclock_display','wiring_layout')
     else:
         wiring_type=''
-    outpt_file = mode + '_' + side + wiring_type + '.svg'
+    outpt_file = mode + '_' + side + '_' + wiring_type + '.svg'
     print('Rendering ' + outpt_file + '...')
     print('  Side .........: ' + side)
     print('  Mode .........: ' + mode)
@@ -174,7 +174,7 @@ def create_svg(lang, config, side='front', mode='stancil'):
     # Process minutes
     for min_num in [1, 2, 3, 4]:
         min_coords = get_min_coords(width, height, minute_margin, min_num, side)
-        if(mode=='stancil'):
+        if mode == 'stancil':
             text_layout.add(layout.circle(\
                     center=min_coords,\
                     r=rm, fill=fg)\
@@ -186,6 +186,15 @@ def create_svg(lang, config, side='front', mode='stancil'):
                     )
             text_layout.add(layout.line((min_coords[0], min_coords[1]-y_sub_spacing), (min_coords[0], min_coords[1]+y_sub_spacing), stroke=fg))
             text_layout.add(layout.line((min_coords[0]-x_sub_spacing, min_coords[1]), (min_coords[0]+x_sub_spacing, min_coords[1]), stroke=fg))
+
+    # Add connection to RPi at minute number 4
+    # Since minute number 4 is specific for 'bernds_wiring', we check here, if this is the current wiring type
+    if not mode == 'stancil' and wiring_type == 'bernds_wiring':
+        min_num = 4
+        min_coords = get_min_coords(width, height, minute_margin, min_num, side)
+        text_layout.add(layout.line((min_coords[0], min_coords[1]), (min_coords[0]+5*x_sub_spacing*(-1 if side=='front' else 1), min_coords[1]), stroke='rgb(255,0,0)'))
+        coords_rpi = min_coords[0]+6*x_sub_spacing*(-1 if side =='front' else 1), min_coords[1]
+        text_layout.add(layout.text(('Connect here to power supply and Raspberry.'), insert = coords_rpi, style=('text-anchor:end;' if side=='front' else 'text-anchor:start')))
 
     # Fuse layouts
     layout.add(text_layout)
@@ -210,6 +219,8 @@ def main():
             configFile = a
         elif o in ('-h'):
             print('Provide config-file using -c option')
+            print('Process all layouts using -a option')
+            sys.exit(0)
         else:
             assert False, 'unhandled option'
 
