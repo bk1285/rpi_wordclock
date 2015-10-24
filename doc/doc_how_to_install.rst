@@ -64,8 +64,11 @@ Install rpi_ws281x to your home-directory (to access leds)::
     sudo python setup.py install
 
 .. note::
-    Since this library is continiously updated: A version, which is tested to work with the wordclock is commit 6cffc95: 
+    Since this library is continiously updated: A version, which is tested to work with the wordclock is commit 6cffc95:
     https://github.com/jgarff/rpi_ws281x/tree/6cffc954a3fc25f0d741d03b575ad9cdf3068103
+
+    If you are using a Raspberry Pi 2, you might run into issues, reported here: https://github.com/bk1285/rpi_wordclock/issues/12
+    To avoid those, use https://github.com/richardghirst/rpi_ws281x instead.
 
 Install fontdemo to your home-directory (to render strings)::
 
@@ -90,7 +93,6 @@ Further details: https://code.google.com/p/python-weather-api/#Weather.com
 
 The wordclock software
 ++++++++++++++++++++++
-
 
 .. _download_software:
 
