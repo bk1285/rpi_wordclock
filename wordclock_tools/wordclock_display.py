@@ -20,7 +20,16 @@ class wordclock_display:
         self.wcl = wiring.wiring(config)
 
         # Create NeoPixel object with appropriate configuration.
-        self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ, self.wcl.LED_DMA, self.wcl.LED_INVERT)
+        try:
+            brightness = config.getint('wordclock_display', 'brightness')
+        except:
+            print('WARNING: Brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
+            brightness = 255
+        try:
+            self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ, self.wcl.LED_DMA, self.wcl.LED_INVERT, brightness)
+        except:
+            print('WARNING: Your NeoPixel dependency is to old to accept customized brightness values')
+            self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ, self.wcl.LED_DMA, self.wcl.LED_INVERT)
 
         # Initialize the NeoPixel object
         self.strip.begin()
@@ -29,6 +38,14 @@ class wordclock_display:
         self.default_fg_color=wcc.WWHITE
         self.default_bg_color=wcc.BLACK
         self.base_path=config.get('wordclock', 'base_path')
+
+
+    def setPixelColor(self, pixel, color):
+        '''
+        Sets the color for a pixel, while considering the brightness, set within the config file
+        '''
+        self.strip.setPixelColor(pixel, color)
+
 
     def setColorBy1DCoordinates(self, *args, **kwargs):
         '''
@@ -68,10 +85,10 @@ class wordclock_display:
         '''
         if includeMinutes:
             for i in range(self.wcl.LED_COUNT):
-                self.strip.setPixelColor(i, color)
+                self.setPixelColor(i, color)
         else:
             for i in self.wcl.getWcaIndices():
-                self.strip.setPixelColor(i, color)
+                self.setPixelColor(i, color)
 
     def resetDisplay(self):
         '''
@@ -162,7 +179,7 @@ class wordclock_display:
     def setMinutes(self, time, color):
         if time.minute%5 != 0:
             for i in range (1,time.minute%5+1):
-                self.strip.setPixelColor(self.wcl.mapMinutes(i), color)
+                self.setPixelColor(self.wcl.mapMinutes(i), color)
 
     def show(self):
         '''
