@@ -50,9 +50,17 @@ class wordclock:
         plugins = (plugin for plugin in os.listdir(plugin_dir) if os.path.isdir(os.path.join(plugin_dir, plugin)))
 
         # Import plugins, which can be operated by the wordclock:
-        index = 0 # A helper variable (only incremeted on successful import)
+        index = 0 # A helper variable (only incremented on successful import)
         self.plugins = []
         for plugin in plugins:
+            # Check the config-file, whether to activate or deactivate the plugin
+            try:
+                if not self.config.getboolean('plugin_'+plugin, 'activate'):
+                    print('Skipping plugin ' + plugin + ' since it is set to activate=false in the config-file.')
+                    continue
+            except:
+                print('  INFO: No activate-flag set for plugin '+plugin+' within the config-file. Will be imported.')
+
             # Perform a minimal (!) validity check
             # Check, if plugin is valid (if the plugin.py is provided)
             if not os.path.isfile(os.path.join(plugin_dir, plugin, 'plugin.py')):
