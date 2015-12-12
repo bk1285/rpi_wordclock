@@ -31,6 +31,8 @@ If you want to build a wordclock
       * Germany: http://astore.amazon.de/araspbepibase-21
       * UK: http://astore.amazon.co.uk/araspbepiba0c-21
 
+  * A final note: Throughout this project, you will assemble electronic components, which can possibly harm you or others (or destroy your hardware).
+    It's therefore important, that you know, what you are doing: By assembling this clock, you act on your own responsibility!
 
 * Hardware requirements:
 
