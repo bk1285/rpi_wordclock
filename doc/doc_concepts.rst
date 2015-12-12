@@ -42,6 +42,6 @@ Exemplary button wiring
 Exemplary wiring layout to connect RPi, buttons, etc.
 
 .. figure:: _images/wiring.png
-    :scale: 40 %
+    :scale: 60 %
     :alt: Examplary wiring layout for RPi-buttons
 
