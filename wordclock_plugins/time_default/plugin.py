@@ -5,6 +5,7 @@ import time_english
 import time_german
 import time_swabian
 import time_dutch
+import time_bavarian
 import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
@@ -32,6 +33,8 @@ class plugin:
             self.taw = time_german.time_german()
         elif language == 'swabian':
             self.taw = time_swabian.time_swabian()
+        elif language == 'bavarian':
+            self.taw = time_bavarian.time_bavarian()
         else:
             print('Could not detect language: ' + language + '.')
             print('Choosing default: german')
@@ -45,6 +48,8 @@ class plugin:
         self.color_modes = \
                [[wcc.BLACK, wcc.WWHITE, wcc.WWHITE],
                 [wcc.BLACK, wcc.WHITE, wcc.WHITE],
+                [wcc.BLACK, wcc.ORANGE, wcc.ORANGE],
+                [wcc.BLACK, wcc.ORANGE, wcc.WWHITE],
                 [wcc.BLACK, wcc.PINK, wcc.GREEN],
                 [wcc.BLACK, wcc.RED, wcc.YELLOW],
                 [wcc.BLACK, wcc.BLUE, wcc.RED],
@@ -57,6 +62,11 @@ class plugin:
                 [wcc.BLACK, wcc.Color(30,30,30), wcc.Color(30,30,30)]]
         self.color_mode_pos = 0
         self.rb_pos = 0 # index position for "rainbow"-mode
+        try:
+            self.brightness_mode_pos = config.getint('wordclock_display', 'brightness')
+        except:
+            print('WARNING: Brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
+            self.brightness_mode_pos = 255
 
     def run(self, wcd, wci):
         '''
@@ -87,21 +97,25 @@ class plugin:
             if (event == wci.button_return):
                 return
             if (event == wci.button_right):
-                self.bg_color = wcc.BLACK
-                wcd.setColorToAll(self.bg_color, includeMinutes=True)
-                while wci.getPinState(wci.button_right):
+                self.brightness_mode_pos -= 15
+                if self.brightness_mode_pos <= 5:
+                    self.brightness_mode_pos = 255
+
+                wcd.setBrightness(self.brightness_mode_pos)
+                time.sleep(0.02)
+                #while wci.getPinState(wci.button_right):
                     # BEGIN: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
-                    if self.rb_pos < 85:
-                        self.word_color = self.minute_color = wcc.Color(3*self.rb_pos, 255-3*self.rb_pos, 0)
-                    elif self.rb_pos < 170:
-                        self.word_color = self.minute_color = wcc.Color(255-3*(self.rb_pos-85), 0, 3*(self.rb_pos-85))
-                    else:
-                        self.word_color = self.minute_color = wcc.Color(0, 3*(self.rb_pos-170), 255-3*(self.rb_pos-170))
+                    #if self.rb_pos < 85:
+                     ##   self.word_color = self.minute_color = wcc.Color(3*self.rb_pos, 255-3*self.rb_pos, 0)
+                    #elif self.rb_pos < 170:
+                   #     self.word_color = self.minute_color = wcc.Color(255-3*(self.rb_pos-85), 0, 3*(self.rb_pos-85))
+                   # else:
+                   #     self.word_color = self.minute_color = wcc.Color(0, 3*(self.rb_pos-170), 255-3*(self.rb_pos-170))
                     # END: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
-                    wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
-                    wcd.setMinutes(now, self.minute_color)
-                    wcd.show()
-                    self.rb_pos += 1
-                    if self.rb_pos == 256: self.rb_pos = 0
-                    time.sleep(0.02)
+                  #  wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+                  #  wcd.setMinutes(now, self.minute_color)
+                  #  wcd.show()
+                    #self.rb_pos += 1
+                   # if self.rb_pos == 256: self.rb_pos = 0
+                   # time.sleep(0.02)
 

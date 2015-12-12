@@ -9,6 +9,7 @@ RED   = Color(255,  0,  0)
 WHITE = Color(255,255,255)
 WWHITE= Color(255,255, 50) # Warm white
 YELLOW= Color(255,255,  0)
+ORANGE= Color(212,165,  25)
 
 # Summarize colors: [BLACK->WHITE, RED->BLUE (rainbow)]
 colors= [BLACK, WHITE, WWHITE, RED, YELLOW, GREEN, BLUE]
