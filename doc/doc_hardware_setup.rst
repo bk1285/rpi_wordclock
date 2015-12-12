@@ -11,37 +11,55 @@ Assembling steps
     :scale: 40%
     :alt: Drilling
 
+    According to the stancil layout, for each LED a hole needs to be prepared. The total number of 114 holes makes this pretty tedious.
+
 .. figure:: _images/sawing.jpg
     :scale: 40%
     :alt: Sawing
+
+    To place the Raspberry Pi within the skeleton, some sawing is required...
 
 .. figure:: _images/after_soldering.jpg
     :scale: 40%
     :alt: After Soldering
 
+    After soldering the LED strip, the clock looks like this. The soldering needs to be done according to the wiring layout, you chose: E.g. something like :ref:`this<concept_exemplary_wiring_layout>`.
+
 .. figure:: _images/software_update.jpg
     :scale: 40%
     :alt: Software Update
+
+    Before you mount your raspberry inside the clock, install the latest Raspbian, connect it to your local wifi and ensure that you can ssh to it.
 
 .. figure:: _images/components.jpg
     :scale: 40%
     :alt: Components
 
+    At this stage, the displayed components are required for the further setup.
+
 .. figure:: _images/wiring_detail.jpg
     :scale: 40%
     :alt: Wiring detail
+
+    The connection of buttons, LED strip and power brings the wordclock close to its final hardware configuration. Check also :ref:`this overview<exemplary_button_wiring>`.
 
 .. figure:: _images/wiring_button.jpg
     :scale: 40%
     :alt: Wiring button
 
+    Buttons with attached resistors. The center button has already its final tip.
+
 .. figure:: _images/final_backside.jpg
     :scale: 40%
     :alt: Final backside
 
+    Backside of the final wordclock.
+
 .. figure:: _images/final_backside_detail.jpg
     :scale: 40%
     :alt: Final backside detail
+
+    Closeup of the final wordclock.
 
 .. _video_documentation:
 Video documentation on the wiring layout
