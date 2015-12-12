@@ -6,6 +6,10 @@ Something is not working?
 
 * The leds do not light up as expected?
 
+    * It is important to have common ground for LEDs and RPi. Assure, ground is same for all of them (Thanks to euchkatzl).
+
+    * Assure to connect the LED strip in the right direction. Little arrows indicate that along the strip (Thanks to euchkatzl).
+
     * Assure correct functionality of leds::
 
       cd ~/rpi_ws281x/python/examples
