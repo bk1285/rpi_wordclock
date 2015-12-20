@@ -67,6 +67,7 @@ class plugin:
         except:
             print('WARNING: Brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
             self.brightness_mode_pos = 255
+        self.brightness_change = 8
 
     def run(self, wcd, wci):
         '''
@@ -93,29 +94,49 @@ class plugin:
                 self.word_color   = self.color_modes[self.color_mode_pos][1]
                 self.minute_color = self.color_modes[self.color_mode_pos][2]
                 time.sleep(0.2)
-            # Return to main menu, if button_return is pressed
             if (event == wci.button_return):
-                return
+                return # Return to main menu, if button_return is pressed
             if (event == wci.button_right):
-                self.brightness_mode_pos -= 15
-                if self.brightness_mode_pos <= 5:
-                    self.brightness_mode_pos = 255
+                time.sleep(wci.lock_time)
+                self.color_selection(wcd, wci)
 
-                wcd.setBrightness(self.brightness_mode_pos)
-                time.sleep(0.02)
-                #while wci.getPinState(wci.button_right):
-                    # BEGIN: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
-                    #if self.rb_pos < 85:
-                     ##   self.word_color = self.minute_color = wcc.Color(3*self.rb_pos, 255-3*self.rb_pos, 0)
-                    #elif self.rb_pos < 170:
-                   #     self.word_color = self.minute_color = wcc.Color(255-3*(self.rb_pos-85), 0, 3*(self.rb_pos-85))
-                   # else:
-                   #     self.word_color = self.minute_color = wcc.Color(0, 3*(self.rb_pos-170), 255-3*(self.rb_pos-170))
-                    # END: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
-                  #  wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
-                  #  wcd.setMinutes(now, self.minute_color)
-                  #  wcd.show()
-                    #self.rb_pos += 1
-                   # if self.rb_pos == 256: self.rb_pos = 0
-                   # time.sleep(0.02)
+    def color_selection(self, wcd, wci):
+        while True:
+            # BEGIN: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
+            if self.rb_pos < 85:
+                self.word_color = self.minute_color = wcc.Color(3*self.rb_pos, 255-3*self.rb_pos, 0)
+            elif self.rb_pos < 170:
+                self.word_color = self.minute_color = wcc.Color(255-3*(self.rb_pos-85), 0, 3*(self.rb_pos-85))
+            else:
+                self.word_color = self.minute_color = wcc.Color(0, 3*(self.rb_pos-170), 255-3*(self.rb_pos-170))
+            # END: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
+            #TODO: Evaluate taw_indices only every n-th loop (saving ressources)
+            now = datetime.datetime.now() # Set current time
+            taw_indices = self.taw.get_time(now)
+            wcd.setColorToAll(self.bg_color, includeMinutes=True)
+            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setMinutes(now, self.minute_color)
+            wcd.show()
+            self.rb_pos += 1
+            if self.rb_pos == 256: self.rb_pos = 0
+            event = wci.waitSecondsForEvent([wci.button_return, wci.button_left, wci.button_right], 0.1)
+            if event > 0:
+                time.sleep(wci.lock_time)
+                break
+        while True:
+            self.brightness_mode_pos += self.brightness_change
+            #TODO: Evaluate taw_indices only every n-th loop (saving ressources)
+            now = datetime.datetime.now() # Set current time
+            taw_indices = self.taw.get_time(now)
+            wcd.setColorToAll(self.bg_color, includeMinutes=True)
+            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setMinutes(now, self.minute_color)
+            wcd.setBrightness(self.brightness_mode_pos)
+            wcd.show()
+            if self.brightness_mode_pos < abs(self.brightness_change) or self.brightness_mode_pos > 255 - abs(self.brightness_change):
+                self.brightness_change *= -1
+            event = wci.waitSecondsForEvent([wci.button_return, wci.button_left, wci.button_right], 0.1)
+            if event > 0:
+                time.sleep(wci.lock_time)
+                return
 
