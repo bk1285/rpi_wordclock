@@ -51,9 +51,9 @@ To install use::
 (Optional) dependencies to readout temperature sensor
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-To read out than temperature sensor, which can be additionally added to the raspberry through GPIOs, install the according software
+To read out an temperature sensor (AM2302), which can additionally be connected to the raspberry via GPIOs, install the according dependencies:
 
-External dependencies are http://www.airspayce.com/mikem/bcm2835/index.html
+These dependencies are http://www.airspayce.com/mikem/bcm2835/index.html
 
 and::
 
