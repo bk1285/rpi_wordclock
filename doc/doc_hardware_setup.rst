@@ -23,7 +23,19 @@ Assembling steps
     :scale: 40%
     :alt: After Soldering
 
-    After soldering the LED strip, the clock looks like this. The soldering needs to be done according to the wiring layout, you chose: E.g. something like :ref:`this<concept_exemplary_wiring_layout>`. Assure to connect the LED strip in the right direction. Little arrows indicate that along the strip.
+    After soldering the LED strip, the clock looks like this. The soldering needs to be done according to the wiring layout, you chose: 
+
+.. class:: center
+
+.. figure:: _images/wiring_back_bernds_wiring.png
+    :scale: 8 %
+    :alt: Examplary wiring layout (back side)
+    
+.. figure:: _images/wiring_front_bernds_wiring.png
+    :scale: 8 %
+    :alt: Examplary wiring layout (front side)
+    
+Find further wiring layouts `here <https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts>`_ Assure to connect the LED strip in the right direction. Little arrows indicate that along the strip.
 
 .. figure:: _images/software_update.jpg
     :scale: 40%
@@ -42,6 +54,13 @@ Assembling steps
     :alt: Wiring detail
 
     The connection of buttons, LED strip and power brings the wordclock close to its final hardware configuration. Check also :ref:`this overview<exemplary_button_wiring>`.
+
+
+.. figure:: _images/wiring.jpg
+    :scale: 60%
+    :alt: Wiring concept
+
+    Exemplary wiring layout to connect RPi, buttons, etc.
 
 .. figure:: _images/wiring_button.jpg
     :scale: 40%
