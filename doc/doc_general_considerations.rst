@@ -15,11 +15,12 @@ If you want to build a wordclock
 
       * Stancil layout and software:
 
-          * german (including swabian: Thanks to Timo)
+          * german (including swabian and bavarian: Thanks to Timo and Euchkatzl)
+          * english (Thanks to Alexandre)
+          * dutch (Thanks to svenjacobi, resolution is 10x9. Therefore, not all plugins are supported!)
 
       * Stancil layout only (requiring some python-implementations: See wordclock_plugins/time_default):
 
-          * english
           * french
           * italian
           * spanish
@@ -32,7 +33,7 @@ If you want to build a wordclock
       * UK: http://astore.amazon.co.uk/araspbepiba0c-21
 
   * A final note: Throughout this project, you will assemble electronic components, which can possibly harm you or others (or destroy your hardware).
-    It's therefore important, that you know, what you are doing: By assembling this clock, you act on your own responsibility!
+    It's therefore important, that you know, what you are doing: By assembling this clock, you act on your own risk!
 
 * Hardware requirements:
 
