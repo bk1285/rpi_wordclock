@@ -23,11 +23,8 @@ Assembling steps
     :scale: 40%
     :alt: After Soldering
 
-    After soldering the LED strip, the clock looks like this. The soldering needs to be done according to the wiring layout. You may chose:
+    After soldering the LED strip, the clock looks like this. The soldering needs to be done according to the wiring layout. E.g.:
 
-.. figure:: _images/wiring_back_bernds_wiring.png
-    :scale: 8 %
-    :alt: Examplary wiring layout (back side)
 .. figure:: _images/wiring_front_bernds_wiring.png
     :scale: 8 %
     :alt: Examplary wiring layout (front side)
