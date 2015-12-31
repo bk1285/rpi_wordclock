@@ -1,4 +1,3 @@
-import am2302_ths
 import os
 import pywapi
 import time
@@ -20,6 +19,7 @@ class plugin:
         self.weather_service = config.get('plugin_weather_forecast', 'weather_service')
 
         try:
+            import am2302_ths
             self.pin_temp_sensor=int(config.get('wordclock_interface', 'pin_temp_sensor'))
             self.temp_sensor_registered=True
             print('  Registered temperature sensor at pin '+str(self.pin_temp_sensor)+'.')
