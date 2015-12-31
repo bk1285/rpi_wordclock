@@ -4,6 +4,15 @@ Trouble shooting
 
 Something is not working?
 
+* The command::
+
+    sudo pip install pytz astral feedparser pillow svgwrite freetype-py
+     
+  fails to install properly? If so, try to install further dependencies (thanks to SEBatHome)::
+  
+    sudo apt-get build-dep python-imaging libjpeg8 libjpeg62-dev libfreetype6 libfreetype6-dev
+
+
 * The leds do not light up as expected?
 
     * It is important to have common ground for LEDs and RPi. Assure, ground is same for all of them (Thanks to euchkatzl).
