@@ -1,11 +1,11 @@
 .. _hardware_setup:
+.. _hardware_setup_steps:
 Hardware setup
 ==============
 
-
-.. _hardware_setup_steps:
-Assembling steps
-++++++++++++++++
+.. _skeleton_setup:
+Skeleton setup
+++++++++++++++
 
 .. figure:: _images/drilling.jpg
     :scale: 40%
@@ -19,6 +19,10 @@ Assembling steps
 
     To place the Raspberry Pi within the skeleton, some sawing is required...
 
+.. _led_setup:
+LED setup
++++++++++
+
 .. figure:: _images/after_soldering.jpg
     :scale: 40%
     :alt: After Soldering
@@ -29,16 +33,24 @@ Assembling steps
 .. _concept_exemplary_wiring_layout:
 
 .. figure:: _images/wiring_front_bernds_wiring.png
-    :scale: 15 %
+    :scale: 25 %
     :alt: Examplary wiring layout (front side)
 
-    Further wiring layouts are `available <https://github.com/bk1289/rpi_wordclock/tree/master/wordclock_layouts>`_. Assure to connect the LED strip in the right direction. Little arrows indicate that along the strip.
+    Further wiring layouts are `available <https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts>`_. Assure to connect the LED strip in the right direction. Little arrows indicate that along the strip.
+
+.. _rpi_setup:
+Raspberry Pi setup
+++++++++++++++++++
 
 .. figure:: _images/software_update.jpg
     :scale: 40%
     :alt: Software Update
 
     Before you mount your raspberry inside the clock, install the latest Raspbian, connect it to your local wifi and ensure that you can ssh to it.
+
+.. _button_setup:
+Button setup
+++++++++++++
 
 .. figure:: _images/components.jpg
     :scale: 40%
@@ -65,6 +77,10 @@ Assembling steps
     :alt: Wiring button
 
     Buttons with attached resistors. The center button has already its final tip.
+
+.. _final_clock:
+Final clock
++++++++++++
 
 .. figure:: _images/final_backside.jpg
     :scale: 40%
