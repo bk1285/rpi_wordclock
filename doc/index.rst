@@ -11,9 +11,9 @@ This is the documentation for rpi_wordclock
     :maxdepth: 2
 
     doc_general_considerations
-    doc_concepts
     doc_hardware_setup
-    doc_how_to_install
+    doc_software_setup
+    doc_further_reading
     doc_troubleshooting
 
 .. _further_doc:
