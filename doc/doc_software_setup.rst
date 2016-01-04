@@ -1,7 +1,7 @@
 .. _software_installation:
 
-Software installation
-=====================
+Software setup
+==============
 
 Set locales
 +++++++++++

@@ -1,6 +1,10 @@
+.. _further_reading:
+Further reading
+===============
+
 .. _concepts:
 Concepts and background
-=======================
++++++++++++++++++++++++
 
 .. _concept_WCA:
 * WCA (Word Clock Array): The center matrix, without minute-LEDs and other stuff
