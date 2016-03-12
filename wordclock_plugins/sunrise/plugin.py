@@ -5,6 +5,7 @@ import time
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_plugins.time_default.time_german as wcp_time_german
 import wordclock_plugins.time_default.time_dutch as wcp_time_dutch
+import wordclock_plugins.time_default.time_swiss_german as wcp_swiss_german
 
 class plugin:
     '''
@@ -27,6 +28,8 @@ class plugin:
             self.taw = wcp_time_german.time_german()
         elif language == 'dutch':
             self.taw = wcp_time_dutch.time_dutch()
+        elif language == 'swiss_german':
+            self.taw = wcp_swiss_german.time_swiss_german()
         else:
             print('Could not detect language: ' + language + '.')
             print('Choosing default: german')
@@ -57,7 +60,7 @@ class plugin:
         wcd.show()
         time.sleep(3)
         # Display current moon phase
-        moon_phase = self.astral_at_location.moon_phase(datetime.datetime.now())
+        moon_phase = int(self.astral_at_location.moon_phase(datetime.datetime.now()))
         for i in range(0, moon_phase):
             wcd.showIcon('sunrise', 'moon_'+str(i).zfill(2))
             time.sleep(0.1)
