@@ -13,24 +13,13 @@ class wordclock_interface:
         '''
 
         print('Setting up wordclock interface')
-        interface_type = config.get('wordclock_interface', 'type')
-
-        if (interface_type == 'gpio_low'):
-            interface = gpio_low(config)
-        # elif (interface_type == 'gpio_high'):
-        #     pass
-        # elif (interface_type == 'None'):
-        #     pass
-        else:
-            print('Warning: Unkonwn interface_type ' + interface)
-            print('  Falling back to "No interface" allowing no user-interaction')
-
-        self.button_left   = interface.button_left
-        print('  Mapping button "left" to pin ' + str(interface.button_left) + '.')
-        self.button_return = interface.button_return
-        print('  Mapping button "return" to pin ' + str(interface.button_return) + '.')
-        self.button_right  = interface.button_right
-        print('  Mapping button "right" to pin ' + str(interface.button_right) + '.')
+        self.interface = button_settings(config)
+        self.button_left   = self.interface.button_left
+        print('  Mapping button "left" to pin ' + str(self.interface.button_left) + '.')
+        self.button_return = self.interface.button_return
+        print('  Mapping button "return" to pin ' + str(self.interface.button_return) + '.')
+        self.button_right  = self.interface.button_right
+        print('  Mapping button "right" to pin ' + str(self.interface.button_right) + '.')
         self.lock_time = float(config.get('wordclock_interface', 'lock_time'))
         print('  Lock time of buttons is ' + str(self.lock_time) + ' seconds')
 
@@ -39,7 +28,7 @@ class wordclock_interface:
         Return state of a given pin
         '''
         # Return "not" since triggered GPIOs go to ground (low)
-        return not GPIO.input(pin)
+        return self.interface.pinState(pin)
 
     def waitForEvent(self, pinrange_to_listen, cps=10):
         '''
@@ -48,7 +37,7 @@ class wordclock_interface:
         '''
         while True:
             for i in pinrange_to_listen:
-                if not GPIO.input(i):
+                if self.interface.pinState(i):
                     print('Pin ' + str(i) + ' pressed.')
                     return i
             time.sleep(1.0/cps)
@@ -60,15 +49,15 @@ class wordclock_interface:
         '''
         for _ in range(int(seconds*cps)):
             for i in pinrange_to_listen:
-                if not GPIO.input(i):
+                if self.interface.pinState(i):
                     print('Pin ' + str(i) + ' pressed.')
                     return i
             time.sleep(1.0/cps)
         return -1
 
-class gpio_low:
+class button_settings:
     '''
-    Class, implementing a wordclock interface using buttons, which set GPIOs to low, when beeing pressed.
+    Class, implementing a wordclock interface using buttons.
     '''
 
     def __init__(self, config):
@@ -87,4 +76,18 @@ class gpio_low:
         GPIO.setup(self.button_left, GPIO.IN)
         GPIO.setup(self.button_return, GPIO.IN)
         GPIO.setup(self.button_right, GPIO.IN)
+
+        interface_type = config.get('wordclock_interface', 'type')
+        if (interface_type == 'gpio_low'):
+            self.alter_interface_state = False
+        elif (interface_type == 'gpio_high'):
+            self.alter_interface_state = True
+        else:
+            print('Warning: Unkonwn interface_type ' + interface)
+            print('  Falling back to default')
+            self.alter_interface_state = False
+        print('Interface type set to ' + interface_type + ' (' + str(self.alter_interface_state) + ')')
+
+    def pinState(self, i):
+        return self.alter_interface_state == GPIO.input(i)
 
