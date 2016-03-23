@@ -38,12 +38,13 @@ Required python dependencies:
   * astral (to get moon/sun information)
   * feedparser (to get access to latest feeds)
   * scipy
+  * netifaces (to get the ip of the pi)
   * pil
   * svgwrite (to plot stancil/wiring layouts)
 
 To install use::
 
-    sudo pip install pytz astral feedparser pillow svgwrite freetype-py
+    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces
 
 
 .. _temperature_sensor:
