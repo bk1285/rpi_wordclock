@@ -141,7 +141,7 @@ class christians_wiring:
         '''
         Access minutes (1,2,3,4)
         Needs hardware/wiring dependent implementation
-        This implementation assumes the minutes to be wired as first and last two leds of the led-strip
+        This implementation assumes the minutes to be wired as the last four leds of the led-strip
         '''
         if min == 1:
             return self.LED_COUNT-4
