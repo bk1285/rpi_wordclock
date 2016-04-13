@@ -40,8 +40,9 @@ If you want to build a wordclock
   * A (wooden) sceleton to hold LEDs, stancil, RPi, etc...
   * A stancil providing the letters
 
-    * You can order them online or create your own layout: Special plotters can produce adhesive stancils, which you can glue onto a glas plane .
+    * You can order them online or create your own layout: Special plotters can produce adhesive stancils, which you can glue onto a glas plane.
     * Consider, that you might need to invert the layout to have the adhesive surface on top to attach to the glas plate.
+    * A possible option for ordering a lasercut stancil is https://www.ponoko.com/ (thanks to StefanCarton). 
 
   * A frame to enframe the wordclock
 
