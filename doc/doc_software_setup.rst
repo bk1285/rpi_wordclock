@@ -25,7 +25,7 @@ If not, check this website, to adjust it: http://perlgeek.de/en/article/set-up-a
 
 To install 3rd party dependencies (packages) enter in a terminal/commandline::
 
-    sudo apt-get install python-pip python-scipy scons git swig
+    sudo apt-get install python-pip python-scipy scons git swig ttf-freefont
 
 
 .. _3rd_party_deps_python:
@@ -80,9 +80,6 @@ Install rpi_ws281x to your home-directory (to access leds)::
 .. note::
     Since this library is continiously updated: A version, which is tested to work with the wordclock is commit 2f9e03c45:
     https://github.com/jgarff/rpi_ws281x/tree/2f9e03c45ba0964029204db565ad9d6233b3a1a6
-
-    If you are using a Raspberry Pi 2, you might run into issues, reported here: https://github.com/bk1285/rpi_wordclock/issues/12
-    To avoid those, use https://github.com/richardghirst/rpi_ws281x instead.
 
 Install fontdemo to your home-directory (to render strings)::
 
