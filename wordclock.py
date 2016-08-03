@@ -61,19 +61,18 @@ class wordclock:
             except:
                 print('  INFO: No activate-flag set for plugin '+plugin+' within the config-file. Will be imported.')
 
-            # Perform a minimal (!) validity check
-            # Check, if plugin is valid (if the plugin.py is provided)
-            if not os.path.isfile(os.path.join(plugin_dir, plugin, 'plugin.py')):
-                raise
-            self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
-            # Search for default plugin to display the time
-            if plugin == 'time_default':
-                print('  Selected "' + plugin + '" as default plugin')
-                self.default_plugin = index
-            print('Imported plugin ' + str(index) + ': "' + plugin + '".')
-            index +=1
             try:
-                pass
+                # Perform a minimal (!) validity check
+                # Check, if plugin is valid (if the plugin.py is provided)
+                if not os.path.isfile(os.path.join(plugin_dir, plugin, 'plugin.py')):
+                    raise
+                self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
+                # Search for default plugin to display the time
+                if plugin == 'time_default':
+                    print('  Selected "' + plugin + '" as default plugin')
+                    self.default_plugin = index
+                print('Imported plugin ' + str(index) + ': "' + plugin + '".')
+                index +=1
             except:
                 print('Failed to import plugin ' + plugin + '!')
 
