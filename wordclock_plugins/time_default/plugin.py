@@ -43,6 +43,18 @@ class plugin:
             print('Choosing default: german')
             self.taw = time_german.time_german()
 
+        try:
+            self.typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
+        except:
+            print('  No typewriter-flag set for default plugin within the config-file. Typewriter animation will be used.')
+            self.typewriter = True
+
+        try:
+            self.typewriter_speed = config.getint('plugin_' + self.name, 'typewriter_speed')
+        except:
+            self.typewriter_speed = 5
+            print('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(self.typewriter_speed) + '.')
+
         self.bg_color     = wcc.BLACK  # default background color
         self.word_color   = wcc.WWHITE # default word color
         self.minute_color = wcc.WWHITE # default minute color
@@ -76,18 +88,31 @@ class plugin:
         '''
         Displays time until aborted by user interaction on pin button_return
         '''
+        # Some initializations of the "previous" minute
+        prev_min = -1
+
         while True:
-            # Set background color
-            wcd.setColorToAll(self.bg_color, includeMinutes=True)
-            # Set current time
+            # Get current time
             now = datetime.datetime.now()
-            # Returns indices, which represent the current time, when beeing illuminated
-            taw_indices = self.taw.get_time(now)
-            #TODO: Improve rendering of time during while-loop: Render array only once per 5 minutes...
-            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
-            wcd.setMinutes(now, self.minute_color)
-            wcd.show()
-            event = wci.waitSecondsForEvent([wci.button_left, wci.button_return, wci.button_right], 10)
+            # Check, if a minute has passed (to render the new time)
+            if prev_min < now.minute:
+                # Set background color
+                wcd.setColorToAll(self.bg_color, includeMinutes=True)
+                # Returns indices, which represent the current time, when beeing illuminated
+                taw_indices = self.taw.get_time(now)
+                if self.typewriter:
+                    for i in range(len(taw_indices)):
+                        wcd.setColorBy1DCoordinates(wcd.strip, taw_indices[0:i+1], self.word_color)
+                        wcd.show()
+                        time.sleep(1.0/self.typewriter_speed)
+                    wcd.setMinutes(now, self.minute_color)
+                    wcd.show()
+                else:
+                    wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+                    wcd.setMinutes(now, self.minute_color)
+                    wcd.show()
+                prev_min = -1 if now.minute == 59 else now.minute
+            event = wci.waitSecondsForEvent([wci.button_left, wci.button_return, wci.button_right], 2)
             # Switch display color, if button_left is pressed
             if (event == wci.button_left):
                 self.color_mode_pos += 1

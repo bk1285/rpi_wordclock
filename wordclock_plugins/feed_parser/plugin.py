@@ -16,9 +16,8 @@ class plugin:
 
     def run(self, wcd, wci):
         '''
-        Displaying expected temperature
+        Displaying latest news
         '''
-        # Display latest news...
         feed = feedparser.parse(self.rss_url)
         wcd.showText(feed["items"][0]["title"], fps=15)
 
