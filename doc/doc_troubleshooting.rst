@@ -29,8 +29,8 @@ Something is not working?
 
     * Disable the RPis soundcard (since it might interfere with the PMW-channel, sending data to the LEDs. Thanks to ELViTO12 for reporting)::
 
-      sudo sh -c "echo blacklist snd_bcm2835 >> /etc/modprobe.d/alsa-blacklist.conf";
-      sudo reboot;
+        sudo sh -c "echo blacklist snd_bcm2835 >> /etc/modprobe.d/alsa-blacklist.conf";
+        sudo reboot;
 
 * When starting the wordclock-script, "Pin 17 pressed" is logged all the time?
 
