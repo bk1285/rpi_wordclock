@@ -27,12 +27,6 @@ Something is not working?
 
       The leds should light up now...
 
-    * You're using a Raspberry Pi 2 and the leds do not work?
-
-      In this case, the library to address the leds ( https://github.com/jgarff/rpi_ws281x ) has not yet been updated for the RPi2.
-
-      Consider to use Richards library instead as reported here: https://github.com/bk1285/rpi_wordclock/issues/12
-
 * When starting the wordclock-script, "Pin 17 pressed" is logged all the time?
 
     To get rid of this message, you first need to finish the wordclock setup by attaching all 3 buttons to it.
