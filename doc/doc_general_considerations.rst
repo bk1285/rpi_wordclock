@@ -9,7 +9,7 @@ If you want to build a wordclock
 .. note:: This project is currently still in an experimental state:
 
   * The documentation contains the main steps to build a wordclock, but might not guide you through all steps in greatest detail
-  * Depending on your language-dependent stancil-layout, you might need to adapt the software.
+  * Depending on your language-dependent stencil-layout, you might need to adapt the software.
     Feel free to contribute here!
     Currently available:
 
@@ -26,9 +26,9 @@ If you want to build a wordclock
           * spanish
           * turkish
 
-      * Further languages/stancil layouts can be created using the ''config-file'' and the script ''create_layout.py''
+      * Further languages/stencil layouts can be created using the ''config-file'' and the script ''create_layout.py''
 
-  * A collection of the main hardware components -- except sceleton and stancil -- are available for
+  * A collection of the main hardware components -- except sceleton and stencil -- are available for
       * Germany: http://astore.amazon.de/araspbepibase-21
       * UK: http://astore.amazon.co.uk/araspbepiba0c-21
 
@@ -37,12 +37,12 @@ If you want to build a wordclock
 
 * Hardware requirements:
 
-  * A (wooden) sceleton to hold LEDs, stancil, RPi, etc...
-  * A stancil providing the letters
+  * A (wooden) sceleton to hold LEDs, stencil, RPi, etc...
+  * A stencil providing the letters
     * Find an overview over the different layouts here: https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts
-    * You can create them on your own: Special plotters can produce adhesive stancils, which you can glue onto a glas plane.
+    * You can create them on your own: Special plotters can produce adhesive stencils, which you can glue onto a glas plane.
     * Consider, that you might need to invert the layout to have the adhesive surface on top to attach to the glas plate.
-    * Possible options for ordering a stancil are:
+    * Possible options for ordering a stencil are:
       * https://www.ponoko.com/ (thanks to StefanCarton).
       * http://www.mikrocontroller.net/articles/Word_Clock (thanks to euchkatzl)
     * Further reading:
@@ -55,7 +55,7 @@ If you want to build a wordclock
   * A LED-strip running at 5V (e.g. WS2812 B Stripe 5m 150 LED)
 
     * Assure, that the spacing of the LEDs on the strip is equal or greater than the spacing of the letters
-      of your stancil. If the spacing is smaller, you will not be able to get your LEDs into the correct position.
+      of your stencil. If the spacing is smaller, you will not be able to get your LEDs into the correct position.
 
   * A Raspberry Pi (e.g. Review B, including SD-card)
   * A wifi-dongle to connect your RPi wireless to your local network

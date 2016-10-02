@@ -13,7 +13,7 @@ class plugin:
     '''
     A class to display the current time (default mode).
     This default mode needs to be adapted to the hardware
-    layout of the wordclock (the choosen stancil) and is
+    layout of the wordclock (the choosen stencil) and is
     the most essential time display mode of the wordclock.
     '''
 

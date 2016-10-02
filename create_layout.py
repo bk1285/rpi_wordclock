@@ -38,8 +38,8 @@ def get_min_coords(width, height, minute_margin, min_num, side):
     else:
         print('ERROR: Invalid ' + str(min_num))
 
-def create_svg(lang, config, side='front', mode='stancil'):
-    if not mode == 'stancil':
+def create_svg(lang, config, side='front', mode='stencil'):
+    if not mode == 'stencil':
         wiring_type= config.get('wordclock_display','wiring_layout')
     else:
         wiring_type=''
@@ -49,24 +49,24 @@ def create_svg(lang, config, side='front', mode='stancil'):
     print('  Mode .........: ' + mode)
     content = ast.literal_eval(config.get('language_options', lang))
     print('  Language .....: ' + lang)
-    font_type = config.get('stancil_parameter', 'font_type')
+    font_type = config.get('stencil_parameter', 'font_type')
     print('  Font-type.....: ' + font_type)
-    font_size = config.get('stancil_parameter', 'font_size')
+    font_size = config.get('stencil_parameter', 'font_size')
     print('  Font-size.....: ' + font_size)
-    height=float(config.get('stancil_parameter', 'height'))
+    height=float(config.get('stencil_parameter', 'height'))
     print('  Height .......: ' + str(height) + 'mm')
-    width =float(config.get('stancil_parameter', 'width'))
+    width =float(config.get('stencil_parameter', 'width'))
     print('  Width ........: ' + str(width) + 'mm')
-    wca_height=float(config.get('stancil_parameter', 'wca_height'))
+    wca_height=float(config.get('stencil_parameter', 'wca_height'))
     print('  Wca height ...: ' + str(wca_height) + 'mm')
-    wca_width =float(config.get('stancil_parameter', 'wca_width'))
+    wca_width =float(config.get('stencil_parameter', 'wca_width'))
     print('  Wca width ....: ' + str(wca_width) + 'mm')
     row_num=len(content)
     print('  Wca rows .....: ' + str(row_num))
     col_num=len(content[0].decode('utf-8'))
     print('  Wca columns ..: ' + str(col_num))
-    minute_margin=float(config.get('stancil_parameter', 'minute_margin'))
-    minute_diameter=float(config.get('stancil_parameter', 'minute_diameter'))
+    minute_margin=float(config.get('stencil_parameter', 'minute_margin'))
+    minute_diameter=float(config.get('stencil_parameter', 'minute_diameter'))
     rm=minute_diameter/2
 
     # iterate over coordinates
@@ -80,7 +80,7 @@ def create_svg(lang, config, side='front', mode='stancil'):
     full_path=os.path.join(file_dir, outpt_file)
 
     # Set colors
-    if mode=='stancil':
+    if mode=='stencil':
         fg='rgb(255,255,255)'
         bg='rgb(0,0,0)'
     else:
@@ -99,7 +99,7 @@ def create_svg(lang, config, side='front', mode='stancil'):
             'text-anchor:middle;'\
             'fill:'+fg+';'\
             'font-family:'+font_type+';'\
-            'font-size:'+str(font_size if mode=='stancil' else 6))
+            'font-size:'+str(font_size if mode=='stencil' else 6))
 
     # Process letters
     wca_top_left = [(width-wca_width)/2, (height-wca_height)/2]
@@ -114,7 +114,7 @@ def create_svg(lang, config, side='front', mode='stancil'):
     wca_index_1d = 0
 
     # Add annotations
-    if not mode == 'stancil':
+    if not mode == 'stencil':
         layout.add(layout.text(lang + ' --- ' + side+'-view --- ' + wiring_type, insert=(width/2, minute_margin),
             style='text-anchor:middle;'\
             'fill:rgb(0,255,0);'\
@@ -145,7 +145,7 @@ def create_svg(lang, config, side='front', mode='stancil'):
     for y in y_coords:
         for x in x_coords:
             coords=get_letter_coords(wca_top_left,x,x_spacing,y,y_spacing, side, col_num)
-            if(mode=='stancil'):
+            if(mode=='stencil'):
                 # Write only characters
                 text_layout.add(layout.text((content[y].decode('utf-8')[x]), insert = (coords[0],coords[1]+float(font_size)/2.0)))
             else:
@@ -174,7 +174,7 @@ def create_svg(lang, config, side='front', mode='stancil'):
     # Process minutes
     for min_num in [1, 2, 3, 4]:
         min_coords = get_min_coords(width, height, minute_margin, min_num, side)
-        if mode == 'stancil':
+        if mode == 'stencil':
             text_layout.add(layout.circle(\
                     center=min_coords,\
                     r=rm, fill=fg)\
@@ -189,7 +189,7 @@ def create_svg(lang, config, side='front', mode='stancil'):
 
     # Add connection to RPi at minute number 4
     # Since minute number 4 is specific for 'bernds_wiring', we check here, if this is the current wiring type
-    if not mode == 'stancil' and wiring_type == 'bernds_wiring':
+    if not mode == 'stencil' and wiring_type == 'bernds_wiring':
         min_num = 4
         min_coords = get_min_coords(width, height, minute_margin, min_num, side)
         text_layout.add(layout.line((min_coords[0], min_coords[1]), (min_coords[0]+5*x_sub_spacing*(-1 if side=='front' else 1), min_coords[1]), stroke='rgb(255,0,0)'))
@@ -232,11 +232,11 @@ def main():
     if process_all:
         all_languages=cfg.options('language_options')
     else:
-        all_languages=[cfg.get('stancil_parameter', 'language')]
+        all_languages=[cfg.get('stencil_parameter', 'language')]
 
     for lang in all_languages:
         print('Processing layouts for ' +str(lang) + '.')
-        create_svg(lang, cfg, side='front', mode='stancil')
+        create_svg(lang, cfg, side='front', mode='stencil')
         create_svg(lang, cfg, side='front', mode='wiring')
         create_svg(lang, cfg, side='back', mode='wiring')
 

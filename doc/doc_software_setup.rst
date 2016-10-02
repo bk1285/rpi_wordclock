@@ -40,7 +40,7 @@ Required python dependencies:
   * scipy
   * netifaces (to get the ip of the pi)
   * pil
-  * svgwrite (to plot stancil/wiring layouts)
+  * svgwrite (to plot stencil/wiring layouts)
 
 To install use::
 
@@ -132,7 +132,7 @@ To start over, you might just copy the file ~/rpi_wordclock/wordclock_config/wor
 
 Note: Each plugin of the wordclock project has its own section in the config-file (create it, if needed, but not existant)
 
-.. note:: If your wordclock has a stancil layout or display resolution, which is not supported yet, you might need to adopt the
+.. note:: If your wordclock has a stencil layout or display resolution, which is not supported yet, you might need to adopt the
   software by providing your own `wiring`-class (to the file wordclock_tools/wiring.py)
 
 

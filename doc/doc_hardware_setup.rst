@@ -11,7 +11,7 @@ Skeleton setup
     :scale: 40%
     :alt: Drilling
 
-    According to the stancil layout, for each LED a hole needs to be prepared. The total number of 114 holes makes this pretty tedious.
+    According to the stencil layout, for each LED a hole needs to be prepared. The total number of 114 holes makes this pretty tedious.
 
 .. figure:: _images/sawing.jpg
     :scale: 40%
