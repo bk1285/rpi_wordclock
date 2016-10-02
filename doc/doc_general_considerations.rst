@@ -39,10 +39,14 @@ If you want to build a wordclock
 
   * A (wooden) sceleton to hold LEDs, stancil, RPi, etc...
   * A stancil providing the letters
-
-    * You can order them online or create your own layout: Special plotters can produce adhesive stancils, which you can glue onto a glas plane.
+    * Find an overview over the different layouts here: https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts
+    * You can create them on your own: Special plotters can produce adhesive stancils, which you can glue onto a glas plane.
     * Consider, that you might need to invert the layout to have the adhesive surface on top to attach to the glas plate.
-    * A possible option for ordering a lasercut stancil is https://www.ponoko.com/ (thanks to StefanCarton). 
+    * Possible options for ordering a stancil are:
+      * https://www.ponoko.com/ (thanks to StefanCarton).
+      * http://www.mikrocontroller.net/articles/Word_Clock (thanks to euchkatzl)
+    * Further reading:
+      * http://diskussion.christians-bastel-laden.de/viewforum.php?f=12&sid=b90281d4a392f47503e9b9fc15495b19
 
   * A frame to enframe the wordclock
 
