@@ -7,6 +7,7 @@ import time_swabian
 import time_dutch
 import time_bavarian
 import time_swiss_german
+import time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
@@ -38,6 +39,8 @@ class plugin:
             self.taw = time_bavarian.time_bavarian()
         elif language == 'swiss_german':
             self.taw = time_swiss_german.time_swiss_german()
+        elif language == 'swiss_german2':
+            self.taw = time_swiss_german2.time_swiss_german2()
         else:
             print('Could not detect language: ' + language + '.')
             print('Choosing default: german')
