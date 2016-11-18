@@ -31,6 +31,8 @@ Something is not working?
 
         sudo sh -c "echo blacklist snd_bcm2835 >> /etc/modprobe.d/alsa-blacklist.conf";
         sudo reboot;
+        
+    * In case the LEDs are flickering as shown in this video https://www.youtube.com/watch?v=UHxVS8SkXOU (Thanks to oxivanisher), consider the usage of a level-shifter to connect the GPIO-pin of the raspberry to the LED-strip. Further reading: https://github.com/jgarff/rpi_ws281x/issues/127 https://github.com/bk1285/rpi_wordclock/issues/38
 
 * When starting the wordclock-script, "Pin 17 pressed" is logged all the time?
 
