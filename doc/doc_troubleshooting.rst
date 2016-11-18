@@ -33,6 +33,9 @@ Something is not working?
         sudo reboot;
         
     * In case the LEDs are flickering as shown in this video https://www.youtube.com/watch?v=UHxVS8SkXOU (Thanks to oxivanisher), consider the usage of a level-shifter to connect the GPIO-pin of the raspberry to the LED-strip. Further reading: https://github.com/jgarff/rpi_ws281x/issues/127 https://github.com/bk1285/rpi_wordclock/issues/38
+    .. figure:: _images/74HCT125_wiring.png
+        :scale: 40%
+        :alt: Wiring of the a 74HCT125 level-shifter
 
 * When starting the wordclock-script, "Pin 17 pressed" is logged all the time?
 
