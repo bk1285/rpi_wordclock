@@ -16,7 +16,7 @@ class time_swiss_german2():
             # -> ZÄÄ AB
             range(29,32) + range(36,38), \
             # -> VIERTU AB
-            range(16,21) + range(36,38), \
+            range(15,21) + range(36,38), \
             # -> ZWÄNZG AB
             range(22,28) + range(36,38), \
             # -> FÜF VOR HAUBI
@@ -28,7 +28,7 @@ class time_swiss_german2():
             # -> ZWÄNZG VOR
             range(22,28) + range(33,36), \
             # -> VIERTU VOR
-            range(16,21) + range(33,36), \
+            range(15,21) + range(33,36), \
             # -> ZÄÄ VOR
             range(29,32) + range(33,36), \
             # -> FÜF VOR
