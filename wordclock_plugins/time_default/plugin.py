@@ -7,6 +7,7 @@ import time_swabian
 import time_dutch
 import time_bavarian
 import time_swiss_german
+import time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
@@ -38,6 +39,8 @@ class plugin:
             self.taw = time_bavarian.time_bavarian()
         elif language == 'swiss_german':
             self.taw = time_swiss_german.time_swiss_german()
+        elif language == 'swiss_german2':
+            self.taw = time_swiss_german2.time_swiss_german2()
         else:
             print('Could not detect language: ' + language + '.')
             print('Choosing default: german')
@@ -97,20 +100,7 @@ class plugin:
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
                 # Set background color
-                wcd.setColorToAll(self.bg_color, includeMinutes=True)
-                # Returns indices, which represent the current time, when beeing illuminated
-                taw_indices = self.taw.get_time(now)
-                if self.typewriter and now.minute%5 == 0:
-                    for i in range(len(taw_indices)):
-                        wcd.setColorBy1DCoordinates(wcd.strip, taw_indices[0:i+1], self.word_color)
-                        wcd.show()
-                        time.sleep(1.0/self.typewriter_speed)
-                    wcd.setMinutes(now, self.minute_color)
-                    wcd.show()
-                else:
-                    wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
-                    wcd.setMinutes(now, self.minute_color)
-                    wcd.show()
+                self.show_time(wcd, wci)
                 prev_min = -1 if now.minute == 59 else now.minute
             event = wci.waitSecondsForEvent([wci.button_left, wci.button_return, wci.button_right], 2)
             # Switch display color, if button_left is pressed
@@ -121,12 +111,31 @@ class plugin:
                 self.bg_color     = self.color_modes[self.color_mode_pos][0]
                 self.word_color   = self.color_modes[self.color_mode_pos][1]
                 self.minute_color = self.color_modes[self.color_mode_pos][2]
+                self.show_time(wcd, wci)
                 time.sleep(0.2)
             if (event == wci.button_return):
                 return # Return to main menu, if button_return is pressed
             if (event == wci.button_right):
                 time.sleep(wci.lock_time)
                 self.color_selection(wcd, wci)
+
+    def show_time(self, wcd, wci):
+        now = datetime.datetime.now()
+        # Set background color
+        wcd.setColorToAll(self.bg_color, includeMinutes=True)
+        # Returns indices, which represent the current time, when beeing illuminated
+        taw_indices = self.taw.get_time(now)
+        if self.typewriter and now.minute%5 == 0:
+            for i in range(len(taw_indices)):
+                wcd.setColorBy1DCoordinates(wcd.strip, taw_indices[0:i+1], self.word_color)
+                wcd.show()
+                time.sleep(1.0/self.typewriter_speed)
+            wcd.setMinutes(now, self.minute_color)
+            wcd.show()
+        else:
+            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setMinutes(now, self.minute_color)
+            wcd.show()
 
     def color_selection(self, wcd, wci):
         while True:
