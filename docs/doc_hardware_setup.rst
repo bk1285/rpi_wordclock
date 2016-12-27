@@ -78,6 +78,28 @@ Button setup
 
     Buttons with attached resistors. The center button has already its final tip.
 
+.. _stancil_setup:
+Stancil setup
++++++++++++++
+
+.. figure:: _images/stancil_setup_01.jpg
+    :scale: 40%
+    :alt: Stancil setup 01
+
+    Fixation of 4 screws within the 4 corners of the stancil using two-component adhesive.
+
+.. figure:: _images/stancil_setup_02.jpg
+    :scale: 40%
+    :alt: Stancil setup 02
+
+    Allows to fix the stancil with screw-nuts to the sceleton.
+
+.. figure:: _images/stancil_setup_03.jpg
+    :scale: 40%
+    :alt: Stancil setup 03
+
+    To increase stability, consider an overlapping of the frame to hold the major weight of the stancil.
+
 .. _final_clock:
 Final clock
 +++++++++++

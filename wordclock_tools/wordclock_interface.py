@@ -52,7 +52,7 @@ class wordclock_interface:
                     virtual_pin = self.virtual_button_right
                 if(i == self.button_return):
                     virtual_pin = self.virtual_button_return
-                if self.interface.pinState(i) or not self.interface.pinState(virtual_pin):
+                if self.interface.pinState(i) or GPIO.input(virtual_pin):
                     print('Pin ' + str(i) + ' pressed.')
                     return i
             time.sleep(1.0/cps)
@@ -71,7 +71,7 @@ class wordclock_interface:
                     virtual_pin = self.virtual_button_right
                 if(i == self.button_return):
                     virtual_pin = self.virtual_button_return
-                if self.interface.pinState(i) or not self.interface.pinState(virtual_pin):
+                if self.interface.pinState(i) or GPIO.input(virtual_pin):
                     print('Pin ' + str(i) + ' pressed.')
                     return i
             time.sleep(1.0/cps)
