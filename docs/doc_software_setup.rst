@@ -58,7 +58,7 @@ These dependencies are http://www.airspayce.com/mikem/bcm2835/index.html
 
 and::
 
-    sudo pip install am2303_rpi
+    sudo pip install am2302_rpi
 
 
 .. _3rd_party_deps_git:
@@ -67,7 +67,6 @@ and::
 +++++++++++++++++++++++++++++++++++++++++
 
 Install 3rd-party dependencies (compiled on your own).
-.. todo:: Improve installation location.
 
 Install rpi_ws281x to your home-directory (to access leds)::
 
