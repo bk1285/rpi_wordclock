@@ -62,7 +62,7 @@ Button setup
     :scale: 40%
     :alt: Wiring concept
 
-    Conceptual wiring layout to connect RPi, buttons, etc.
+    Conceptual wiring layout to connect RPi, buttons, etc. See also `Power connectors <https://en.wikipedia.org/wiki/Coaxial_power_connector>`_, `USB-Pinouts <https://en.wikipedia.org/wiki/USB#Pinouts>`_
 
 .. figure:: _images/wiring_detail.jpg
     :scale: 40%
