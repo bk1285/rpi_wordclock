@@ -6,7 +6,7 @@ import time
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
 import wordclock_tools.wordclock_interface as wci
-
+import wordclock_tools.wordclock_socket as wcs
 
 class wordclock:
     '''
@@ -76,6 +76,8 @@ class wordclock:
             except:
                 print('Failed to import plugin ' + plugin + '!')
 
+        # Create object to interact with the wordclock using the interface of your choice
+        self.wcs = wcs.wordclock_socket(self.config, self.plugins)
 
     def startup(self):
         '''
