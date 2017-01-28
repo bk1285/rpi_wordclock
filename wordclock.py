@@ -5,8 +5,8 @@ import os
 import time
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
-import wordclock_tools.wordclock_interface as wci
 import wordclock_tools.wordclock_socket as wcs
+import wordclock_interfaces.event_handler as wci
 
 class wordclock:
     '''
@@ -34,7 +34,7 @@ class wordclock:
         self.config.set('wordclock','base_path', self.basePath)
 
         # Create object to interact with the wordclock using the interface of your choice
-        self.wci = wci.wordclock_interface(self.config)
+        self.wci = wci.event_handler()
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
@@ -118,21 +118,20 @@ class wordclock:
             self.runPlugin()
 
             # If plugin.run exits, loop through menu to select next plugin
-            plugin_selected = False
-            while not plugin_selected:
+            while True:
                 # The showIcon-command expects to have a plugin logo available
                 self.wcd.showIcon(plugin=self.plugins[self.plugin_index].name, iconName='logo')
                 time.sleep(self.wci.lock_time)
-                pin = self.wci.waitForEvent([self.wci.button_left, self.wci.button_return, self.wci.button_right], cps=10)
-                if pin == self.wci.button_left:
+                evt = self.wci.waitForEvent()
+                if evt == self.wci.EVENT_BUTTON_LEFT:
                     self.plugin_index -=1
                     if self.plugin_index == -1:
                         self.plugin_index = len(self.plugins)-1
                     time.sleep(self.wci.lock_time)
-                if pin == self.wci.button_return:
-                    plugin_selected = True
+                if evt == self.wci.EVENT_BUTTON_RETURN:
                     time.sleep(self.wci.lock_time)
-                if pin == self.wci.button_right:
+                    break
+                if evt == self.wci.EVENT_BUTTON_RIGHT:
                     self.plugin_index +=1
                     if self.plugin_index == len(self.plugins):
                         self.plugin_index = 0
