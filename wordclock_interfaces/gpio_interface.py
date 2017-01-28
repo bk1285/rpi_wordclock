@@ -37,27 +37,27 @@ class gpio_interface:
         GPIO.add_event_detect(self.button_left,
                               self.polarity,
                               callback = lambda channel: self._left(),
-                              debouncetime=100)
+                              bouncetime=100)
         GPIO.add_event_detect(self.button_return,
                               self.polarity,
                               callback = lambda channel: self._return(),
-                              debouncetime=100)
+                              bouncetime=100)
         GPIO.add_event_detect(self.button_right,
                               self.polarity,
                               callback = lambda channel: self._right()(),
-                              debouncetime=100)
+                              bouncetime=100)
         GPIO.add_event_detect(self.virtual_button_left,
                               self.polarity,
                               callback = lambda channel: self._left(),
-                              debouncetime=100)
+                              bouncetime=100)
         GPIO.add_event_detect(self.virtual_button_return,
                               self.interface.polarity,
                               callback = lambda channel: self._return(),
-                              debouncetime=100)
+                              bouncetime=100)
         GPIO.add_event_detect(self.virtual_button_right,
                               self.interface.polarity,
                               callback = lambda channel: self._right(),
-                              debouncetime=100)
+                              bouncetime=100)
     
     def _left(self):
         self.evtHandler.setEvent(self.evtHandler.EVENT_BUTTON_LEFT)
