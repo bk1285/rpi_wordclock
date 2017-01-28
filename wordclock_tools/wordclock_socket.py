@@ -8,11 +8,8 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
 
     def handle(self):
         print('Received new connection from ' + str(self.client_address[0]))
-        print(self.wclk.config.get('plugin_time_default', 'language'))
-        print('Plugin-index: ' + str(self.wclk.plugin_index))
         while True:
             jdata = self.recv_msg()
-            #jdata = "{\"API\":1, \"GET_CONFIG\":0}"
             data = json.loads(jdata)
             json.dumps(data)
 
@@ -26,8 +23,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
                 msg = { 'PLUGINS': plugins, 'ACTIVE_PLUGIN': self.wclk.plugin_index, 'API': 1 }
                 self.send_msg(json.dumps(msg))
             elif 'SET_ACTIVE_PLUGIN' in data:
-#                self.wclk.set_plugin_index(int(data['SET_ACTIVE_PLUGIN']))
-                print "Todo: Needs implementation"
+                self.wclk.runPlugin(int(data['SET_ACTIVE_PLUGIN']))
             else:
                 e_msg= "Can\'t handle json-request..."
                 json_e_msg = json.dumps('ERROR_MSG:' + e_msg)

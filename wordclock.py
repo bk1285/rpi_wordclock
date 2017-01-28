@@ -89,10 +89,17 @@ class wordclock:
             self.wcd.showText(self.config.get('wordclock', 'startup_message'))
 
 
-    def runPlugin(self):
+    def runPlugin(self, plugin_index=None):
         '''
         Runs the currently selected plugin
         '''
+        if (plugin_index):
+            plugin_index = int(plugin_index)
+            if (plugin_index < 0 or plugin_index >= len(self.plugins)):
+                print 'Invalid plugin index: ' + str(plugin_index)
+                raise
+            self.plugin_index=plugin_index
+
         try:
             print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
             self.plugins[self.plugin_index].run(self.wcd, self.wci)
