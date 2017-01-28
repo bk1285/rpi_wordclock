@@ -85,18 +85,18 @@ class wordclock:
             self.wcd.showText(self.config.get('wordclock', 'startup_message'))
 
 
-    def runPlugin(self, plugin_index):
+    def runPlugin(self):
         '''
-        Runs a selected plugin
+        Runs the currently selected plugin
         '''
         try:
-            print('Running plugin ' + self.plugins[plugin_index].name + '.')
-            self.plugins[plugin_index].run(self.wcd, self.wci)
+            print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+            self.plugins[self.plugin_index].run(self.wcd, self.wci)
         except:
-            print('ERROR: In plugin ' + self.plugins[plugin_index].name + '.')
+            print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
             time.sleep(1)
-            self.wcd.showText('Error in ' + self.plugins[plugin_index].name, fg_color=wcc.RED, fps = 15)
+            self.wcd.showText('Error in ' + self.plugins[self.plugin_index].name, fg_color=wcc.RED, fps = 15)
 
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()
@@ -111,32 +111,32 @@ class wordclock:
         while True:
 
             # Run the default plugin
-            self.runPlugin(self.default_plugin)
-            plugin_index = self.default_plugin
+            self.plugin_index = self.default_plugin
+            self.runPlugin()
 
             # If plugin.run exits, loop through menu to select next plugin
             plugin_selected = False
             while not plugin_selected:
                 # The showIcon-command expects to have a plugin logo available
-                self.wcd.showIcon(plugin=self.plugins[plugin_index].name, iconName='logo')
+                self.wcd.showIcon(plugin=self.plugins[self.plugin_index].name, iconName='logo')
                 time.sleep(self.wci.lock_time)
                 pin = self.wci.waitForEvent([self.wci.button_left, self.wci.button_return, self.wci.button_right], cps=10)
                 if pin == self.wci.button_left:
-                    plugin_index -=1
-                    if plugin_index == -1:
-                        plugin_index = len(self.plugins)-1
+                    self.plugin_index -=1
+                    if self.plugin_index == -1:
+                        self.plugin_index = len(self.plugins)-1
                     time.sleep(self.wci.lock_time)
                 if pin == self.wci.button_return:
                     plugin_selected = True
                     time.sleep(self.wci.lock_time)
                 if pin == self.wci.button_right:
-                    plugin_index +=1
-                    if plugin_index == len(self.plugins):
-                        plugin_index = 0
+                    self.plugin_index +=1
+                    if self.plugin_index == len(self.plugins):
+                        self.plugin_index = 0
                     time.sleep(self.wci.lock_time)
 
             # Run selected plugin
-            self.runPlugin(plugin_index)
+            self.runPlugin()
 
             # After leaving selected plugin, start over again with the default plugin...
 
