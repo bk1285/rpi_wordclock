@@ -35,6 +35,7 @@ class wordclock:
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
+        self.gpio = wci.gpio_interface()
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
