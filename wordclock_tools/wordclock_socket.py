@@ -1,4 +1,5 @@
 import json
+import struct
 import threading
 import SocketServer
 
@@ -7,14 +8,31 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
 
     def handle(self):
         print('Received new connection from ' + str(self.client_address[0]))
-        print(self.cfg.get('plugin_time_default', 'language'))
-        for i, plugin in enumerate(self.plgs):
-            print ('{' + str(i) + ': ' + plugin.name + '}')
+        print(self.wclk.config.get('plugin_time_default', 'language'))
+        print('Plugin-index: ' + str(self.wclk.plugin_index))
         while True:
-            data = self.request.recv(1024)
-            cur_thread = threading.current_thread()
-            response = "{}: {}".format(cur_thread.name, data)
-            self.request.sendall(response)
+            jdata = self.recv_msg()
+            #jdata = "{\"API\":1, \"GET_CONFIG\":0}"
+            data = json.loads(jdata)
+            json.dumps(data)
+
+            if (data['API'] != 1 ):
+                print 'Wrong API: Expected API = 1'
+                return
+            if 'GET_CONFIG' in data:
+                plugins = []
+                for i, plugin in enumerate(self.wclk.plugins):
+                    plugins.append(plugin.name)
+                msg = { 'PLUGINS': plugins, 'ACTIVE_PLUGIN': self.wclk.plugin_index, 'API': 1 }
+                self.send_msg(json.dumps(msg))
+            elif 'SET_ACTIVE_PLUGIN' in data:
+#                self.wclk.set_plugin_index(int(data['SET_ACTIVE_PLUGIN']))
+                print "Todo: Needs implementation"
+            else:
+                e_msg= "Can\'t handle json-request..."
+                json_e_msg = json.dumps('ERROR_MSG:' + e_msg)
+                self.send_msg(json_e_msg)
+                print e_msg
 
     def send_msg(self, msg):
         # Prefix each message with a 4-byte length (network byte order)
@@ -48,19 +66,16 @@ class wordclock_socket:
     A class providing a json api for the wordclock
     '''
 
-    def __init__(self, config, plugins):
+    def __init__(self, wordclock):
         '''
         Setup wordclock_socket
         '''
         print('Setting up wordclock socket')
         class ThreadedTCPRequestHandlerWithConfig(ThreadedTCPRequestHandler):
-            cfg = config
-            plgs = plugins
+            wclk = wordclock
 
         HOST, PORT = "0.0.0.0", 8081
         server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandlerWithConfig)
-        server.config = config
-
 
         # Start a thread with the server -- that thread will then start one
         # more thread for each request

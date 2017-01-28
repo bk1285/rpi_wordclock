@@ -77,7 +77,8 @@ class wordclock:
                 print('Failed to import plugin ' + plugin + '!')
 
         # Create object to interact with the wordclock using the interface of your choice
-        self.wcs = wcs.wordclock_socket(self.config, self.plugins)
+        self.plugin_index = 0
+        self.wcs = wcs.wordclock_socket(self)
 
     def startup(self):
         '''
