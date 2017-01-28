@@ -14,14 +14,9 @@ class gpio_interface:
         self.button_return = int(config.get('wordclock_interface', 'pin_button_return'))
         self.button_right = int(config.get('wordclock_interface', 'pin_button_right'))
 
-        self.virtual_button_left = int(config.get('wordclock_interface', 'virtual_pin_button_left'))
-        self.virtual_button_return = int(config.get('wordclock_interface', 'virtual_pin_button_return'))
-        self.virtual_button_right = int(config.get('wordclock_interface', 'virtual_pin_button_right'))
-
         # Initializations for GPIO-input
         GPIO.setmode(GPIO.BCM)
         GPIO.setup([self.button_left, self.button_return, self.button_right], GPIO.IN)
-        GPIO.setup([self.virtual_button_left, self.virtual_button_return, self.virtual_button_right], GPIO.OUT)
 
         interface_type = config.get('wordclock_interface', 'type')
         if (interface_type == 'gpio_low'):
@@ -45,18 +40,6 @@ class gpio_interface:
         GPIO.add_event_detect(self.button_right,
                               self.polarity,
                               callback = lambda channel: self._right()(),
-                              bouncetime=100)
-        GPIO.add_event_detect(self.virtual_button_left,
-                              self.polarity,
-                              callback = lambda channel: self._left(),
-                              bouncetime=100)
-        GPIO.add_event_detect(self.virtual_button_return,
-                              self.interface.polarity,
-                              callback = lambda channel: self._return(),
-                              bouncetime=100)
-        GPIO.add_event_detect(self.virtual_button_right,
-                              self.interface.polarity,
-                              callback = lambda channel: self._right(),
                               bouncetime=100)
     
     def _left(self):
