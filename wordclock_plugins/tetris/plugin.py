@@ -91,7 +91,7 @@ class plugin:
                 self.carve(brick, x, y)
                 self.draw(wcd)
 
-                event = wci.waitSecondsForEvent([wci.button_return,wci.button_left,wci.button_right], 0.01, 1000)
+                event = wci.waitForEvent(0.01)
                 # check the time
                 d = time.time() - t
                 timeout = d > max(0.2, (0.5 - 0.02 * lines)) # make game harder over time
@@ -113,7 +113,7 @@ class plugin:
 
                 lastevent = event
 
-                if event == wci.button_return:
+                if event == wci.EVENT_BUTTON_RETURN:
                     brickr = brick.rotate_cw()
                     # simple wall bounce
                     if not self.collision(brickr, x, y):
@@ -127,12 +127,12 @@ class plugin:
                     # adjust x and y
                     x = min(max(-brick.padLeft, x), W - brick.innerWidth - brick.padLeft)
                     y = max(-brick.padTop - brick.innerHeight + 1, y)
-                elif event == wci.button_left:
+                elif event == wci.EVENT_BUTTON_RETURN:
                     # move brick to the left
                     nx = max(-brick.padLeft, x - 1)
                     if not self.collision(brick, nx, y):
                         x = nx
-                elif event == wci.button_right:
+                elif event == wci.EVENT_BUTTON_RIGHT:
                     # move brick to the right
                     nx = min(x + 1, W - brick.innerWidth - brick.padLeft)
                     if not self.collision(brick, nx, y):
