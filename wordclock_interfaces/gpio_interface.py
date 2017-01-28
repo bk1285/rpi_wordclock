@@ -39,7 +39,7 @@ class gpio_interface:
                               bouncetime=100)
         GPIO.add_event_detect(self.button_right,
                               self.polarity,
-                              callback = lambda channel: self._right()(),
+                              callback = lambda channel: self._right(),
                               bouncetime=100)
     
     def _left(self):

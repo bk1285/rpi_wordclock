@@ -12,6 +12,7 @@ class event_handler:
     def __init__(self):
         self.condition = threading.Condition()
         self.event = self.EVENT_INVALID
+        self.lock_time = 0.1
 
     def waitForEvent(self, seconds = None):
         self.condition.acquire()

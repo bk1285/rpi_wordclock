@@ -127,7 +127,7 @@ class plugin:
                     # adjust x and y
                     x = min(max(-brick.padLeft, x), W - brick.innerWidth - brick.padLeft)
                     y = max(-brick.padTop - brick.innerHeight + 1, y)
-                elif event == wci.EVENT_BUTTON_RETURN:
+                elif event == wci.EVENT_BUTTON_LEFT:
                     # move brick to the left
                     nx = max(-brick.padLeft, x - 1)
                     if not self.collision(brick, nx, y):
