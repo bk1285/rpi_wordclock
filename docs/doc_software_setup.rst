@@ -44,7 +44,7 @@ Required python dependencies:
 
 To install use::
 
-    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces
+    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic
 
 
 .. _temperature_sensor:
