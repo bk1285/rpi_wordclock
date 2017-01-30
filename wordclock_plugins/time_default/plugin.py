@@ -113,7 +113,7 @@ class plugin:
                 self.minute_color = self.color_modes[self.color_mode_pos][2]
                 self.show_time(wcd, wci)
                 time.sleep(0.2)
-            if (event == wci.EVENT_BUTTON_RETURN):
+            if (event == wci.EVENT_BUTTON_RETURN) or (event == wci.EVENT_EXIT_PLUGIN):
                 return # Return to main menu, if button_return is pressed
             if (event == wci.EVENT_BUTTON_RIGHT):
                 time.sleep(wci.lock_time)

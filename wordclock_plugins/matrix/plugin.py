@@ -55,8 +55,8 @@ class plugin:
                     rain[x] = y + 1
             wcd.show()
             # input handling
-            event = wci.waitSecondsForEvent(0.1)
-            if event == wci.EVENT_BUTTON_RETURN:
+            event = wci.waitForEvent(0.1)
+            if event == wci.EVENT_BUTTON_RETURN or event == wci.EVENT_EXIT_PLUGIN:
                 return
             elif event == wci.EVENT_BUTTON_LEFT:
                 self.threshold = min(0.95, self.threshold + 0.05)

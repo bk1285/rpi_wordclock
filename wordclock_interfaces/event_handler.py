@@ -8,6 +8,7 @@ class event_handler:
     EVENT_BUTTON_LEFT = 0
     EVENT_BUTTON_RIGHT = 1
     EVENT_BUTTON_RETURN = 2
+    EVENT_EXIT_PLUGIN = 3
 
     def __init__(self):
         self.condition = threading.Condition()
