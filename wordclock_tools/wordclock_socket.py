@@ -2,6 +2,7 @@ import json
 import struct
 import threading
 import SocketServer
+from wordclock_interfaces.event_handler import event_handler as eh
 
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
     cfg = None
@@ -9,26 +10,35 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         print('Received new connection from ' + str(self.client_address[0]))
         while True:
-            jdata = self.recv_msg()
-            data = json.loads(jdata)
-            json.dumps(data)
+            try:
+                jdata = self.recv_msg()
+                if not jdata:
+                    raise
+            except:
+                print "Connection to {} terminated" % str(self.client_address[0]) 
+                return
+            
+            try:
+                data = json.loads(jdata)
+            except:
+                print "Invalid data from {}" % str(self.client_address[0])
+                return
 
             if (data['API'] != 1 ):
                 print 'Wrong API: Expected API = 1'
                 return
             if 'GET_CONFIG' in data:
-                plugins = []
-                for i, plugin in enumerate(self.wclk.plugins):
-                    plugins.append(plugin.name)
+                plugins = map(lambda plugin: plugin.name, self.wclk.plugins)
                 msg = { 'PLUGINS': plugins, 'ACTIVE_PLUGIN': self.wclk.plugin_index, 'API': 1 }
                 self.send_msg(json.dumps(msg))
             elif 'SET_ACTIVE_PLUGIN' in data:
-                self.wclk.runPlugin(int(data['SET_ACTIVE_PLUGIN']))
+                self.wclk.runNext(int(data['SET_ACTIVE_PLUGIN']))
+                self.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
             else:
                 e_msg= "Can\'t handle json-request..."
-                json_e_msg = json.dumps('ERROR_MSG:' + e_msg)
-                self.send_msg(json_e_msg)
+                self.send_msg(json.dumps({ 'ERROR_MSG' : e_msg, 'API': 1 }))
                 print e_msg
+                return
 
     def send_msg(self, msg):
         # Prefix each message with a 4-byte length (network byte order)

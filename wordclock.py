@@ -80,6 +80,7 @@ class wordclock:
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
+        self.run_next_index = None
         self.wcs = wcs.wordclock_socket(self)
 
     def startup(self):
@@ -90,16 +91,10 @@ class wordclock:
             self.wcd.showText(self.config.get('wordclock', 'startup_message'))
 
 
-    def runPlugin(self, plugin_index=None):
+    def runPlugin(self):
         '''
         Runs the currently selected plugin
         '''
-        if (plugin_index):
-            plugin_index = int(plugin_index)
-            if (plugin_index < 0 or plugin_index >= len(self.plugins)):
-                print 'Invalid plugin index: ' + str(plugin_index)
-                raise
-            self.plugin_index=plugin_index
 
         #try:
         print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
@@ -113,18 +108,23 @@ class wordclock:
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()
 
+    def runNext(self, plugin_index = None):
+        self.run_next_index = plugin_index
 
     def run(self):
         '''
         Makes the wordclock run...
         '''
 
+        # Run the default plugin
+        self.run_next_index = self.default_plugin
+
         # Run the wordclock forever
         while True:
-
-            # Run the default plugin
-            self.plugin_index = self.default_plugin
-            self.runPlugin()
+            while self.run_next_index:
+                    self.plugin_index = self.run_next_index
+                    self.run_next_index = None
+                    self.runPlugin()
 
             # If plugin.run exits, loop through menu to select next plugin
             while True:
@@ -137,7 +137,7 @@ class wordclock:
                     if self.plugin_index == -1:
                         self.plugin_index = len(self.plugins)-1
                     time.sleep(self.wci.lock_time)
-                if evt == self.wci.EVENT_BUTTON_RETURN:
+                if evt == self.wci.EVENT_BUTTON_RETURN or evt == self.wci.EVENT_EXIT_PLUGIN:
                     time.sleep(self.wci.lock_time)
                     break
                 if evt == self.wci.EVENT_BUTTON_RIGHT:
@@ -148,6 +148,7 @@ class wordclock:
 
             # Run selected plugin
             self.runPlugin()
+            
 
             # After leaving selected plugin, start over again with the default plugin...
 
