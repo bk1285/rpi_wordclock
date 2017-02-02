@@ -5,8 +5,9 @@ import os
 import time
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
-import wordclock_tools.wordclock_interface as wci
-
+import wordclock_tools.wordclock_socket as wcs
+import wordclock_interfaces.event_handler as wci
+import wordclock_interfaces.gpio_interface as wcigpio
 
 class wordclock:
     '''
@@ -34,7 +35,8 @@ class wordclock:
         self.config.set('wordclock','base_path', self.basePath)
 
         # Create object to interact with the wordclock using the interface of your choice
-        self.wci = wci.wordclock_interface(self.config)
+        self.wci = wci.event_handler()
+        self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
@@ -76,6 +78,9 @@ class wordclock:
             except:
                 print('Failed to import plugin ' + plugin + '!')
 
+        # Create object to interact with the wordclock using the interface of your choice
+        self.plugin_index = 0
+        self.wcs = wcs.wordclock_socket(self)
 
     def startup(self):
         '''
@@ -85,18 +90,25 @@ class wordclock:
             self.wcd.showText(self.config.get('wordclock', 'startup_message'))
 
 
-    def runPlugin(self):
+    def runPlugin(self, plugin_index=None):
         '''
         Runs the currently selected plugin
         '''
-        try:
-            print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-            self.plugins[self.plugin_index].run(self.wcd, self.wci)
-        except:
-            print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
-            self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
-            time.sleep(1)
-            self.wcd.showText('Error in ' + self.plugins[self.plugin_index].name, fg_color=wcc.RED, fps = 15)
+        if (plugin_index):
+            plugin_index = int(plugin_index)
+            if (plugin_index < 0 or plugin_index >= len(self.plugins)):
+                print 'Invalid plugin index: ' + str(plugin_index)
+                raise
+            self.plugin_index=plugin_index
+
+        #try:
+        print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+        self.plugins[self.plugin_index].run(self.wcd, self.wci)
+        #except:
+        #    print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
+        #    self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+        #    time.sleep(1)
+        #    self.wcd.showText('Error in ' + self.plugins[self.plugin_index].name, fg_color=wcc.RED, fps = 15)
 
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()
@@ -115,21 +127,20 @@ class wordclock:
             self.runPlugin()
 
             # If plugin.run exits, loop through menu to select next plugin
-            plugin_selected = False
-            while not plugin_selected:
+            while True:
                 # The showIcon-command expects to have a plugin logo available
                 self.wcd.showIcon(plugin=self.plugins[self.plugin_index].name, iconName='logo')
                 time.sleep(self.wci.lock_time)
-                pin = self.wci.waitForEvent([self.wci.button_left, self.wci.button_return, self.wci.button_right], cps=10)
-                if pin == self.wci.button_left:
+                evt = self.wci.waitForEvent()
+                if evt == self.wci.EVENT_BUTTON_LEFT:
                     self.plugin_index -=1
                     if self.plugin_index == -1:
                         self.plugin_index = len(self.plugins)-1
                     time.sleep(self.wci.lock_time)
-                if pin == self.wci.button_return:
-                    plugin_selected = True
+                if evt == self.wci.EVENT_BUTTON_RETURN:
                     time.sleep(self.wci.lock_time)
-                if pin == self.wci.button_right:
+                    break
+                if evt == self.wci.EVENT_BUTTON_RIGHT:
                     self.plugin_index +=1
                     if self.plugin_index == len(self.plugins):
                         self.plugin_index = 0

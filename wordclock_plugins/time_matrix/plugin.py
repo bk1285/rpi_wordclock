@@ -89,12 +89,12 @@ class plugin:
 
             wcd.show()
 
-            event = wci.waitSecondsForEvent([wci.button_return, wci.button_left, wci.button_right], 0.1)
-            if event == wci.button_return:
+            event = wci.waitForEvent(0.1)
+            if event == wci.EVENT_BUTTON_RETURN:
                 return
-            elif event == wci.button_left:
+            elif event == wci.EVENT_BUTTON_LEFT:
                 self.threshold = min(0.95, self.threshold + 0.05)
-            elif event == wci.button_right:
+            elif event == wci.EVENT_BUTTON_RIGHT:
                 self.threshold = max(0.7, self.threshold - 0.05)
 
 
