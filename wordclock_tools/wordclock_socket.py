@@ -38,6 +38,8 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
             elif 'SET_ACTIVE_PLUGIN' in data:
                 self.wclk.runNext(int(data['SET_ACTIVE_PLUGIN']))
                 self.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
+            elif 'SEND_EVENT' in data:
+                self.wclk.wci.setEvent(int(data['SEND_EVENT']))
             else:
                 e_msg= "Can\'t handle json-request..."
                 self.send_json({ 'ERROR_MSG' : e_msg })
