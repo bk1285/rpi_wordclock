@@ -84,6 +84,8 @@ class wordclock_socket:
         '''
         self.allClients = set()
         
+        SocketServer.TCPServer.allow_reuse_address = True
+        
         print('Setting up wordclock socket')
         class ThreadedTCPRequestHandlerWithConfig(ThreadedTCPRequestHandler):
             wclk = wordclock
