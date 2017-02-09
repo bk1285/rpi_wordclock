@@ -15,6 +15,9 @@ class plugin:
         '''
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
+        self.pretty_name = "Weather forecast"
+        self.description = "Displays the current temperature"
+
         self.location_id = config.get('plugin_' + self.name, 'location_id')
         self.weather_service = config.get('plugin_weather_forecast', 'weather_service')
 

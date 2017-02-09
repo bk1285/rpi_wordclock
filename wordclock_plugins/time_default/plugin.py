@@ -24,6 +24,8 @@ class plugin:
         '''
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
+        self.pretty_name = "The time"
+        self.description = "The minimum, you should expect from a wordclock."
 
         # Choose language
         language = config.get('plugin_' + self.name, 'language')

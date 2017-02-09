@@ -11,7 +11,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
         self.mainloop()
         self.wclk.wcs.allClients.discard(self)
         print "Connection to {0} terminated".format(str(self.client_address[0]))
-        
+
     def mainloop(self):
         while True:
             try:
@@ -20,7 +20,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
                     return
             except:
                 return
-            
+
             try:
                 data = json.loads(jdata)
             except:
@@ -30,9 +30,9 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
             if (data['API'] != 1 ):
                 print 'Wrong API: Expected API = 1'
                 return
-            
+
             if 'GET_CONFIG' in data:
-                plugins = [plugin.name for plugin in self.wclk.plugins]
+                plugins = [{"NAME": plugin.pretty_name, "DESCRIPTION": plugin.description} for plugin in self.wclk.plugins]
                 msg = { 'PLUGINS': plugins, 'ACTIVE_PLUGIN': self.wclk.plugin_index }
                 self.send_json(msg)
             elif 'SET_ACTIVE_PLUGIN' in data:
@@ -85,9 +85,9 @@ class wordclock_socket:
         Setup wordclock_socket
         '''
         self.allClients = set()
-        
+
         SocketServer.TCPServer.allow_reuse_address = True
-        
+
         print('Setting up wordclock socket')
         class ThreadedTCPRequestHandlerWithConfig(ThreadedTCPRequestHandler):
             wclk = wordclock
@@ -101,10 +101,10 @@ class wordclock_socket:
         # Exit the server thread when the main thread terminates
         server_thread.daemon = True
         server_thread.start()
-    
+
     def sendCurrentPlugin(self, index):
         self.__sendToAll({'ACTIVE_PLUGIN': index})
-    
+
     def __sendToAll(self, jsonobj):
         for client in self.allClients:
             try:

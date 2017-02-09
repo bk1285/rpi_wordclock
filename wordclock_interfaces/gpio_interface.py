@@ -28,7 +28,7 @@ class gpio_interface:
             print('  Falling back to default')
             self.polarity = GPIO.RISING
         print('Interface type set to ' + interface_type)
-        
+
         GPIO.add_event_detect(self.button_left,
                               self.polarity,
                               callback = lambda channel: self._left(),
@@ -41,13 +41,13 @@ class gpio_interface:
                               self.polarity,
                               callback = lambda channel: self._right(),
                               bouncetime=100)
-    
+
     def _left(self):
         self.evtHandler.setEvent(self.evtHandler.EVENT_BUTTON_LEFT)
-    
+
     def _return(self):
         self.evtHandler.setEvent(self.evtHandler.EVENT_BUTTON_RETURN)
-    
+
     def _right(self):
         self.evtHandler.setEvent(self.evtHandler.EVENT_BUTTON_RIGHT)
 
