@@ -25,8 +25,15 @@ class event_handler:
 
     def setEvent(self, evt):
         self.condition.acquire()
-        self.event = evt
+        if self.event != self.EVENT_EXIT_PLUGIN:
+            self.event = evt
         self.condition.notifyAll()
+        self.condition.release()
+    
+    def waitForExit(self, seconds = None):
+        self.condition.acquire()
+        self.__wait_for(lambda: self.event == self.EVENT_EXIT_PLUGIN, seconds)
+        self.event = self.EVENT_INVALID
         self.condition.release()
 
     def __wait_for(self, predicate, timeout=None):
