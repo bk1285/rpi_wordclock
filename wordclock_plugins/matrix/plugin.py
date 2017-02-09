@@ -15,10 +15,11 @@ class plugin:
         '''
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
-
         self.bg_color = wcc.BLACK;
-
         self.threshold = 0.9
+
+        self.pretty_name = "Matrix"
+        self.description = "Why do my eyes hurt?"
 
         # Colors from black to green (and a bit gray-ish)
         self.colors = []
