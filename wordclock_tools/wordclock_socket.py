@@ -27,8 +27,8 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
                 print "Invalid data from {0}".format(str(self.client_address[0]))
                 return
 
-            if (data['API'] != 1 ):
-                print 'Wrong API: Expected API = 1'
+            if (data['API'] != 2 ):
+                print 'Wrong API: Expected API = 2'
                 return
 
             if 'GET_CONFIG' in data:
