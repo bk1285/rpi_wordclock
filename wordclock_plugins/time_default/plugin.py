@@ -212,7 +212,7 @@ class plugin:
             event = wci.waitForEvent(0.1)
             if event != wci.EVENT_INVALID:
                 time.sleep(wci.lock_time)
-                break´
+                break
         if not self.brightness_use_sensor:
             while True:
                 self.brightness_mode_pos += self.brightness_change

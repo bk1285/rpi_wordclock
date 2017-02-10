@@ -1,4 +1,8 @@
-from neopixel import *
+try:
+    from neopixel import *
+except ImportError:
+	from WXcolors import Color
+
 
 # Define colors which are available for the wcd. Currenly: Alphabetic order
 BLACK = Color(  0,  0,  0)

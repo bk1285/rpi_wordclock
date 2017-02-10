@@ -9,7 +9,7 @@ class wiring:
     adopted.
     '''
 
-    def __init__(self, config):
+    def __init__(self, config,simulation):
 
         # LED strip configuration:
         language=config.get('stencil_parameter', 'language')
@@ -26,20 +26,25 @@ class wiring:
         print('  WCA_HEIGHT: ' + str(self.WCA_HEIGHT))
         print('  Num of LEDs: ' + str(self.LED_COUNT))
 
-        wiring_layout = config.get('wordclock_display', 'wiring_layout')
-        if wiring_layout == 'bernds_wiring':
-            self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
-        elif wiring_layout == 'christians_wiring':
-            self.wcl = christians_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
-        elif wiring_layout == 'timos_wiring':
-            self.wcl = timos_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
-        elif wiring_layout == 'mini_wiring':
-            self.LED_COUNT   = self.WCA_HEIGHT*(self.WCA_WIDTH+1)+3
-            self.wcl = mini_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+        if not (simulation):
+            wiring_layout = config.get('wordclock_display', 'wiring_layout')
+            if wiring_layout == 'bernds_wiring':
+                self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+            elif wiring_layout == 'christians_wiring':
+                self.wcl = christians_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+            elif wiring_layout == 'timos_wiring':
+                self.wcl = timos_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+            elif wiring_layout == 'simulation_wiring':
+                self.wcl = simulation_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+            elif wiring_layout == 'mini_wiring':
+                self.LED_COUNT   = self.WCA_HEIGHT*(self.WCA_WIDTH+1)+3
+                self.wcl = mini_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+            else:
+                print('Warning: No valid wiring layout found. Falling back to default!')
+                self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
-            print('Warning: No valid wiring layout found. Falling back to default!')
-            self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
-
+            self.wcl = simulation_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+                            
     def setColorBy1DCoordinates(self, strip, ledCoordinates, color):
         '''
         Linear mapping from top-left to bottom right
@@ -111,6 +116,44 @@ class bernds_wiring:
             print('WARNING: Out of range, when mapping minutes...')
             print(min)
             return 0
+
+class simulation_wiring:
+    '''
+    A class, holding all information of the wordclock's layout to map given
+    timestamps, 2d-coordinates to the corresponding LEDs (corresponding to
+    the individual wiring/layout of any wordclock).
+    If a different wordclock wiring/layout is chosen, this class needs to be
+    adopted.
+    '''
+
+    def __init__(self, WCA_WIDTH, WCA_HEIGHT):
+        self.WCA_WIDTH   = WCA_WIDTH
+        self.WCA_HEIGHT  = WCA_HEIGHT
+        self.LED_COUNT   = self.WCA_WIDTH*self.WCA_HEIGHT+4
+
+    def getStripIndexFrom2D(self, x, y):
+        '''
+        Mapping coordinates to the wordclocks display
+        Needs hardware/wiring dependent implementation
+        Final range:
+             (0,0): top-left
+             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        '''
+        return y * self.WCA_WIDTH + x
+
+    def mapMinutes(self, min):
+        '''
+        Access minutes (1,2,3,4)
+        Needs hardware/wiring dependent implementation
+        This implementation assumes the minutes to be wired as first and last two leds of the led-strip
+        '''
+        if min >= 1 and min <= 4:
+            return self.LED_COUNT - (4 - min + 1)
+        else:
+            print('WARNING: Out of range, when mapping minutes...')
+            print(min)
+            return 0
+
 
 class christians_wiring:
     '''

@@ -3,11 +3,12 @@ from importlib import import_module
 import inspect
 import os
 import time
+import traceback
+import threading
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
 import wordclock_tools.wordclock_socket as wcs
 import wordclock_interfaces.event_handler as wci
-import wordclock_interfaces.gpio_interface as wcigpio
 
 class wordclock:
     '''
@@ -35,12 +36,16 @@ class wordclock:
         self.config.set('wordclock','base_path', self.basePath)
 
         # Create object to interact with the wordclock using the interface of your choice
-        self.wci = wci.event_handler()
-        self.gpio = wcigpio.gpio_interface(self.config, self.wci)
+        self.wci = wci.event_handler()        
+        try:
+            import wordclock_interfaces.gpio_interface as wcigpio
+            self.gpio = wcigpio.gpio_interface(self.config, self.wci)
+        except:            
+            print("No GPIO interface")
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
-        self.wcd = wcd.wordclock_display(self.config)
+        self.wcd = wcd.wordclock_display(self.config,self.wci)
 
         # Define path to general icons (not plugin-specific)
         self.pathToGeneralIcons = os.path.join(self.basePath, 'icons', self.wcd.dispRes())
@@ -76,13 +81,14 @@ class wordclock:
                 print('Imported plugin ' + str(index) + ': "' + plugin + '".')
                 index +=1
             except:
+                #traceback.print_exc()
                 print('Failed to import plugin ' + plugin + '!')
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
         self.run_next_index = None
         self.wcs = wcs.wordclock_socket(self)
-
+    
     def startup(self):
         '''
         Startup behavior
@@ -150,11 +156,37 @@ class wordclock:
 
             # Run selected plugin
             self.runPlugin()
+
+    def run_forever(self):
+        self.startup()
+        self.run()
             
 
             # After leaving selected plugin, start over again with the default plugin...
 
 if __name__ == '__main__':
+    gpio_support = True
+    try:
+        import wordclock_interfaces.gpio_interface as wcigpio        
+    except:
+        gpio_support = False
+        print("No GPIO support")
+
+    if not (gpio_support):
+        # must be created first
+        import wx
+        app = wx.App()
+
     word_clock = wordclock()
-    word_clock.startup()
-    word_clock.run()
+    if(gpio_support):
+        word_clock.run_forever()
+    else:
+        print("We are not on raspberry...open simulation window")        
+        wordclock_thread = threading.Thread(target=word_clock.run_forever)
+        # Exit the server thread when the main thread terminates
+        wordclock_thread.daemon = True
+        wordclock_thread.start()    
+        app.MainLoop()    
+    
+
+    
