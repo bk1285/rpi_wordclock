@@ -16,9 +16,18 @@ class wordclock_display:
         Initalization
         '''
         # Get the wordclocks wiring-layout
-
-        # Create NeoPixel object with appropriate configuration.
         simulation = False
+        try:
+            from neopixel import *
+        except ImportError:
+            simulation = True
+
+
+        self.wcl = wiring.wiring(config,simulation)
+        # Create NeoPixel object with appropriate configuration.
+        
+
+
         try:
             brightness = config.getint('wordclock_display', 'brightness')
         except:
@@ -31,13 +40,12 @@ class wordclock_display:
             except:
                 print('WARNING: Your NeoPixel dependency is to old to accept customized brightness values and correct RGB-settings.')
                 self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ, self.wcl.LED_DMA, self.wcl.LED_INVERT)
-        except ImportError:
-            simulation = True
+        except ImportError:            
             from WXstrip import WXstrip
             self.strip = WXstrip(weh)
 
 
-        self.wcl = wiring.wiring(config,simulation)
+        
 
        
 
