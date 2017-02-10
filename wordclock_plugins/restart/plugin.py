@@ -12,6 +12,8 @@ class plugin:
         '''
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
+        self.pretty_name = "Restart"
+        self.description = "Restarts the wordclock"
 
     def run(self, wcd, wci):
         '''
