@@ -48,7 +48,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
 
     def send_json(self, jsonobj):
         # Prefix each message with a 4-byte length (network byte order)
-        jsonobj['API'] = 1
+        jsonobj['API'] = 2
         msg = json.dumps(jsonobj)
         msg = struct.pack('>I', len(msg)) + msg
         self.request.sendall(msg)
