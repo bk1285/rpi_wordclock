@@ -15,6 +15,8 @@ class plugin:
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
         self.taw = time_as_words_dutch.time_as_words_dutch()
+        self.pretty_name = "Time as words (dutch)"
+        self.description = "Displays the current time as words."
         self.bg_color_index     = 0 # default background color: black
         self.word_color_index   = 2 # default word color: warm white
 
