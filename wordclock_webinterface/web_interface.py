@@ -44,10 +44,8 @@ class web_interface:
     '''
         The class, which is used by web py packet (is initialized on every request)
     '''
-    def __init__(self):
-        print("init")
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print('connecting to server')
+    def __init__(self):        
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)        
         HOST, PORT = "0.0.0.0", 8081
         self.s.connect((HOST, PORT))
 

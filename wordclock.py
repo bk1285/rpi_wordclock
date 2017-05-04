@@ -19,8 +19,6 @@ class wordclock:
         '''
         Initializations, executed at every startup of the wordclock
         '''
-
-
         # Get path of the directory where this file is stored
         self.basePath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
