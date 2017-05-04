@@ -1,0 +1,162 @@
+$def with (plugins)
+<html> 
+    <head>
+        <title>Wordclock Remote Control</title>
+        <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>                
+        <link rel="stylesheet" href="/css/bootstrap.min.css">        
+        <link  rel="stylesheet" href="/css/bootstrap-theme.min.css">
+        <link  rel="stylesheet" href="/css/wordclock-theme.css">
+        <link rel="shortcut icon" type="image/x-icon" href="/icons/favicon.ico">
+        <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+        <link rel="icon" type="image/gif" href="/icons/favicon.gif">
+        <link rel="icon" type="image/png" href="/icons/favicon.png">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-57x57.png" sizes="57x57">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-60x60.png" sizes="60x60">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-72x72.png" sizes="72x72">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-76x76.png" sizes="76x76">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-114x114.png" sizes="114x114">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-120x120.png" sizes="120x120">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-128x128.png" sizes="128x128">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-144x144.png" sizes="144x144">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-152x152.png" sizes="152x152">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-180x180.png" sizes="180x180">
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon-precomposed.png">
+        <link rel="icon" type="image/png" href="/icons/favicon-16x16.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="/icons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/icons/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="/icons/favicon-160x160.png" sizes="160x160">
+        <link rel="icon" type="image/png" href="/icons/favicon-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="/icons/favicon-196x196.png" sizes="196x196">
+        <meta name="msapplication-TileImage" content="/icons/win8-tile-144x144.png"> 
+        <meta name="msapplication-TileColor" content="#ffffff"> 
+        <meta name="msapplication-navbutton-color" content="#ffffff"> 
+        <meta name="application-name" content="Wordclock Remote"/> 
+        <meta name="msapplication-tooltip" content="Wordclock Remote"/> 
+        <meta name="apple-mobile-web-app-title" content="Wordclock Remote"/> 
+        <meta name="msapplication-square70x70logo" content="/icons/win8-tile-70x70.png"> 
+        <meta name="msapplication-square144x144logo" content="/icons/win8-tile-144x144.png"> 
+        <meta name="msapplication-square150x150logo" content="/icons/win8-tile-150x150.png"> 
+        <meta name="msapplication-wide310x150logo" content="/icons/win8-tile-310x150.png"> 
+        <meta name="msapplication-square310x310logo" content="/icons/win8-tile-310x310.png"> 
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/fastclick.js"></script>        
+        <script type="text/javascript">
+                                jQuery(document).ready(function() {
+                                    FastClick.attach(document.body);                                    
+                                    jQuery(".activateplugin").click(function($$button) {                                                                                
+                                            var input_string = $$button.target.value - 1
+                                            console.log(input_string)
+                                            jQuery.ajax({
+                                                    type: "POST",                                                 
+                                                    contentType: "application/json; charset=utf-8",
+                                                    dataType: "json",
+                                                    data: JSON.stringify({ type : "activate_plugin" , value : input_string }),
+                                                    success: function(data) {
+                                                    
+                                                    },
+                                                    });
+                                            return false;
+                                    })
+                                    
+
+                                    jQuery(".left").click(function($$button) {
+                                            jQuery.ajax({
+                                                    type: "POST",
+                                                    contentType: "application/json; charset=utf-8",
+                                                    dataType: "json",
+                                                    data: JSON.stringify({ type : "send_event" , value : 0 }),
+                                                    success: function(data) {
+                                                    
+                                                    },
+                                                    });
+                                            return false;
+                                    })
+                                    
+
+                                    jQuery(".right").click(function($$button) {
+                                            jQuery.ajax({
+                                                    type: "POST",
+                                                    contentType: "application/json; charset=utf-8",
+                                                    dataType: "json",
+                                                    data: JSON.stringify({ type : "send_event" , value : 1 }),
+                                                    success: function(data) {
+                                                    
+                                                    },
+                                                    });
+                                            return false;
+                                    })
+
+                                    jQuery(".middle").click(function($$button) {
+                                            jQuery.ajax({
+                                                    type: "POST",
+                                                    contentType: "application/json; charset=utf-8",
+                                                    dataType: "json",
+                                                    data: JSON.stringify({ type : "send_event" , value : 2 }),
+                                                    success: function(data) {
+                                                    
+                                                    },
+                                                    });
+                                            return false;
+                                    })
+
+                                    jQuery("#navigationPlugins").click(function($$button) {
+                                        jQuery("#navigationPlugins").addClass('active');
+                                        jQuery("#navigationButtons").removeClass('active');
+                                        jQuery("#buttons").addClass('hidden');
+                                        jQuery("#plugins").removeClass('hidden');                                        
+                                    })
+
+                                    jQuery("#navigationButtons").click(function($$button) {
+                                        jQuery("#navigationPlugins").removeClass('active');
+                                        jQuery("#navigationButtons").addClass('active');
+                                        jQuery("#buttons").removeClass('hidden');
+                                        jQuery("#plugins").addClass('hidden');                                        
+                                    })
+                                    }
+                                );
+                        </script>
+    </head>
+     
+    <body class="container-fluid">
+        $if plugins:
+            <div class="btn-group input-group-lg">
+                <button class="btn btn-default btn-lg btn-navigation active" id="navigationButtons" type="button">Buttons</button>
+                <button class="btn btn-default btn-lg btn-navigation" id="navigationPlugins" type="button" >Plugins</button>                
+            </div>
+            <section class="hidden" id="plugins">
+                <div class"row">
+                    <div class="col-xs-12">
+                    <table class="plugin-table">
+                    $for c in plugins:
+                        <tr class="$loop.parity">                    
+                            <td>
+                                <button class="btn btn-default activateplugin" type="button" value="$loop.index">$loop.index  $c</button>
+                            </td>
+                        </tr>
+                    </table>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="" id="buttons">
+                <div class"row">
+                    <div class="col-xs-6">
+                        <button class="btn btn-default btn-control left" type="button" >Left</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-default btn-control right" type="button">Right</button>
+                    </div>
+                </div>
+                <div class"row">                
+                    <div class="col-xs-12">
+                        <button  class="btn btn-default btn-control middle" type="button">Middle</button>
+                    </div>
+                </div>
+            </section>            
+        $else:
+            Something went wrong
+    </body>
+     
+</html>
+

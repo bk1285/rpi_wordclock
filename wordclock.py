@@ -9,34 +9,36 @@ import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
 import wordclock_tools.wordclock_socket as wcs
 import wordclock_interfaces.event_handler as wci
+import wordclock_webinterface.web_interface as wwi
 
 class wordclock:
     '''
     The class, which makes the wordclock run...
     '''
-
     def __init__(self):
         '''
         Initializations, executed at every startup of the wordclock
         '''
+
+
         # Get path of the directory where this file is stored
         self.basePath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
         # Get wordclock configuration from config-file
-        pathToConfigFile=self.basePath + '/wordclock_config/wordclock_config.cfg'
+        pathToConfigFile = self.basePath + '/wordclock_config/wordclock_config.cfg'
         if not os.path.exists(pathToConfigFile):
             print('Warning: No config-file specified! Falling back to example-config!')
-            pathToConfigFile=self.basePath + '/wordclock_config/wordclock_config.example.cfg'
+            pathToConfigFile = self.basePath + '/wordclock_config/wordclock_config.example.cfg'
         print('Parsing ' + pathToConfigFile)
         self.config = ConfigParser.ConfigParser()
         self.config.read(pathToConfigFile)
 
         # Add to the loaded configuration the current base path to provide it
         # to other classes/plugins for further usage
-        self.config.set('wordclock','base_path', self.basePath)
+        self.config.set('wordclock', 'base_path', self.basePath)
 
         # Create object to interact with the wordclock using the interface of your choice
-        self.wci = wci.event_handler()        
+        self.wci = wci.event_handler()
         try:
             import wordclock_interfaces.gpio_interface as wcigpio
             self.gpio = wcigpio.gpio_interface(self.config, self.wci)
@@ -88,7 +90,7 @@ class wordclock:
         self.plugin_index = 0
         self.run_next_index = None
         self.wcs = wcs.wordclock_socket(self)
-    
+        self.wwi = wwi.wordclock_webinterface(self)
     def startup(self):
         '''
         Startup behavior
@@ -100,8 +102,7 @@ class wordclock:
     def runPlugin(self):
         '''
         Runs the currently selected plugin
-        '''
-
+        '''        
         self.wcs.sendCurrentPlugin(self.plugin_index)
 
         #try:
@@ -129,10 +130,10 @@ class wordclock:
 
         # Run the wordclock forever
         while True:
-            while self.run_next_index:
-                    self.plugin_index = self.run_next_index
-                    self.run_next_index = None
-                    self.runPlugin()
+            while self.run_next_index != None:
+                self.plugin_index = self.run_next_index
+                self.run_next_index = None
+                self.runPlugin()
 
             # If plugin.run exits, loop through menu to select next plugin
             while True:
@@ -158,10 +159,8 @@ class wordclock:
             self.runPlugin()
 
     def run_forever(self):
-        self.startup()
+        self.startup()        
         self.run()
-            
-
             # After leaving selected plugin, start over again with the default plugin...
 
 if __name__ == '__main__':
@@ -177,7 +176,7 @@ if __name__ == '__main__':
         import wx
         app = wx.App()
 
-    word_clock = wordclock()
+    word_clock = wordclock()    
     if(gpio_support):
         word_clock.run_forever()
     else:
