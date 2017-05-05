@@ -81,7 +81,7 @@ class wordclock:
                 print('Imported plugin ' + str(index) + ': "' + plugin + '".')
                 index +=1
             except:
-                #traceback.print_exc()
+                traceback.print_exc()
                 print('Failed to import plugin ' + plugin + '!')
 
         # Create object to interact with the wordclock using the interface of your choice

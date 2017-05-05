@@ -54,7 +54,6 @@ class wordclock_display:
         print("Font Path is " + fontPath)
         # Initialize the NeoPixel object
         self.strip.begin()
-        #'/Users/phenze/Library/Fonts/'
         self.default_font = os.path.join(fontPath, config.get('wordclock_display', 'default_font') + '.ttf')
         self.default_fg_color=wcc.WWHITE
         self.default_bg_color=wcc.BLACK

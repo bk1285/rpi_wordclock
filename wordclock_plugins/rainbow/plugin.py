@@ -1,8 +1,7 @@
 import datetime
 import os
 import time
-import RPi.GPIO as GPIO
-from neopixel import *
+import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
     '''
@@ -31,19 +30,19 @@ class plugin:
                 for i in range(114):
                     wcd.setPixelColor(i, self.wheel((i+j) & 255))
                 wcd.show()
-                if not GPIO.input(22) or GPIO.input(8):
-                    print('Pin ' + str(22) + ' pressed.')
-                    return
+                event = wci.waitForEvent(0.1)
+                if event == wci.EVENT_BUTTON_RETURN or event == wci.EVENT_EXIT_PLUGIN:
+                    return                
                 time.sleep(20/1000.0)
 
     def wheel(self, pos):
         """Generate rainbow colors across 0-255 positions."""
         if pos < 85:
-            return Color(pos * 3, 255 - pos * 3, 0)
+            return wcc.Color(pos * 3, 255 - pos * 3, 0)
         elif pos < 170:
             pos -= 85
-            return Color(255 - pos * 3, 0, pos * 3)
+            return wcc.Color(255 - pos * 3, 0, pos * 3)
         else:
             pos -= 170
-            return Color(0, pos * 3, 255 - pos * 3)   
+            return wcc.Color(0, pos * 3, 255 - pos * 3)
 
