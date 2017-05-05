@@ -1,10 +1,11 @@
-$def with (plugins)
+$def with (plugins,pluginDescriptions,activePlugin)
 <html> 
     <head>
         <title>Wordclock Remote Control</title>
         <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>                
         <link rel="stylesheet" href="/css/bootstrap.min.css">        
-        <link  rel="stylesheet" href="/css/bootstrap-theme.min.css">
+        <!--<link  rel="stylesheet" href="/css/bootstrap-theme.min.css">-->
+        <!--<link  rel="stylesheet" href="/css/sb-admin-2.min.css">-->
         <link  rel="stylesheet" href="/css/wordclock-theme.css">
         <link rel="shortcut icon" type="image/x-icon" href="/icons/favicon.ico">
         <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
@@ -45,6 +46,8 @@ $def with (plugins)
                                 jQuery(document).ready(function() {
                                     FastClick.attach(document.body);                                    
                                     jQuery(".activateplugin").click(function($$button) {                                                                                
+                                            jQuery(".activateplugin").removeClass('btn-primary');
+                                            $$button.target.classList.add('btn-primary')                                                                                        
                                             var input_string = $$button.target.value - 1
                                             console.log(input_string)
                                             jQuery.ajax({
@@ -120,35 +123,40 @@ $def with (plugins)
      
     <body class="container-fluid">
         $if plugins:
-            <div class="btn-group input-group-lg">
-                <button class="btn btn-default btn-lg btn-navigation active" id="navigationButtons" type="button">Buttons</button>
-                <button class="btn btn-default btn-lg btn-navigation" id="navigationPlugins" type="button" >Plugins</button>                
-            </div>
-            <section class="hidden" id="plugins">
-                <div class"row">
-                    <div class="col-xs-12">
-                    <table class="plugin-table">
-                    $for c in plugins:
-                        <tr class="$loop.parity">                    
-                            <td>
-                                <button class="btn btn-default activateplugin" type="button" value="$loop.index">$loop.index  $c</button>
-                            </td>
-                        </tr>
-                    </table>
-                    </div>
+            <section class="header-wrapper" id="header">
+                <div class="btn-group input-group-lg">
+                    <button class="btn btn-default btn-lg btn-navigation active" id="navigationButtons" type="button">Buttons</button>
+                    <button class="btn btn-default btn-lg btn-navigation" id="navigationPlugins" type="button" >Plugins</button>                
                 </div>
             </section>
+            <section class="content-wrapper hidden" id="plugins">                
+                <!--<div class="row plugin-table"></div>-->
+                $for c in plugins:                
+                    <div class="row">
+                        <div class="center">
+                        <div class="col-md-5">
+                            $if (loop.index - 1) == activePlugin:
+                                <button class="btn btn-default activateplugin btn-primary" type="button" value="$loop.index">$c</button>
+                            $else:
+                                <button class="btn btn-default activateplugin" type="button" value="$loop.index">$c</button>
+                        </div>
+                        <div class="col-md-7">
+                            <label class="plugin-description">$pluginDescriptions[loop.index - 1]</label>
+                        </div>
+                        </div>
+                    </div>
+            </section>
             
-            <section class="" id="buttons">
-                <div class"row">
+            <section class="content-wrapper" id="buttons">
+                <div class="row">
                     <div class="col-xs-6">
                         <button class="btn btn-default btn-control left" type="button" >Left</button>
                     </div>
                     <div class="col-xs-6">
                         <button class="btn btn-default btn-control right" type="button">Right</button>
                     </div>
-                </div>
-                <div class"row">                
+                </div>                
+                <div class="row">                
                     <div class="col-xs-12">
                         <button  class="btn btn-default btn-control middle" type="button">Middle</button>
                     </div>

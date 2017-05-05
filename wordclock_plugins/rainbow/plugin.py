@@ -5,12 +5,8 @@ import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
     '''
-    A class to display the current time (default mode).
-    This default mode needs to be adapted to the hardware
-    layout of the wordclock (the choosen stancil) and is
-    the most essential time display mode of the wordclock.
+    A class to display a nice rainbow
     '''
-
     def __init__(self, config):
         '''
         Initializations for the startup of the current wordclock plugin

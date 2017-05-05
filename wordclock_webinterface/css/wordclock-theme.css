@@ -1,18 +1,28 @@
 .btn-control {
     display: block; 
     width: 100%; 
-    height: 40%;
-    margin-top:10px;
+    height: 40%;    
+    margin-bottom: 10px;
     font-size: 50px;
 }
 .btn-navigation {
     display: block;     
     width: 50%; 
 }
-.activateplugin {
-    margin : 5px;
+.activateplugin {           
+    margin-bottom: 10px;
+    width : 100%;    
+}
+@media (max-width: 992px) {
+    .activateplugin {
+        min-height:100px;
+        font-size: 30px;
+    }   
 }
 
+.plugin-description {
+    font-size: 20px;
+}
 .hidden {
      display:none !important;
 }
@@ -23,4 +33,14 @@
 }
 .plugin-table {
     margin-top:10px;
+}
+@media (max-width: 992px) {
+    .center {
+        margin: 0 auto;
+        width: 80%;
+    }
+}
+
+.content-wrapper {    
+    padding-top:90px;    
 }

@@ -94,9 +94,13 @@ class web_interface:
         message = self.recv_msg()
         data = json.loads(message)
         print(data)
-        plugins = data["PLUGINS"]        
+        plugins = data["PLUGINS"]
         pluginKeys = []
+        pluginDescriptions = []
+        activePlugin = int(data["ACTIVE_PLUGIN"])
         for key in plugins:
             pluginKeys.append(key["NAME"])
-        return render.index(pluginKeys)
+            pluginDescriptions.append(key["DESCRIPTION"])
+
+        return render.index(pluginKeys,pluginDescriptions,activePlugin)
             
