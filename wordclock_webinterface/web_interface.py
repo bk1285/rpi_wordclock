@@ -13,7 +13,7 @@ urls = (
     '/activateplugin', 'web_interface_post'
 )
 
-render = web.template.render('wordclock_webinterface/')
+render = web.template.render(os.path.dirname(__file__))
 webapp = web.application(urls, globals())
 
 class wordclock_webinterface:
