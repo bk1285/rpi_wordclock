@@ -14,6 +14,7 @@ urls = (
 )
 
 render = web.template.render(os.path.dirname(__file__))
+web.config.debug = False
 webapp = web.application(urls, globals())
 
 class wordclock_webinterface:
