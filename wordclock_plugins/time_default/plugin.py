@@ -24,6 +24,8 @@ class plugin:
         '''
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
+        self.pretty_name = "The time"
+        self.description = "The minimum, you should expect from a wordclock."
 
         # Choose language
         language = config.get('plugin_' + self.name, 'language')
@@ -102,9 +104,9 @@ class plugin:
                 # Set background color
                 self.show_time(wcd, wci)
                 prev_min = -1 if now.minute == 59 else now.minute
-            event = wci.waitSecondsForEvent([wci.button_left, wci.button_return, wci.button_right], 2)
+            event = wci.waitForEvent(2)
             # Switch display color, if button_left is pressed
-            if (event == wci.button_left):
+            if (event == wci.EVENT_BUTTON_LEFT):
                 self.color_mode_pos += 1
                 if self.color_mode_pos == len(self.color_modes):
                     self.color_mode_pos = 0
@@ -113,9 +115,9 @@ class plugin:
                 self.minute_color = self.color_modes[self.color_mode_pos][2]
                 self.show_time(wcd, wci)
                 time.sleep(0.2)
-            if (event == wci.button_return):
+            if (event == wci.EVENT_BUTTON_RETURN) or (event == wci.EVENT_EXIT_PLUGIN):
                 return # Return to main menu, if button_return is pressed
-            if (event == wci.button_right):
+            if (event == wci.EVENT_BUTTON_RIGHT):
                 time.sleep(wci.lock_time)
                 self.color_selection(wcd, wci)
 
@@ -156,8 +158,8 @@ class plugin:
             wcd.show()
             self.rb_pos += 1
             if self.rb_pos == 256: self.rb_pos = 0
-            event = wci.waitSecondsForEvent([wci.button_return, wci.button_left, wci.button_right], 0.1)
-            if event > 0:
+            event = wci.waitForEvent(0.1)
+            if event != wci.EVENT_INVALID:
                 time.sleep(wci.lock_time)
                 break
         while True:
@@ -172,8 +174,8 @@ class plugin:
             wcd.show()
             if self.brightness_mode_pos < abs(self.brightness_change) or self.brightness_mode_pos > 255 - abs(self.brightness_change):
                 self.brightness_change *= -1
-            event = wci.waitSecondsForEvent([wci.button_return, wci.button_left, wci.button_right], 0.1)
-            if event > 0:
+            event = wci.waitForEvent(0.1)
+            if event != wci.EVENT_INVALID:
                 time.sleep(wci.lock_time)
                 return
 

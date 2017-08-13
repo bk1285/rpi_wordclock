@@ -3,10 +3,12 @@ from importlib import import_module
 import inspect
 import os
 import time
+from shutil import copyfile
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
-import wordclock_tools.wordclock_interface as wci
-
+import wordclock_tools.wordclock_socket as wcs
+import wordclock_interfaces.event_handler as wci
+import wordclock_interfaces.gpio_interface as wcigpio
 
 class wordclock:
     '''
@@ -23,8 +25,13 @@ class wordclock:
         # Get wordclock configuration from config-file
         pathToConfigFile=self.basePath + '/wordclock_config/wordclock_config.cfg'
         if not os.path.exists(pathToConfigFile):
-            print('Warning: No config-file specified! Falling back to example-config!')
-            pathToConfigFile=self.basePath + '/wordclock_config/wordclock_config.example.cfg'
+            pathToConfigFileExample=self.basePath + '/wordclock_config/wordclock_config.example.cfg'
+            if not os.path.exists(pathToConfigFileExample):
+                print('Error: No config-file available!')
+                print('  Expected '+ pathToConfigFile + ' or ' + pathToConfigFileExample)
+                raise Exception('Missing config-file')
+            copyfile(pathToConfigFileExample, pathToConfigFile)
+            print('Warning: No config-file specified! Was created from example-config!')
         print('Parsing ' + pathToConfigFile)
         self.config = ConfigParser.ConfigParser()
         self.config.read(pathToConfigFile)
@@ -34,7 +41,8 @@ class wordclock:
         self.config.set('wordclock','base_path', self.basePath)
 
         # Create object to interact with the wordclock using the interface of your choice
-        self.wci = wci.wordclock_interface(self.config)
+        self.wci = wci.event_handler()
+        self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
@@ -76,6 +84,10 @@ class wordclock:
             except:
                 print('Failed to import plugin ' + plugin + '!')
 
+        # Create object to interact with the wordclock using the interface of your choice
+        self.plugin_index = 0
+        self.run_next_index = None
+        self.wcs = wcs.wordclock_socket(self)
 
     def startup(self):
         '''
@@ -85,58 +97,66 @@ class wordclock:
             self.wcd.showText(self.config.get('wordclock', 'startup_message'))
 
 
-    def runPlugin(self, plugin_index):
+    def runPlugin(self):
         '''
-        Runs a selected plugin
+        Runs the currently selected plugin
         '''
-        try:
-            print('Running plugin ' + self.plugins[plugin_index].name + '.')
-            self.plugins[plugin_index].run(self.wcd, self.wci)
-        except:
-            print('ERROR: In plugin ' + self.plugins[plugin_index].name + '.')
-            self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
-            time.sleep(1)
-            self.wcd.showText('Error in ' + self.plugins[plugin_index].name, fg_color=wcc.RED, fps = 15)
+
+        self.wcs.sendCurrentPlugin(self.plugin_index)
+
+        #try:
+        print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+        self.plugins[self.plugin_index].run(self.wcd, self.wci)
+        #except:
+        #    print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
+        #    self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+        #    time.sleep(1)
+        #    self.wcd.showText('Error in ' + self.plugins[self.plugin_index].name, fg_color=wcc.RED, fps = 15)
 
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()
 
+    def runNext(self, plugin_index = None):
+        self.run_next_index = plugin_index
 
     def run(self):
         '''
         Makes the wordclock run...
         '''
 
+        # Run the default plugin
+        self.run_next_index = self.default_plugin
+
         # Run the wordclock forever
         while True:
-
-            # Run the default plugin
-            self.runPlugin(self.default_plugin)
-            plugin_index = self.default_plugin
+            while self.run_next_index:
+                    self.plugin_index = self.run_next_index
+                    self.run_next_index = None
+                    self.runPlugin()
 
             # If plugin.run exits, loop through menu to select next plugin
-            plugin_selected = False
-            while not plugin_selected:
+            while True:
                 # The showIcon-command expects to have a plugin logo available
-                self.wcd.showIcon(plugin=self.plugins[plugin_index].name, iconName='logo')
+                self.wcd.showIcon(plugin=self.plugins[self.plugin_index].name, iconName='logo')
                 time.sleep(self.wci.lock_time)
-                pin = self.wci.waitForEvent([self.wci.button_left, self.wci.button_return, self.wci.button_right], cps=10)
-                if pin == self.wci.button_left:
-                    plugin_index -=1
-                    if plugin_index == -1:
-                        plugin_index = len(self.plugins)-1
+                evt = self.wci.waitForEvent()
+                if evt == self.wci.EVENT_BUTTON_LEFT:
+                    self.plugin_index -=1
+                    if self.plugin_index == -1:
+                        self.plugin_index = len(self.plugins)-1
                     time.sleep(self.wci.lock_time)
-                if pin == self.wci.button_return:
-                    plugin_selected = True
+                if evt == self.wci.EVENT_BUTTON_RETURN or evt == self.wci.EVENT_EXIT_PLUGIN:
                     time.sleep(self.wci.lock_time)
-                if pin == self.wci.button_right:
-                    plugin_index +=1
-                    if plugin_index == len(self.plugins):
-                        plugin_index = 0
+                    break
+                if evt == self.wci.EVENT_BUTTON_RIGHT:
+                    self.plugin_index +=1
+                    if self.plugin_index == len(self.plugins):
+                        self.plugin_index = 0
                     time.sleep(self.wci.lock_time)
 
             # Run selected plugin
-            self.runPlugin(plugin_index)
+            self.runPlugin()
+            
 
             # After leaving selected plugin, start over again with the default plugin...
 
