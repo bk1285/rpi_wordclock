@@ -3,6 +3,7 @@ from importlib import import_module
 import inspect
 import os
 import time
+from shutil import copyfile
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
 import wordclock_tools.wordclock_socket as wcs
@@ -24,8 +25,13 @@ class wordclock:
         # Get wordclock configuration from config-file
         pathToConfigFile=self.basePath + '/wordclock_config/wordclock_config.cfg'
         if not os.path.exists(pathToConfigFile):
-            print('Warning: No config-file specified! Falling back to example-config!')
-            pathToConfigFile=self.basePath + '/wordclock_config/wordclock_config.example.cfg'
+            pathToConfigFileExample=self.basePath + '/wordclock_config/wordclock_config.example.cfg'
+            if not os.path.exists(pathToConfigFileExample):
+                print('Error: No config-file available!')
+                print('  Expected '+ pathToConfigFile + ' or ' + pathToConfigFileExample)
+                raise Exception('Missing config-file')
+            copyfile(pathToConfigFileExample, pathToConfigFile)
+            print('Warning: No config-file specified! Was created from example-config!')
         print('Parsing ' + pathToConfigFile)
         self.config = ConfigParser.ConfigParser()
         self.config.read(pathToConfigFile)
