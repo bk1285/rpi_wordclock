@@ -45,7 +45,7 @@ class plugin:
         outdoor_temp=current_weather_forecast['current_conditions']['temperature']
         if self.temp_sensor_registered:
             try:
-                indoor_temp=str(int(round(am2302_ths.get_temperature(4))))
+                indoor_temp=str(int(round(am2302_ths.get_temperature(self.pin_temp_sensor))))
                 wcd.showText(outdoor_temp + '*', count=1, fps=8)
                 wcd.showText(indoor_temp + '*', count=1, fg_color=wcc.GREEN, fps=8)
                 wcd.showText(outdoor_temp + '*', count=1, fps=8)
