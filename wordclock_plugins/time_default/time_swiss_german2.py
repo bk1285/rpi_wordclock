@@ -33,8 +33,7 @@ class time_swiss_german2():
             range(29,32) + range(33,36), \
             # -> FÜF VOR
             range(12,15) + range(33,36) ]
-            # -> ZWÖUFI
-        self.hours= [range(99,105), \
+        self.hours= [range(104,110), \
             # -> EIS
             range(100,103), \
             # -> ZWÖI
