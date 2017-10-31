@@ -1,7 +1,5 @@
-import datetime
 import os
 import time
-import RPi.GPIO as GPIO
 from neopixel import *
 
 class plugin:
@@ -28,13 +26,11 @@ class plugin:
         while True:
             """Draw rainbow that fades across all pixels at once."""
             for j in range(256*5):
-                for i in range(114):
+                for i in range(wcd.get_led_count()):
                     wcd.setPixelColor(i, self.wheel((i+j) & 255))
                 wcd.show()
-                if not GPIO.input(22) or GPIO.input(8):
-                    print('Pin ' + str(22) + ' pressed.')
+                if wci.waitForEvent(0.02) >= 0:
                     return
-                time.sleep(20/1000.0)
 
     def wheel(self, pos):
         """Generate rainbow colors across 0-255 positions."""
@@ -45,5 +41,5 @@ class plugin:
             return Color(255 - pos * 3, 0, pos * 3)
         else:
             pos -= 170
-            return Color(0, pos * 3, 255 - pos * 3)   
+            return Color(0, pos * 3, 255 - pos * 3)
 

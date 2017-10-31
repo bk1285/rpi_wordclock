@@ -29,7 +29,7 @@ class event_handler:
             self.event = evt
         self.condition.notifyAll()
         self.condition.release()
-    
+
     def waitForExit(self, seconds = None):
         self.condition.acquire()
         self.__wait_for(lambda: self.event == self.EVENT_EXIT_PLUGIN, seconds)
