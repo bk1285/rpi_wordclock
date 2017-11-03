@@ -1,5 +1,6 @@
 import ConfigParser
 from importlib import import_module
+import netifaces
 import inspect
 import os
 import time
@@ -96,7 +97,12 @@ class wordclock:
         Startup behavior
         '''
         if self.config.getboolean('wordclock', 'show_startup_message'):
-            self.wcd.showText(self.config.get('wordclock', 'startup_message'))
+            startup_message = self.config.get('wordclock', 'startup_message')
+            if startup_message == "ShowIP":
+                interface = self.config.get('plugin_ip_address', 'interface')
+                self.wcd.showText("IP: " + netifaces.ifaddresses(interface)[2][0]['addr'])
+            else:
+                self.wcd.showText(startup_message)
 
 
     def runPlugin(self):
