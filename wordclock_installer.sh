@@ -8,8 +8,8 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 # Install latest updates of the os
-echo -e "\e[34mInstalling latest updates of the current operating system:\e[0m"
-sudo apt-get update && sudo apt-get upgrade
+echo -e "\e[34mNot installing latest updates of the current operating system:\e[0m"
+#sudo apt-get update && sudo apt-get upgrade
 echo -e "\e[34m  Done.\e[0m"
 
 # Install 3rd party dependencies
@@ -62,8 +62,10 @@ echo -e "\e[34mInstalling the actual wordclock software...\e[0m"
     ln -s ~/5488053/fontdemo.py ~/rpi_wordclock/fontdemo.py
 
 echo -e "\e[34mAdding the wordclock software to the startup scripts of the RPi...\e[0m"
-    #sudo crontab -e
-    #@reboot sudo python /home/pi/rpi_wordclock/wordclock.py
+sudo crontab -l > tmp_cron
+echo "@reboot sudo python /home/pi/rpi_wordclock/wordclock.py" >> tmp_cron
+crontab tmp_cron
+rm tmp_cron
 
 echo -e "\e[34mTo start the wordclock, system reboot required. Reboot now...?\e[0m"
 
