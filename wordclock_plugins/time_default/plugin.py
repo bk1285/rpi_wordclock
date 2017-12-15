@@ -3,6 +3,7 @@ import os
 import time
 import time_english
 import time_german
+import time_german2
 import time_swabian
 import time_dutch
 import time_bavarian
@@ -35,6 +36,8 @@ class plugin:
             self.taw = time_english.time_english()
         elif language == 'german':
             self.taw = time_german.time_german()
+        elif language == 'german2':
+            self.taw = time_german2.time_german2()
         elif language == 'swabian':
             self.taw = time_swabian.time_swabian()
         elif language == 'bavarian':

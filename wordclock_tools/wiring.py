@@ -36,6 +36,9 @@ class wiring:
         elif wiring_layout == 'mini_wiring':
             self.LED_COUNT   = self.WCA_HEIGHT*(self.WCA_WIDTH+1)+3
             self.wcl = mini_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'sebastians_wiring':
+            self.LED_COUNT   = 150
+            self.wcl = sebastians_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
             print('Warning: No valid wiring layout found. Falling back to default!')
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
@@ -254,3 +257,51 @@ class mini_wiring:
             print('WARNING: Out of range, when mapping minutes...')
             print(min)
             return 0
+
+class sebastians_wiring:
+    '''
+    A class, holding all information of the wordclock's layout to map given
+    timestamps, 2d-coordinates to the corresponding LEDs (corresponding to
+    the individual wiring/layout of any wordclock).
+    This wiring layout allows for a wordclock setup, which requires only
+    a single (the very last) led to be soldered.
+    '''
+
+    def __init__(self, WCA_WIDTH, WCA_HEIGHT):
+        self.WCA_WIDTH   = WCA_WIDTH
+        self.WCA_HEIGHT  = WCA_HEIGHT+1
+        self.LED_COUNT   = 150
+
+    def getStripIndexFrom2D(self, x, y):
+        '''
+        Mapping coordinates to the wordclocks display
+        Needs hardware/wiring dependent implementation
+        Final range:
+             (0,0): top-left
+             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        '''
+        if x%2 == 0:
+            pos = (self.WCA_WIDTH-x-1)*self.WCA_HEIGHT+y+16
+        else:
+            pos = (self.WCA_WIDTH*self.WCA_HEIGHT)-(self.WCA_HEIGHT*x)-y+14
+        return pos
+
+    def mapMinutes(self, min):
+        '''
+        Access minutes (1,2,3,4)
+        Needs hardware/wiring dependent implementation
+        This implementation assumes the minutes to be wired as first and last two leds of the led-strip
+        '''
+        if min == 1:
+            return self.LED_COUNT-1
+        elif min == 2:
+            return 12
+        elif min == 3:
+            return self.LED_COUNT-11
+        elif min == 4:
+            return 0
+        else:
+            print('WARNING: Out of range, when mapping minutes...')
+            print(min)
+            return 0
+

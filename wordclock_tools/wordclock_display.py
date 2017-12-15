@@ -77,6 +77,12 @@ class wordclock_display:
         '''
         return self.wcl.WCA_WIDTH
 
+    def get_led_count(self):
+        '''
+        Returns the overall number of LEDs
+        '''
+        return self.wcl.LED_COUNT
+
     def dispRes(self):
         '''
         Returns the resolution of the wordclock array as string
