@@ -40,6 +40,7 @@ class wiring:
             self.LED_COUNT   = 150
             self.wcl = sebastians_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'mini_wiring2':
+            self.LED_COUNT   = self.WCA_HEIGHT*(self.WCA_WIDTH+1)+4
             self.wcl = mini_wiring2(self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
             print('Warning: No valid wiring layout found. Falling back to default!')
@@ -320,7 +321,7 @@ class mini_wiring2:
     def __init__(self, WCA_WIDTH, WCA_HEIGHT):
         self.WCA_WIDTH   = WCA_WIDTH
         self.WCA_HEIGHT  = WCA_HEIGHT+1
-        self.LED_COUNT   = self.WCA_WIDTH*self.WCA_HEIGHT+4
+        self.LED_COUNT   = self.WCA_WIDTH*self.WCA_HEIGHT+3
 
     def getStripIndexFrom2D(self, x, y):
         '''
@@ -333,7 +334,7 @@ class mini_wiring2:
         if x%2 == 0:
             pos = (self.WCA_WIDTH-x-1)*self.WCA_HEIGHT+y+2
         else:
-            pos = (self.WCA_WIDTH*self.WCA_HEIGHT)-(self.WCA_HEIGHT*x)-y+0
+            pos = (self.WCA_WIDTH*self.WCA_HEIGHT)-(self.WCA_HEIGHT*x)-y
         return pos
 
     def mapMinutes(self, min):
