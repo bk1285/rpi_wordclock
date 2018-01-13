@@ -81,13 +81,6 @@ Install rpi_ws281x to your home-directory (to access leds)::
     Since this library is continiously updated: A version, which is tested to work with the wordclock is commit 2f9e03c45:
     https://github.com/jgarff/rpi_ws281x/tree/2f9e03c45ba0964029204db565ad9d6233b3a1a6
 
-Install fontdemo to your home-directory (to render strings)::
-
-    cd ~
-    git clone https://gist.github.com/5488053.git
-
-This installs fontdemo.py to ~/5488053.
-
 Install pywapi::
 
     cd ~
@@ -114,11 +107,6 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
 
     cd ~
     git clone https://github.com/bk1285/rpi_wordclock.git
-
-Link the previously installed file fontdemo.py to ~/rpi_wordclock using a softlink::
-
-    ln -s ~/5488053/fontdemo.py ~/rpi_wordclock/fontdemo.py
-
 
 .. _adopt_software:
 
