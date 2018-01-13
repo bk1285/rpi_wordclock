@@ -54,5 +54,5 @@ To do so, you need to...
 
   * Commit your changes using git and consider to create a pull-request at https://www.github.com/bk1285/rpi_wordclock
 
-  * Consider, that this repository uses nvie's branching model: https://github.com/nvie/gitflow
+  * Consider, that this repository uses nvie's branching model: http://nvie.com/posts/a-successful-git-branching-model/
 
