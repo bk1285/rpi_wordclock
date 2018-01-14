@@ -17,7 +17,7 @@ echo -e "\e[34mInstalling 3rd party dependencies:\e[0m"
 for pac in python-pip python-scipy scons git swig ttf-freefont
 do
    echo -e "\e[34m  Installing dependency $pac...\e[0m"
-   sudo apt-get install $pac
+   sudo apt-get install -y $pac
    echo -e "\e[34m  Done.\e[0m"
 done
 
@@ -32,17 +32,17 @@ done
 
 # Install jgarffs LED library
 echo -e "\e[34mInstalling jgarffs LED library\e[0m"
-cd ~
+cd /home/pi
 git clone https://github.com/jgarff/rpi_ws281x.git
 cd rpi_ws281x
 sudo scons
-cd ~/rpi_ws281x/python
+cd /home/pi/rpi_ws281x/python
 sudo python setup.py install
 
 # Install pywapi
 echo -e "\e[34mInstalling pywapi\e[0m"
 #Further details: https://code.google.com/p/python-weather-api/#Weather.com
-cd ~
+cd /home/pi
 wget https://launchpad.net/python-weather-api/trunk/0.3.8/+download/pywapi-0.3.8.tar.gz
 tar -zxf pywapi-0.3.8.tar.gz
 rm pywapi-0.3.8.tar.gz
@@ -52,7 +52,7 @@ sudo python setup.py install
 
 # Install the actual wordclock software
 echo -e "\e[34mInstalling the actual wordclock software...\e[0m"
-cd ~
+cd /home/pi
 git clone https://github.com/bk1285/rpi_wordclock.git
 
 echo -e "\e[34mAdding the wordclock software to the startup scripts of the RPi...\e[0m"
