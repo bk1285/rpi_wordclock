@@ -9,6 +9,7 @@ import wordclock_tools.wordclock_display as wcd
 import wordclock_tools.wordclock_socket as wcs
 import wordclock_interfaces.event_handler as wci
 import wordclock_interfaces.gpio_interface as wcigpio
+import wordclock_interfaces.web_interface as wciweb
 
 class wordclock:
     '''
@@ -88,6 +89,7 @@ class wordclock:
         self.plugin_index = 0
         self.run_next_index = None
         self.wcs = wcs.wordclock_socket(self)
+        self.wciweb = wciweb.web_interface(self)
 
     def startup(self):
         '''
@@ -156,7 +158,6 @@ class wordclock:
 
             # Run selected plugin
             self.runPlugin()
-            
 
             # After leaving selected plugin, start over again with the default plugin...
 
