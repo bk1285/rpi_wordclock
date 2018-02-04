@@ -31,17 +31,24 @@ def api():
     data = {"affe": "bla"}
 
     if 'GET_CONFIG' in data:
-        plugins = [{"NAME": plugin.pretty_name, "DESCRIPTION": plugin.description} for plugin in self.wclk.plugins]
-        msg = { 'PLUGINS': plugins, 'ACTIVE_PLUGIN': self.wclk.plugin_index }
+        plugins = [{"NAME": plugin.pretty_name, "DESCRIPTION": plugin.description} for plugin in web_interface.app.wclk.plugins]
+        msg = { 'PLUGINS': plugins, 'ACTIVE_PLUGIN': web_interface.app.wclk.plugin_index }
         return jsonify(msg)
     elif 'SET_ACTIVE_PLUGIN' in data:
-        self.wclk.runNext(int(data['SET_ACTIVE_PLUGIN']))
-        self.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
+        web_interface.app.wclk.runNext(int(data['SET_ACTIVE_PLUGIN']))
+        web_interface.app.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
     elif 'SEND_EVENT' in data:
-        self.wclk.wci.setEvent(int(data['SEND_EVENT']))
+        web_interface.app.wclk.wci.setEvent(int(data['SEND_EVENT']))
     else:
         e_msg= "Can\'t handle json-request..."
         print e_msg
         web_interface.app.wclk.runNext(4)
         web_interface.app.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
         return jsonify({"error" : name + " " + e_msg})
+
+
+@web_interface.app.route('/pluginlist', methods=['POST'])
+def pluginlist():
+    plugins = [{"NAME": plugin.name, "PRETTY_NAME": plugin.pretty_name, "DESCRIPTION": plugin.description} for plugin in web_interface.app.wclk.plugins]
+    return jsonify({ 'PLUGINS': plugins, 'ACTIVE_PLUGIN': web_interface.app.wclk.plugin_index })
+

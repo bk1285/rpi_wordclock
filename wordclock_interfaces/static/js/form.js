@@ -1,4 +1,19 @@
 $(document).ready(function() {
+    $.ajax({
+            url: '/pluginlist',
+			type : 'POST'
+            })
+            .done(function(data) {
+				$('#pluginList').text(data.PLUGINS[0].DESCRIPTION).show();
+                $("#pluginDropdown option").remove();
+                $.each(data.PLUGINS, function(index, item) {
+                    $("#pluginDropdown").append(
+                        $("<option></option>")
+                            .text(item.PRETTY_NAME)
+                            .val(item.NAME)
+                    );
+                });
+            });
 
 	$('form').on('submit', function(event) {
 
