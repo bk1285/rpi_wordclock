@@ -47,8 +47,14 @@ def api():
         return jsonify({"error" : name + " " + e_msg})
 
 
-@web_interface.app.route('/pluginlist', methods=['POST'])
-def pluginlist():
+@web_interface.app.route('/list', methods=['POST'])
+def list():
     plugins = [{"NAME": plugin.name, "PRETTY_NAME": plugin.pretty_name, "DESCRIPTION": plugin.description} for plugin in web_interface.app.wclk.plugins]
-    return jsonify({ 'PLUGINS': plugins, 'ACTIVE_PLUGIN': web_interface.app.wclk.plugin_index })
+    return jsonify({'PLUGINS': plugins})
 
+@web_interface.app.route('/active', methods=['POST'])
+def active():
+    print "AFFE"
+    index = web_interface.app.wclk.plugin_index
+    plugin = web_interface.app.wclk.plugins[index]
+    return jsonify({ 'INDEX': index, 'NAME': plugin.name, 'PRETTY_NAME': plugin.pretty_name, 'DESCRIPTION': plugin.description })

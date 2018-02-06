@@ -1,10 +1,9 @@
 $(document).ready(function() {
     $.ajax({
-            url: '/pluginlist',
+            url: '/list',
 			type : 'POST'
             })
             .done(function(data) {
-				$('#pluginList').text(data.PLUGINS[0].DESCRIPTION).show();
                 $("#pluginDropdown option").remove();
                 $.each(data.PLUGINS, function(index, item) {
                     $("#pluginDropdown").append(
@@ -13,6 +12,13 @@ $(document).ready(function() {
                             .val(item.NAME)
                     );
                 });
+            });
+    $.ajax({
+            url: '/active',
+			type : 'POST'
+            })
+            .done(function(data) {
+				$('#pluginList').text(data.PRETTY_NAME + ': ' + data.DESCRIPTION).show();
             });
 
 	$('form').on('submit', function(event) {
