@@ -21,31 +21,13 @@ def index():
 @web_interface.app.route('/api', methods=['POST'])
 def api():
 
-    email = request.form['email']
     name = request.form['name']
+    print("name: " + name)
+    plugins = web_interface.app.wclk.plugins
+    pluginindex=[i for i,plugins in enumerate(plugins) if plugins.name == name][0]
 
-    if name and email:
-        newName = name[::-1]
-        print("name: " + name)
-
-    data = {"affe": "bla"}
-
-    if 'GET_CONFIG' in data:
-        plugins = [{"NAME": plugin.pretty_name, "DESCRIPTION": plugin.description} for plugin in web_interface.app.wclk.plugins]
-        msg = { 'PLUGINS': plugins, 'ACTIVE_PLUGIN': web_interface.app.wclk.plugin_index }
-        return jsonify(msg)
-    elif 'SET_ACTIVE_PLUGIN' in data:
-        web_interface.app.wclk.runNext(int(data['SET_ACTIVE_PLUGIN']))
-        web_interface.app.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
-    elif 'SEND_EVENT' in data:
-        web_interface.app.wclk.wci.setEvent(int(data['SEND_EVENT']))
-    else:
-        e_msg= "Can\'t handle json-request..."
-        print e_msg
-        web_interface.app.wclk.runNext(4)
-        web_interface.app.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
-        return jsonify({"error" : name + " " + e_msg})
-
+    web_interface.app.wclk.runNext(pluginindex)
+    web_interface.app.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
 
 @web_interface.app.route('/list', methods=['POST'])
 def list():
@@ -54,7 +36,6 @@ def list():
 
 @web_interface.app.route('/active', methods=['POST'])
 def active():
-    print "AFFE"
     index = web_interface.app.wclk.plugin_index
     plugin = web_interface.app.wclk.plugins[index]
     return jsonify({ 'INDEX': index, 'NAME': plugin.name, 'PRETTY_NAME': plugin.pretty_name, 'DESCRIPTION': plugin.description })

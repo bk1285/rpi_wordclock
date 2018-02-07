@@ -19,6 +19,7 @@ $(document).ready(function() {
             })
             .done(function(data) {
 				$('#pluginList').text(data.PRETTY_NAME + ': ' + data.DESCRIPTION).show();
+                $("#pluginDropdown").val(data.NAME)
             });
 
 	$('form').on('submit', function(event) {
@@ -50,4 +51,26 @@ $(document).ready(function() {
 
 	});
 
+    $('select').on('change', function() {
+		$.ajax({
+			data : {
+				name : this.value
+			},
+			type : 'POST',
+			url : '/api'
+		})
+		.done(function(data) {
+
+			if (data.error) {
+				$('#errorAlert').text(data.error).show();
+				$('#successAlert').hide();
+				$('#pluginList').text("affe").show();
+			}
+			else {
+				$('#successAlert').text(data.name).show();
+				$('#errorAlert').hide();
+				$('#pluginList').text("ooo").show();
+			}
+         });
+    });
 });
