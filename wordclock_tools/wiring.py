@@ -19,7 +19,7 @@ class wiring:
         self.LED_COUNT   = self.WCA_WIDTH*self.WCA_HEIGHT+4 # Number of LED pixels.
         self.LED_PIN     = 18      # GPIO pin connected to the pixels (must support PWM!).
         self.LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
-        self.LED_DMA     = 5       # DMA channel to use for generating signal (try 5)
+        self.LED_DMA     = 10       # DMA channel to use for generating signal
         self.LED_INVERT  = False   # True to invert the signal (when using NPN transistor level shift)
         print('Wiring configuration')
         print('  WCA_WIDTH: ' + str(self.WCA_WIDTH))
