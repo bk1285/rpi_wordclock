@@ -18,38 +18,16 @@ $(document).ready(function() {
 			type : 'POST'
             })
             .done(function(data) {
-				$('#pluginList').text(data.PRETTY_NAME + ': ' + data.DESCRIPTION).show();
-                $("#pluginDropdown").val(data.NAME)
+                if (data.error) {
+                    $('#errorAlert').text(data.error).show();
+                    $('#successAlert').hide();
+                    $('#pluginList').text("Error").show();
+                }
+                else {
+                    $('#pluginList').text(data.DESCRIPTION).show();
+                    $("#pluginDropdown").val(data.NAME)
+                }
             });
-
-	$('form').on('submit', function(event) {
-
-		$.ajax({
-			data : {
-				name : $('#nameInput').val(),
-				email : $('#emailInput').val()
-			},
-			type : 'POST',
-			url : '/api'
-		})
-		.done(function(data) {
-
-			if (data.error) {
-				$('#errorAlert').text(data.error).show();
-				$('#successAlert').hide();
-				$('#pluginList').text("affe").show();
-			}
-			else {
-				$('#successAlert').text(data.name).show();
-				$('#errorAlert').hide();
-				$('#pluginList').text("ooo").show();
-			}
-
-		});
-
-		event.preventDefault();
-
-	});
 
     $('select').on('change', function() {
 		$.ajax({
@@ -64,13 +42,27 @@ $(document).ready(function() {
 			if (data.error) {
 				$('#errorAlert').text(data.error).show();
 				$('#successAlert').hide();
-				$('#pluginList').text("affe").show();
+				$('#pluginList').text("Error").show();
 			}
 			else {
 				$('#successAlert').text(data.name).show();
 				$('#errorAlert').hide();
-				$('#pluginList').text("ooo").show();
 			}
          });
+        $.ajax({
+            url: '/active',
+			type : 'POST'
+            })
+            .done(function(data) {
+                if (data.error) {
+                    $('#errorAlert').text(data.error).show();
+                    $('#successAlert').hide();
+                    $('#pluginList').text("Error").show();
+                }
+                else {
+                    $('#pluginList').text(data.DESCRIPTION).show();
+                    $("#pluginDropdown").val(data.NAME)
+                }
+            });
     });
 });
