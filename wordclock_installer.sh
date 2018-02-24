@@ -23,7 +23,7 @@ done
 
 # Install 3rd party python dependencies
 echo -e "\e[34mInstalling 3rd party python dependencies:\e[0m"
-for pac in pytz astral feedparser pillow svgwrite freetype-py netifaces am2303_rpi
+for pac in pytz astral feedparser pillow svgwrite freetype-py netifaces am2303_rpi monotonic
 do
    echo -e "\e[34m  Installing python dependency $pac...\e[0m"
    sudo pip install $pac
@@ -54,6 +54,7 @@ sudo python setup.py install
 echo -e "\e[34mInstalling the actual wordclock software...\e[0m"
 cd /home/pi
 git clone https://github.com/bk1285/rpi_wordclock.git
+sudo chown -R pi /home/pi/rpi_wordclock
 
 echo -e "\e[34mAdding the wordclock software to the startup scripts of the RPi...\e[0m"
 sudo crontab -l > tmp_cron
