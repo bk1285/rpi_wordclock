@@ -29,7 +29,8 @@ class plugin:
         self.description = "The minimum, you should expect from a wordclock."
 
         # Choose language
-        language = config.get('plugin_' + self.name, 'language')
+        language = ''.join(config.get('plugin_' + self.name, 'language'))
+        print('  Setting language to ' + language + '.')
         if language == 'dutch':
             self.taw = time_dutch.time_dutch()
         elif language == 'english':
