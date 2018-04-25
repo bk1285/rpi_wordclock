@@ -29,12 +29,12 @@ def api():
     web_interface.app.wclk.runNext(pluginindex)
     web_interface.app.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
 
-@web_interface.app.route('/list', methods=['POST'])
+@web_interface.app.route('/list', methods=['POST', 'GET'])
 def list():
     plugins = [{"NAME": plugin.name, "PRETTY_NAME": plugin.pretty_name, "DESCRIPTION": plugin.description} for plugin in web_interface.app.wclk.plugins]
     return jsonify({'PLUGINS': plugins})
 
-@web_interface.app.route('/active', methods=['POST'])
+@web_interface.app.route('/active', methods=['POST', 'GET'])
 def active():
     index = web_interface.app.wclk.plugin_index
     plugin = web_interface.app.wclk.plugins[index]
