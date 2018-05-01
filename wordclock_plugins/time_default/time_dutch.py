@@ -10,11 +10,11 @@ class time_dutch():
     range(7,11) + range(40,44): VIJF OVER
     range(11,15) + range(40,44): TIEN OVER
     range(28,33) + range(40,44): KWART OVER
-    range(11,15) + range(18,22) + range(35,39): TIEN VOOR HALF
-    range(7,11) + range(18,22) + range(35,39): VIJF VOOR HALF
-    range(35,39): HALF
-    range(7,11) + range(22,26) + range(35,39): VIJF OVER HALF
-    range(11,15) + range(22,26) + range(35,39): TIEN OVER HALF
+    range(11,15) + range(18,22) + range(33,37): TIEN VOOR HALF
+    range(7,11) + range(18,22) + range(33,37): VIJF VOOR HALF
+    range(33,37): HALF
+    range(7,11) + range(22,26) + range(33,37): VIJF OVER HALF
+    range(11,15) + range(22,26) + range(33,37): TIEN OVER HALF
     range(28,33) + range(44,48): KWART VOOR
     range(11,15) + range(44,48): TIEN VOOR
     range(7,11) + range(44,48): VIJF VOOR
@@ -42,11 +42,11 @@ class time_dutch():
             range(7,11) + range(40,44), \
             range(11,15) + range(40,44), \
             range(28,33) + range(40,44), \
-            range(11,15) + range(18,22) + range(35,39), \
-            range(7,11) + range(18,22) + range(35,39), \
-            range(35,39), \
-            range(7,11) + range(22,26) + range(35,39), \
-            range(11,15) + range(22,26) + range(35,39), \
+            range(11,15) + range(18,22) + range(33,37), \
+            range(7,11) + range(18,22) + range(33,37), \
+            range(33,37), \
+            range(7,11) + range(22,26) + range(33,37), \
+            range(11,15) + range(22,26) + range(33,37), \
             range(28,33) + range(44,48), \
             range(11,15) + range(44,48), \
             range(7,11) + range(44,48) ]
