@@ -3,12 +3,12 @@ from importlib import import_module
 import inspect
 import os
 import time
+#import wordclock_tools.wordclock_colors as wcc
 from shutil import copyfile
-import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
 import wordclock_tools.wordclock_socket as wcs
 import wordclock_interfaces.event_handler as wci
-import wordclock_interfaces.gpio_interface as wcigpio
+#import wordclock_interfaces.gpio_interface as wcigpio
 
 class wordclock:
     '''
@@ -42,11 +42,11 @@ class wordclock:
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
-        self.gpio = wcigpio.gpio_interface(self.config, self.wci)
+        #self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
-        self.wcd = wcd.wordclock_display(self.config)
+        self.wcd = wcd.wordclock_display(self.config, self.wci)
 
         # Define path to general icons (not plugin-specific)
         self.pathToGeneralIcons = os.path.join(self.basePath, 'icons', self.wcd.dispRes())

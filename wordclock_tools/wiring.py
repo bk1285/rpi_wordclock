@@ -34,8 +34,10 @@ class wiring:
         elif wiring_layout == 'timos_wiring':
             self.wcl = timos_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'mini_wiring':
-            self.LED_COUNT   = self.WCA_HEIGHT*(self.WCA_WIDTH+1)+3
+            self.LED_COUNT = self.WCA_HEIGHT*(self.WCA_WIDTH+1) + 3
             self.wcl = mini_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'developer_wiring':
+            self.wcl = gtk_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'sebastians_wiring':
             self.LED_COUNT   = 150
             self.wcl = sebastians_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
@@ -113,6 +115,43 @@ class bernds_wiring:
             return self.LED_COUNT-2
         elif min == 4:
             return 0
+        else:
+            print('WARNING: Out of range, when mapping minutes...')
+            print(min)
+            return 0
+
+class gtk_wiring:
+    '''
+    A class, holding all information of the wordclock's layout to map given
+    timestamps, 2d-coordinates to the corresponding LEDs (corresponding to
+    the individual wiring/layout of any wordclock).
+    If a different wordclock wiring/layout is chosen, this class needs to be
+    adopted.
+    '''
+
+    def __init__(self, WCA_WIDTH, WCA_HEIGHT):
+        self.WCA_WIDTH   = WCA_WIDTH
+        self.WCA_HEIGHT  = WCA_HEIGHT
+        self.LED_COUNT   = self.WCA_WIDTH*self.WCA_HEIGHT+4
+
+    def getStripIndexFrom2D(self, x, y):
+        '''
+        Mapping coordinates to the wordclocks display
+        Needs hardware/wiring dependent implementation
+        Final range:
+             (0,0): top-left
+             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        '''
+        return y * self.WCA_WIDTH + x
+
+    def mapMinutes(self, min):
+        '''
+        Access minutes (1,2,3,4)
+        Needs hardware/wiring dependent implementation
+        This implementation assumes the minutes to be wired as first and last two leds of the led-strip
+        '''
+        if min >= 1 and min <= 4:
+            return self.LED_COUNT - (4 - min + 1)
         else:
             print('WARNING: Out of range, when mapping minutes...')
             print(min)

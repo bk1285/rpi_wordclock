@@ -1,5 +1,5 @@
 import fontdemo
-from neopixel import *
+from GTKstrip import GTKstrip
 import os
 from PIL import Image
 import time
@@ -12,29 +12,19 @@ class wordclock_display:
     Depends on the (individual) wordclock layout/wiring
     '''
 
-    def __init__(self, config):
+    def __init__(self, config, weh):
         '''
         Initalization
         '''
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
 
-        # Create NeoPixel object with appropriate configuration.
-        try:
-            brightness = config.getint('wordclock_display', 'brightness')
-        except:
-            print('WARNING: Brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
-            brightness = 255
-        try:
-            self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ, self.wcl.LED_DMA, self.wcl.LED_INVERT, brightness, 0, ws.WS2811_STRIP_GRB)
-        except:
-            print('WARNING: Your NeoPixel dependency is to old to accept customized brightness values and correct RGB-settings.')
-            self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ, self.wcl.LED_DMA, self.wcl.LED_INVERT)
+        self.strip = GTKstrip(weh)
 
         # Initialize the NeoPixel object
         self.strip.begin()
 
-        self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/', config.get('wordclock_display', 'default_font') + '.ttf')
+        self.default_font = os.path.join('/usr/share/fonts/TTF/', config.get('wordclock_display', 'default_font') + '.ttf')
         self.default_fg_color=wcc.WWHITE
         self.default_bg_color=wcc.BLACK
         self.base_path=config.get('wordclock', 'base_path')
