@@ -34,10 +34,10 @@ class wiring:
         elif wiring_layout == 'timos_wiring':
             self.wcl = timos_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'mini_wiring':
-            self.LED_COUNT   = self.WCA_HEIGHT*(self.WCA_WIDTH+1)+3
-        elif wiring_layout == 'gtk_wiring':
-            self.wcl = gtk_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+            self.LED_COUNT = self.WCA_HEIGHT*(self.WCA_WIDTH+1) + 3
             self.wcl = mini_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'developer_wiring':
+            self.wcl = gtk_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'sebastians_wiring':
             self.LED_COUNT   = 150
             self.wcl = sebastians_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
