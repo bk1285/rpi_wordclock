@@ -5,9 +5,14 @@ import gobject
 import threading
 from gtk._gtk import FILL
 import pango
-from GTKcolors import Color
 import os
 from wordclock_interfaces import event_handler as weh 
+
+class Color:
+    def __init__(self, r, g, b):
+        self.r = r
+        self.g = g
+        self.b = b
 
 gobject.threads_init()
 
