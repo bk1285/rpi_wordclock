@@ -26,6 +26,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
             except:
                 print "Invalid data from {0}".format(str(self.client_address[0]))
                 return
+            print data
 
             if (data['API'] != 2 ):
                 print 'Wrong API: Expected API = 2'
@@ -52,6 +53,8 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
         msg = json.dumps(jsonobj)
         msg = struct.pack('>I', len(msg)) + msg
         self.request.sendall(msg)
+        print "Sending...."
+        print msg
 
     def recv_msg(self):
         # Read message length and unpack it into an integer
