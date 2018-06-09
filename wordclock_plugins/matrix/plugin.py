@@ -57,7 +57,9 @@ class plugin:
             wcd.show()
             # input handling
             event = wci.waitForEvent(0.1)
-            if event == wci.EVENT_BUTTON_RETURN or event == wci.EVENT_EXIT_PLUGIN:
+            if event == wci.EVENT_BUTTON_RETURN \
+                    or event == wci.EVENT_EXIT_PLUGIN \
+                    or event == wci.EVENT_NEXT_PLUGIN_REQUESTED:
                 return
             elif event == wci.EVENT_BUTTON_LEFT:
                 self.threshold = min(0.95, self.threshold + 0.05)

@@ -53,18 +53,22 @@ class plugin:
         taw_indices = self.taw.get_time(sun_data['sunrise'], withPrefix=False)
         wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
-        time.sleep(3)
+        if wci.waitForExit(3.0):
+            return
         # Display data of sunset
         wcd.animate(self.name, 'sunrise')
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
         taw_indices = self.taw.get_time(sun_data['sunset'], withPrefix=False)
         wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
-        time.sleep(3)
+        if wci.waitForExit(3.0):
+            return
         # Display current moon phase
         moon_phase = int(self.astral_at_location.moon_phase(datetime.datetime.now()))
         for i in range(0, moon_phase):
             wcd.showIcon('sunrise', 'moon_'+str(i).zfill(2))
-            time.sleep(0.1)
-        time.sleep(3)
+            if wci.waitForExit(0.1):
+                return
+        if wci.waitForExit(3.0):
+            return
 

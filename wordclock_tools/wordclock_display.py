@@ -12,14 +12,15 @@ class wordclock_display:
     Depends on the (individual) wordclock layout/wiring
     '''
 
-    def __init__(self, config, weh):
+    def __init__(self, config, wci):
         '''
         Initalization
         '''
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
+        self.wci = wci
 
-        self.strip = GTKstrip(weh)
+        self.strip = GTKstrip(wci)
 
         # Initialize the NeoPixel object
         self.strip.begin()
@@ -131,14 +132,15 @@ class wordclock_display:
         num_of_frames = len([file_count for file_count in os.listdir(animation_dir)])
 
         if invert:
-            animation_range=range(num_of_frames-1, -1, -1)
+            animation_range = range(num_of_frames-1, -1, -1)
         else:
-            animation_range=range(0, num_of_frames)
+            animation_range = range(0, num_of_frames)
 
         for _ in range(count):
             for i in animation_range:
                 self.setImage(animation_dir + str(i).zfill(3) + '.png')
-                time.sleep(1.0/fps)
+                if self.wci.waitForExit(1.0/fps):
+                    return
 
     def showText(self, text, font=None, fg_color=None, bg_color=None, fps=10, count=1):
         '''
@@ -168,7 +170,9 @@ class wordclock_display:
 
             # Show first frame for 0.5 seconds
             self.show()
-            time.sleep(0.5)
+
+            if self.wci.waitForExit(0.5):
+                return
 
             # Shift text from left to right to show all.
             for cur_offset in range(text_width - self.wcl.WCA_WIDTH + 1):
@@ -176,7 +180,8 @@ class wordclock_display:
                     for x in range(self.wcl.WCA_WIDTH):
                         self.wcl.setColorBy2DCoordinates(self.strip, x, y, fg_color if text_as_pixel.pixels[y * text_width + x + cur_offset] else bg_color)
                 self.show()
-                time.sleep(1.0/fps)
+                if self.wci.waitForExit(1.0/fps):
+                    return
 
     def setMinutes(self, time, color):
         if time.minute%5 != 0:

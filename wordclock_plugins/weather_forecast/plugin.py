@@ -56,5 +56,7 @@ class plugin:
         else:
             wcd.showText(outdoor_temp + '*   ' + outdoor_temp + '*   ' + outdoor_temp + '*', count=1, fps=8)
 
-        time.sleep(1)
+        if wci.waitForExit(1.0):
+            return
+
 

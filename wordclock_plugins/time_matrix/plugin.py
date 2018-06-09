@@ -9,6 +9,7 @@ import wordclock_tools.wordclock_colors as wcc
 import random
 from ConfigParser import NoSectionError
 
+
 class plugin:
     '''
     A class to display the current time (default mode).
@@ -42,9 +43,9 @@ class plugin:
             print('Choosing default: german')
             self.taw = time_german.time_german()
 
-        self.bg_color     = wcc.BLACK  # default background color
-        self.word_color   = wcc.WHITE # default word color
-        self.minute_color = wcc.WHITE # default minute color
+        self.bg_color = wcc.BLACK  # default background color
+        self.word_color = wcc.WHITE  # default word color
+        self.minute_color = wcc.WHITE  # default minute color
 
         self.threshold = 0.9
 
@@ -73,7 +74,7 @@ class plugin:
             wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
 
-            for x,y in enumerate(rain):
+            for x, y in enumerate(rain):
                 if (y == 20):
                     # reset y coordinate randomly
                     if (random.random() > self.threshold):
@@ -83,7 +84,7 @@ class plugin:
                     y0 = max(y - 10, 0)
                     y1 = min(9, y);
                     ci = y0 - (y - 10);
-                    for yi,yn in enumerate(range(y0, y1 + 1)):
+                    for yi, yn in enumerate(range(y0, y1 + 1)):
                         color = self.colors[ci + yi]
                         wcd.setColorBy2DCoordinates(wcd.strip, x, yn, color)
                     # advance y coordinate
@@ -92,11 +93,11 @@ class plugin:
             wcd.show()
 
             event = wci.waitForEvent(0.1)
-            if event == wci.EVENT_BUTTON_RETURN or event == wci.EVENT_EXIT_PLUGIN:
+            if event == wci.EVENT_BUTTON_RETURN \
+                    or event == wci.EVENT_EXIT_PLUGIN \
+                    or event == wci.EVENT_NEXT_PLUGIN_REQUESTED:
                 return
             elif event == wci.EVENT_BUTTON_LEFT:
                 self.threshold = min(0.95, self.threshold + 0.05)
             elif event == wci.EVENT_BUTTON_RIGHT:
                 self.threshold = max(0.7, self.threshold - 0.05)
-
-

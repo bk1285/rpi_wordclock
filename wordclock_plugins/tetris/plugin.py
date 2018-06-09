@@ -139,7 +139,7 @@ class plugin:
                     nx = min(x + 1, W - brick.innerWidth - brick.padLeft)
                     if not self.collision(brick, nx, y):
                         x = nx
-                elif event == wci.EVENT_EXIT_PLUGIN:
+                elif event == wci.EVENT_EXIT_PLUGIN or event == wci.EVENT_NEXT_PLUGIN_REQUESTED:
                     return 
 
     def clear_lines(self, wcd):

@@ -88,7 +88,6 @@ class wordclock:
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
-        self.run_next_index = None
         self.wcs = wcs.wordclock_socket(self)
         self.wciweb = wciweb.web_interface(self)
 
@@ -112,20 +111,21 @@ class wordclock:
 
         self.wcs.sendCurrentPlugin(self.plugin_index)
 
-        try:
-            print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-            self.plugins[self.plugin_index].run(self.wcd, self.wci)
-        except:
-            print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
-            self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
-            time.sleep(1)
-            self.wcd.showText('Error in ' + self.plugins[self.plugin_index].name, fg_color=wcc.RED, fps = 15)
+        #try:
+        print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+        self.plugins[self.plugin_index].run(self.wcd, self.wci)
+        #except:
+        #    print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
+        #    self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+        #    time.sleep(1)
+        #    self.wcd.showText('Error in ' + self.plugins[self.plugin_index].name, fg_color=wcc.RED, fps = 15)
 
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()
 
-    def runNext(self, plugin_index = None):
-        self.run_next_index = plugin_index
+    def runNext(self, plugin_index=None):
+        self.plugin_index = plugin_index if plugin_index is not None else self.default_plugin
+        self.wci.setEvent(self.wci.EVENT_NEXT_PLUGIN_REQUESTED)
 
     def run(self):
         '''
@@ -133,39 +133,38 @@ class wordclock:
         '''
 
         # Run the default plugin
-        self.run_next_index = self.default_plugin
+        self.plugin_index = self.default_plugin
 
         # Run the wordclock forever
         while True:
-            while self.run_next_index:
-                    self.plugin_index = self.run_next_index
-                    self.run_next_index = None
-                    self.runPlugin()
-
-            # If plugin.run exits, loop through menu to select next plugin
-            while True:
-                # The showIcon-command expects to have a plugin logo available
-                self.wcd.showIcon(plugin=self.plugins[self.plugin_index].name, iconName='logo')
-                time.sleep(self.wci.lock_time)
-                evt = self.wci.waitForEvent()
-                if evt == self.wci.EVENT_BUTTON_LEFT:
-                    self.plugin_index -=1
-                    if self.plugin_index == -1:
-                        self.plugin_index = len(self.plugins)-1
-                    time.sleep(self.wci.lock_time)
-                if evt == self.wci.EVENT_BUTTON_RETURN or evt == self.wci.EVENT_EXIT_PLUGIN:
-                    time.sleep(self.wci.lock_time)
-                    break
-                if evt == self.wci.EVENT_BUTTON_RIGHT:
-                    self.plugin_index +=1
-                    if self.plugin_index == len(self.plugins):
-                        self.plugin_index = 0
-                    time.sleep(self.wci.lock_time)
-
-            # Run selected plugin
+            print('Lets start over.')
             self.runPlugin()
 
-            # After leaving selected plugin, start over again with the default plugin...
+            # If no plugin was requested yet, loop through menu to select next plugin
+            if self.wci.nextAction == wci.next_action.RUN_DEFAULT_PLUGIN:
+                self.plugin_index = self.default_plugin
+            elif self.wci.nextAction == wci.next_action.GOTO_MENU:
+                while True:
+                    # The showIcon-command expects to have a plugin logo available
+                    self.wcd.showIcon(plugin=self.plugins[self.plugin_index].name, iconName='logo')
+                    time.sleep(self.wci.lock_time)
+                    evt = self.wci.waitForEvent()
+                    if evt == self.wci.EVENT_BUTTON_LEFT:
+                        self.plugin_index -= 1
+                        if self.plugin_index == -1:
+                            self.plugin_index = len(self.plugins)-1
+                        time.sleep(self.wci.lock_time)
+                    if evt == self.wci.EVENT_BUTTON_RETURN:
+                        time.sleep(self.wci.lock_time)
+                        break
+                    if evt == self.wci.EVENT_EXIT_PLUGIN or evt == self.wci.EVENT_NEXT_PLUGIN_REQUESTED:
+                        break
+                    if evt == self.wci.EVENT_BUTTON_RIGHT:
+                        self.plugin_index +=1
+                        if self.plugin_index == len(self.plugins):
+                            self.plugin_index = 0
+                        time.sleep(self.wci.lock_time)
+
 
 if __name__ == '__main__':
     word_clock = wordclock()

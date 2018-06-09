@@ -27,7 +27,6 @@ def api():
     pluginindex=[i for i,plugins in enumerate(plugins) if plugins.name == name][0]
 
     web_interface.app.wclk.runNext(pluginindex)
-    web_interface.app.wclk.wci.setEvent(eh.EVENT_EXIT_PLUGIN)
 
 @web_interface.app.route('/list', methods=['POST', 'GET'])
 def list():
