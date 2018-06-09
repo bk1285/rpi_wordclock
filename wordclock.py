@@ -4,12 +4,10 @@ import netifaces
 import inspect
 import os
 import time
-# import wordclock_tools.wordclock_colors as wcc
 from shutil import copyfile
 import wordclock_tools.wordclock_display as wcd
 import wordclock_tools.wordclock_socket as wcs
 import wordclock_interfaces.event_handler as wci
-# import wordclock_interfaces.gpio_interface as wcigpio
 import wordclock_interfaces.web_interface as wciweb
 
 
@@ -45,7 +43,11 @@ class wordclock:
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
-        # self.gpio = wcigpio.gpio_interface(self.config, self.wci)
+
+        if self.config.get('wordclock_display', 'wiring_layout') != 'developer_wiring':
+            import wordclock_tools.wordclock_colors as wcc
+            import wordclock_interfaces.gpio_interface as wcigpio
+            self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
@@ -111,14 +113,14 @@ class wordclock:
 
         self.wcs.sendCurrentPlugin(self.plugin_index)
 
-        # try:
-        print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-        self.plugins[self.plugin_index].run(self.wcd, self.wci)
-        # except:
-        #    print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
-        #    self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
-        #    time.sleep(1)
-        #    self.wcd.showText('Error in ' + self.plugins[self.plugin_index].name, fg_color=wcc.RED, fps = 15)
+        try:
+            print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+            self.plugins[self.plugin_index].run(self.wcd, self.wci)
+        except:
+            print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
+            self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+            time.sleep(1)
+            #self.wcd.showText('Error in ' + self.plugins[self.plugin_index].name, fg_color=wcc.RED, fps = 15)
 
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()
@@ -137,7 +139,6 @@ class wordclock:
 
         # Run the wordclock forever
         while True:
-            print('Lets start over.')
             self.runPlugin()
 
             # If no plugin was requested yet, loop through menu to select next plugin

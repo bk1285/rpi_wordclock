@@ -1,8 +1,6 @@
 import fontdemo
-from GTKstrip import GTKstrip
 import os
 from PIL import Image
-import wordclock_colors as wcc
 import wiring
 
 
@@ -20,13 +18,36 @@ class wordclock_display:
         self.wcl = wiring.wiring(config)
         self.wci = wci
 
-        self.strip = GTKstrip(wci)
+        if config.get('wordclock_display', 'wiring_layout') == 'developer_wiring':
+            from GTKstrip import GTKstrip
+            import GTKcolors as wcc
+            self.strip = GTKstrip(wci)
+            self.default_font = os.path.join('/usr/share/fonts/TTF/',
+                                             config.get('wordclock_display', 'default_font') + '.ttf')
+        else:
+            from neopixel import *
+            import wordclock_colors as wcc
+            try:
+                brightness = config.getint('wordclock_display', 'brightness')
+            except:
+                print(
+                'WARNING: Brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
+                brightness = 255
+            try:
+                self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
+                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, brightness, 0,
+                                               ws.WS2811_STRIP_GRB)
+            except:
+                print(
+                'WARNING: Your NeoPixel dependency is to old to accept customized brightness values and correct RGB-settings.')
+                self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
+                                               self.wcl.LED_DMA, self.wcl.LED_INVERT)
+            self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
+                                             config.get('wordclock_display', 'default_font') + '.ttf')
 
         # Initialize the NeoPixel object
         self.strip.begin()
 
-        self.default_font = os.path.join('/usr/share/fonts/TTF/',
-                                         config.get('wordclock_display', 'default_font') + '.ttf')
         self.default_fg_color = wcc.WWHITE
         self.default_bg_color = wcc.BLACK
         self.base_path = config.get('wordclock', 'base_path')

@@ -1,4 +1,4 @@
-from neopixel import Color
+from GTKstrip import Color
 
 # Define colors which are available for the wcd. Currently: Alphabetic order
 BLACK = Color(  0,  0,  0)

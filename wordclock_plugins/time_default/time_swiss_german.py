@@ -1,5 +1,6 @@
 # coding: utf8
 
+
 class time_swiss_german:
     """
     This class returns a given time as a range of LED-indices.
