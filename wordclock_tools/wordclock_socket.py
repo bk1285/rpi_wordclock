@@ -4,6 +4,7 @@ import threading
 import SocketServer
 from wordclock_interfaces.event_handler import event_handler as eh
 
+
 class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         print('Received new connection from ' + str(self.client_address[0]))
@@ -28,13 +29,14 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
                 return
             print data
 
-            if (data['API'] != 2 ):
+            if data['API'] != 2:
                 print 'Wrong API: Expected API = 2'
                 return
 
             if 'GET_CONFIG' in data:
-                plugins = [{"NAME": plugin.pretty_name, "DESCRIPTION": plugin.description} for plugin in self.wclk.plugins]
-                msg = { 'PLUGINS': plugins, 'ACTIVE_PLUGIN': self.wclk.plugin_index }
+                plugins = [{"NAME": plugin.pretty_name, "DESCRIPTION": plugin.description} for plugin in
+                           self.wclk.plugins]
+                msg = {'PLUGINS': plugins, 'ACTIVE_PLUGIN': self.wclk.plugin_index}
                 self.send_json(msg)
             elif 'SET_ACTIVE_PLUGIN' in data:
                 self.wclk.runNext(int(data['SET_ACTIVE_PLUGIN']))
@@ -42,8 +44,8 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
             elif 'SEND_EVENT' in data:
                 self.wclk.wci.setEvent(int(data['SEND_EVENT']))
             else:
-                e_msg= "Can\'t handle json-request..."
-                self.send_json({ 'ERROR_MSG' : e_msg })
+                e_msg = "Can\'t handle json-request..."
+                self.send_json({'ERROR_MSG': e_msg})
                 print e_msg
                 return
 
@@ -75,23 +77,26 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
             data += packet
         return data
 
+
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
 
+
 class wordclock_socket:
-    '''
+    """
     A class providing a json api for the wordclock
-    '''
+    """
 
     def __init__(self, wordclock):
-        '''
+        """
         Setup wordclock_socket
-        '''
+        """
         self.allClients = set()
 
         SocketServer.TCPServer.allow_reuse_address = True
 
         print('Setting up wordclock socket')
+
         class ThreadedTCPRequestHandlerWithConfig(ThreadedTCPRequestHandler):
             wclk = wordclock
 

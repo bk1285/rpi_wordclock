@@ -1,12 +1,13 @@
-
 import threading
 from monotonic import monotonic as _time
 from enum import Enum
+
 
 class next_action(Enum):
     NEXT_PLUGIN = 1
     GOTO_MENU = 2
     RUN_DEFAULT_PLUGIN = 3
+
 
 class event_handler:
     EVENT_INVALID = -1
@@ -49,14 +50,16 @@ class event_handler:
 
     def waitForExit(self, seconds=None):
         self.condition.acquire()
-        exitWasTriggered = self.__wait_for(lambda: self.event == self.EVENT_EXIT_PLUGIN or self.event == self.EVENT_NEXT_PLUGIN_REQUESTED, seconds)
+        exitWasTriggered = self.__wait_for(
+            lambda: self.event == self.EVENT_EXIT_PLUGIN or self.event == self.EVENT_NEXT_PLUGIN_REQUESTED, seconds)
         self.getNextAction(self.event)
         self.event = self.EVENT_INVALID
         self.condition.release()
         return True if exitWasTriggered else False
 
     def __wait_for(self, predicate, timeout=None):
-        """Wait until a condition evaluates to True.
+        """
+        Wait until a condition evaluates to True.
 
         predicate should be a callable which result will be interpreted as a
         boolean value.  A timeout may be provided giving the maximum time to
@@ -77,4 +80,3 @@ class event_handler:
             self.condition.wait(waittime)
             result = predicate()
         return result
-

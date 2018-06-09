@@ -1,10 +1,9 @@
-import datetime as dt
 
-class time_german():
-    '''
+class time_german:
+    """
     This class returns a given time as a range of LED-indices.
     Illuminating these LEDs represents the current time on a german WCA
-    '''
+    """
 
     def __init__(self):
         self.prefix = range(0,2) +  range(3,6)

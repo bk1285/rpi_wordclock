@@ -1,12 +1,10 @@
 # coding: utf8
 
-import datetime as dt
-
-class time_swiss_german():
-    '''
+class time_swiss_german:
+    """
     This class returns a given time as a range of LED-indices.
     Illuminating these LEDs represents the current time on a swiss_german WCA
-    '''
+    """
 
     def __init__(self):
         self.prefix = range(0,2) +  range(3,7)  # -> ES ISCH

@@ -1,7 +1,6 @@
-import datetime as dt
 
-class time_dutch():
-    '''
+class time_dutch:
+    """
     This class returns a given time as a range of LED-indices.
     Illuminating these LEDs represents the current time on a dutch WCA
     range(0,3) +  range(4,6): HET IS
@@ -31,9 +30,9 @@ class time_dutch():
             range(110,114): TIEN
             range(81,84): ELF
             range(104,110): TWAALF
-       
+
  self.full_hour= range(118,121)
-    '''
+    """
 
     def __init__(self):
         self.prefix = range(0,3) +  range(4,6)
