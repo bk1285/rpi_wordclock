@@ -16,7 +16,7 @@ class plugin:
     """
     A class to display the current time (default mode).
     This default mode needs to be adapted to the hardware
-    layout of the wordclock (the choosen stencil) and is
+    layout of the wordclock (the chosen stencil) and is
     the most essential time display mode of the wordclock.
     """
 
@@ -127,7 +127,7 @@ class plugin:
                     or (event == wci.EVENT_EXIT_PLUGIN) \
                     or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
                 return
-            if (event == wci.EVENT_BUTTON_RIGHT):
+            if event == wci.EVENT_BUTTON_RIGHT:
                 time.sleep(wci.lock_time)
                 self.color_selection(wcd, wci)
 
@@ -160,7 +160,7 @@ class plugin:
                 self.word_color = self.minute_color = wcc.Color(0, 3 * (self.rb_pos - 170),
                                                                 255 - 3 * (self.rb_pos - 170))
             # END: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
-            # TODO: Evaluate taw_indices only every n-th loop (saving ressources)
+            # TODO: Evaluate taw_indices only every n-th loop (saving resources)
             now = datetime.datetime.now()  # Set current time
             taw_indices = self.taw.get_time(now)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
@@ -175,7 +175,7 @@ class plugin:
                 break
         while True:
             self.brightness_mode_pos += self.brightness_change
-            # TODO: Evaluate taw_indices only every n-th loop (saving ressources)
+            # TODO: Evaluate taw_indices only every n-th loop (saving resources)
             now = datetime.datetime.now()  # Set current time
             taw_indices = self.taw.get_time(now)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)

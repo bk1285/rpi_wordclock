@@ -2,6 +2,7 @@ import fontdemo
 import os
 from PIL import Image
 import wiring
+import wordclock_tools.wordclock_colors as wcc
 
 
 class wordclock_display:
@@ -20,13 +21,10 @@ class wordclock_display:
 
         if config.get('wordclock_display', 'wiring_layout') == 'developer_wiring':
             from GTKstrip import GTKstrip
-            import GTKcolors as wcc
             self.strip = GTKstrip(wci)
             self.default_font = os.path.join('/usr/share/fonts/TTF/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
         else:
-            from neopixel import *
-            import wordclock_colors as wcc
             try:
                 brightness = config.getint('wordclock_display', 'brightness')
             except:

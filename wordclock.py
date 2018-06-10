@@ -45,7 +45,6 @@ class wordclock:
         self.wci = wci.event_handler()
 
         if self.config.get('wordclock_display', 'wiring_layout') != 'developer_wiring':
-            import wordclock_tools.wordclock_colors as wcc
             import wordclock_interfaces.gpio_interface as wcigpio
             self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
