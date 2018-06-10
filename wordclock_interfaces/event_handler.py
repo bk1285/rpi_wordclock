@@ -1,9 +1,8 @@
 import threading
 from monotonic import monotonic as _time
-from enum import Enum
 
 
-class next_action(Enum):
+class next_action:
     NEXT_PLUGIN = 1
     GOTO_MENU = 2
     RUN_DEFAULT_PLUGIN = 3
