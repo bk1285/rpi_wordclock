@@ -25,6 +25,7 @@ class wordclock_display:
             self.default_font = os.path.join('/usr/share/fonts/TTF/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
         else:
+            from neopixel import Adafruit_NeoPixel
             try:
                 brightness = config.getint('wordclock_display', 'brightness')
             except:
