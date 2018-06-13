@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $.ajax({
-            url: '/list',
+            url: '/get/list',
 			type : 'POST'
             })
             .done(function(data) {
@@ -14,7 +14,7 @@ $(document).ready(function() {
                 });
             });
     $.ajax({
-            url: '/active',
+            url: '/get/active',
 			type : 'POST'
             })
             .done(function(data) {
@@ -35,7 +35,7 @@ $(document).ready(function() {
 				name : this.value
 			},
 			type : 'POST',
-			url : '/api'
+			url : '/set/plugin'
 		})
 		.done(function(data) {
 
@@ -50,7 +50,7 @@ $(document).ready(function() {
 			}
          });
         $.ajax({
-            url: '/active',
+            url: '/get/active',
 			type : 'POST'
             })
             .done(function(data) {
