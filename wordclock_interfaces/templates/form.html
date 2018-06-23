@@ -11,6 +11,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 	<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <div class="container">
@@ -26,12 +27,15 @@
       <div id="successAlert" class="text-secondary" style="display:none;"></div>
 	<div id="pluginList" class="text-primary" style="display:none;"></div>
     </center>
-    <br>
-    <div align="right">
-        <a href="https://github.com/bk1285/rpi_wordclock/">
-            <img src="/static/GitHub-Mark-32px.png" width="32px" height="32px" >
-        </a>
-    </div>
 </div>
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">The raspberry wordclock.
+            <a href="https://github.com/bk1285/rpi_wordclock/">
+            <img align="right" src="/static/GitHub-Mark-32px.png" width="32px" height="32px" >
+            </a>
+            </span>
+      </div>
+    </footer>
 </body>
 </html>

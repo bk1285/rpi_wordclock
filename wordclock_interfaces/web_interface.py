@@ -12,7 +12,8 @@ class web_interface():
         thread.start_new_thread(self.threadedApp, ())
 
     def threadedApp(self):
-        self.app.run(host='0.0.0.0', port=80)
+        port = 8080 if self.app.wclk.developer_mode_active else 80
+        self.app.run(host='0.0.0.0', port=port)
 
 
 @web_interface.app.route('/')

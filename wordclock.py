@@ -40,10 +40,12 @@ class wordclock:
         # to other classes/plugins for further usage
         self.config.set('wordclock', 'base_path', self.basePath)
 
+        self.developer_mode_active = self.config.get('wordclock', 'developer_mode', False)
+
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
 
-        if self.config.get('wordclock_display', 'wiring_layout') != 'developer_wiring':
+        if not self.developer_mode_active:
             import wordclock_interfaces.gpio_interface as wcigpio
             self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
