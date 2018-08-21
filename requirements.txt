@@ -1,0 +1,8 @@
+pytz
+astral
+feedparser
+pillow
+svgwrite
+freetype-py
+netifaces
+monotonic
