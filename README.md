@@ -1,6 +1,8 @@
 rpi_wordclock
 =============
 
+[![Coverage Status](https://coveralls.io/repos/github/bk1285/rpi_ws281x/badge.svg?branch=master)](https://coveralls.io/github/bk1285/rpi_ws281x?branch=master)
+
 Software to create a raspberry based wordclock.
 
 Documentation is available at http://rpi-wordclock.readthedocs.io/en/master/
