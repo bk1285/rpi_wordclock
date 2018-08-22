@@ -130,9 +130,9 @@ class wordclock:
         # Run the wordclock forever
         while True:
             while self.run_next_index:
-                    self.plugin_index = self.run_next_index
-                    self.run_next_index = None
-                    self.runPlugin()
+                self.plugin_index = self.run_next_index
+                self.run_next_index = None
+                self.runPlugin()
 
             # If plugin.run exits, loop through menu to select next plugin
             while True:
