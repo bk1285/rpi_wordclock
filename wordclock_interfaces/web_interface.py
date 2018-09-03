@@ -1,21 +1,46 @@
 from flask import Flask, render_template, request
 import thread
 from flask_restplus import Api, Resource, fields
+import wordclock_tools.wordclock_colors as wcc
 
 
 class web_interface:
     app = Flask(__name__)
-    api = Api(app, version='4.0', title='Wordclock API', description='The rpi_wordclock api')
+    api = Api(app,
+              validate=True,
+              version='4.0',
+              title='Wordclock API',
+              description='The rpi_wordclock api',
+              contact='Bernd',
+              security=None,
+              doc='/api',
+              default='API',
+              default_label='Endpoints to access and control the wordclock',
+              ordered=False)
     plugin_model = api.model('plugin', {
-        'name': fields.String('Plugin name in a single word'),
-        'pretty_name': fields.String('Pretty plugin name, which may hold capital + special characters or spaces'),
-        'description': fields.String('Sentence, which describes the plugins functionality')
+        'name': fields.String(description='Plugin name in a single word'),
+        'pretty_name': fields.String(
+            description='Pretty plugin name, which may hold capital + special characters or spaces'),
+        'description': fields.String(description='Sentence, which describes the plugins functionality')
     })
     plugin_name_model = api.model('plugin_name', {
-        'name': fields.String('Plugin name in a single word')
+        'name': fields.String(required=True,
+                              example='time_default',
+                              description='Plugin name in a single word')
     })
     button_model = api.model('button', {
-        'button': fields.String('Name of a button, which will be triggered: left, right, return')
+        'button': fields.String(enum=['left', 'right', 'return'],
+                                required=True,
+                                example='return',
+                                description='Name of a button, which will be triggered')
+    })
+    color_model = api.model('color', {
+        'red': fields.Integer(min=0, max=255, example=50, required=True, description='Red value'),
+        'green': fields.Integer(min=0, max=255, example=200, required=True, description='Green value'),
+        'blue': fields.Integer(min=0, max=255, example=100, required=True, description='Blue value')
+    })
+    brightness_model = api.model('brightness', {
+        'brightness': fields.Integer(min=0, max=255, example=200, required=True, description='Brightness value')
     })
 
     def __init__(self, wordclock):
@@ -60,11 +85,9 @@ class plugin(Resource):
         responses={
             200: 'Success',
             400: 'Bad request',
-            406: 'Bad key or plugin name supplied'})
+            406: 'Bad plugin name supplied'})
     @web_interface.api.expect(web_interface.plugin_name_model)
     def post(self):
-        if 'name' not in web_interface.api.payload:
-            web_interface.api.abort(406, 'Request must contain \"name\" key')
         name = web_interface.api.payload.get('name')
         plugin_list = web_interface.app.wclk.plugins
         try:
@@ -81,18 +104,52 @@ class button(Resource):
         description='Takes a name of the button, to be pressed: left, right, return',
         responses={
             200: 'Success',
-            400: 'Bad request',
-            406: 'Invalid button supplied'})
+            400: 'Bad request'})
     @web_interface.api.expect(web_interface.button_model)
     def post(self):
-        if 'button' not in web_interface.api.payload:
-            web_interface.api.abort(406, 'Request must contain \"button\" key')
-        button = web_interface.api.payload.get('button')
-        if button not in web_interface.app.wclk.wci.BUTTONS:
-            web_interface.api.abort(406, 'Request must contain a valid button name. Received ' + button)
-        event = web_interface.app.wclk.wci.BUTTONS.get(button)
+        button_type = web_interface.api.payload.get('button')
+        event = web_interface.app.wclk.wci.BUTTONS.get(button_type)
         web_interface.app.wclk.wci.setEvent(event)
-        return "Button " + button + " triggered"
+        return "Button " + button_type + " triggered"
 
 
+@web_interface.api.route('/color')
+class color(Resource):
+    @web_interface.api.doc(
+        description='Takes 8bit RGB color values to display the time with',
+        responses={
+            200: 'Success',
+            400: 'Bad request'})
+    @web_interface.api.expect(web_interface.color_model)
+    def post(self):
+        supplied_color = wcc.Color(web_interface.api.payload.get('red'),
+                                   web_interface.api.payload.get('green'),
+                                   web_interface.api.payload.get('blue'))
+
+        default_plugin_idx = web_interface.app.wclk.default_plugin
+        web_interface.app.wclk.runNext(default_plugin_idx)
+        default_plugin = web_interface.app.wclk.plugins[default_plugin_idx]
+        default_plugin.bg_color = wcc.BLACK
+        default_plugin.word_color = supplied_color
+        default_plugin.minute_color = supplied_color
+        default_plugin.show_time(web_interface.app.wclk.wcd, web_interface.app.wclk.wci)
+        return "Wordclock color set"
+
+    @web_interface.api.route('/brightness')
+    class brightness(Resource):
+        @web_interface.api.doc(
+            description='Takes an 8bit value to set the wordclock brightness',
+            responses={
+                200: 'Success',
+                400: 'Bad request'})
+        @web_interface.api.expect(web_interface.brightness_model)
+        def post(self):
+            brightness = web_interface.api.payload.get('brightness')
+
+            dev_mode = web_interface.app.wclk.config.get('wordclock', 'developer_mode', False)
+            if dev_mode:
+                print "Received brightness value of " + str(brightness)
+            else:
+                web_interface.app.wclk.wcd.setBrightness(brightness)
+            return "Wordclock brightness set to " + str(brightness)
 
