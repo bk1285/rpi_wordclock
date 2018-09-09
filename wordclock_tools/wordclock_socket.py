@@ -25,7 +25,7 @@ class webs(WebSocket):
         print('Connection to ' +str(self.address) +' terminated')
 
     def handleMessage(self):
-        print('recieved: ' +self.data)
+        print('WSrecieved: ' +self.data)
 
 	if self.data == 'left':
 	    wclk.wci.setEvent(eh.EVENT_BUTTON_LEFT)
