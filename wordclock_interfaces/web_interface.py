@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 import thread
 from flask_restplus import Api, Resource, fields
 import wordclock_tools.wordclock_colors as wcc
@@ -10,10 +10,11 @@ class web_interface:
               validate=True,
               version='4.0',
               title='Wordclock API',
-              description='The rpi_wordclock api',
+              description='The API to access the raspberry wordclock',
               contact='Bernd',
               security=None,
               doc='/api',
+              prefix='/api',
               default='API',
               default_label='Endpoints to access and control the wordclock',
               ordered=False)
@@ -51,6 +52,11 @@ class web_interface:
     def threaded_app(self):
         port = 8080 if self.app.wclk.developer_mode_active else 80
         self.app.run(host='0.0.0.0', port=port)
+
+
+@web_interface.app.route('/')
+def index():
+    return render_template('form.html')
 
 
 @web_interface.api.route('/plugins')
