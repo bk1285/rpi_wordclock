@@ -24,8 +24,8 @@ $(document).ready(function() {
                     $('#pluginList').text("Error").show();
                 }
                 else {
-                    $('#pluginList').text(data.description).show();
-                    $("#pluginDropdown").val(data.name)
+                    $('#pluginList').text(data.plugin.description).show();
+                    $("#pluginDropdown").val(data.plugin.name)
                 }
             });
 
