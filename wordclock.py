@@ -40,7 +40,7 @@ class wordclock:
         # to other classes/plugins for further usage
         self.config.set('wordclock', 'base_path', self.basePath)
 
-        self.developer_mode_active = self.config.get('wordclock', 'developer_mode', False)
+        self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()

@@ -1,3 +1,4 @@
+import ConfigParser
 import fontdemo
 import os
 from PIL import Image
@@ -18,7 +19,6 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
-
         if config.getboolean('wordclock', 'developer_mode'):
             from GTKstrip import GTKstrip
             self.strip = GTKstrip(wci)

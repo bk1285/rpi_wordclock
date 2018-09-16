@@ -152,8 +152,7 @@ class color(Resource):
         def post(self):
             brightness = web_interface.api.payload.get('brightness')
 
-            dev_mode = web_interface.app.wclk.config.get('wordclock', 'developer_mode', False)
-            if dev_mode:
+            if web_interface.app.wclk.developer_mode_active:
                 print "Received brightness value of " + str(brightness)
             else:
                 web_interface.app.wclk.wcd.setBrightness(brightness)

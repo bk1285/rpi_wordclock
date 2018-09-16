@@ -28,7 +28,7 @@ class wiring:
         print('  Num of LEDs: ' + str(self.LED_COUNT))
 
         wiring_layout = config.get('wordclock_display', 'wiring_layout')
-        if config.get('wordclock', 'developer_mode', False):
+        if config.getboolean('wordclock', 'developer_mode'):
             self.wcl = gtk_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'bernds_wiring':
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
