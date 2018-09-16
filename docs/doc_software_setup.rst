@@ -44,7 +44,7 @@ Required python dependencies:
 
 To install use::
 
-    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic
+    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic flask-restplus
 
 
 .. _temperature_sensor:

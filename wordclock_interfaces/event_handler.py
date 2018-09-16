@@ -17,6 +17,8 @@ class event_handler:
     EVENT_EXIT_PLUGIN = 3
     EVENT_NEXT_PLUGIN_REQUESTED = 4
 
+    BUTTONS = {'left': EVENT_BUTTON_LEFT, 'right': EVENT_BUTTON_RIGHT, 'return': EVENT_BUTTON_RETURN}
+
     def __init__(self):
         self.condition = threading.Condition()
         self.event = self.EVENT_INVALID

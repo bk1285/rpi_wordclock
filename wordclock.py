@@ -6,7 +6,6 @@ import os
 import time
 from shutil import copyfile
 import wordclock_tools.wordclock_display as wcd
-import wordclock_tools.wordclock_socket as wcs
 import wordclock_interfaces.event_handler as wci
 import wordclock_interfaces.web_interface as wciweb
 
@@ -41,10 +40,12 @@ class wordclock:
         # to other classes/plugins for further usage
         self.config.set('wordclock', 'base_path', self.basePath)
 
+        self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')
+
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
 
-        if self.config.get('wordclock_display', 'wiring_layout') != 'developer_wiring':
+        if not self.developer_mode_active:
             import wordclock_interfaces.gpio_interface as wcigpio
             self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
@@ -90,7 +91,6 @@ class wordclock:
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
-        self.wcs = wcs.wordclock_socket(self)
         self.wciweb = wciweb.web_interface(self)
 
     def startup(self):
@@ -109,8 +109,6 @@ class wordclock:
         """
         Runs the currently selected plugin
         """
-
-        self.wcs.sendCurrentPlugin(self.plugin_index)
 
         try:
             print('Running plugin ' + self.plugins[self.plugin_index].name + '.')

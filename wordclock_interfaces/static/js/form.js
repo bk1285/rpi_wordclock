@@ -1,44 +1,42 @@
 $(document).ready(function() {
     $.ajax({
-            url: '/list',
-			type : 'POST'
-            })
-            .done(function(data) {
-                $("#pluginDropdown option").remove();
-                $.each(data.PLUGINS, function(index, item) {
-                    $("#pluginDropdown").append(
-                        $("<option></option>")
-                            .text(item.PRETTY_NAME)
-                            .val(item.NAME)
-                    );
-                });
-            });
+        url: '/api/plugins',
+        type : 'GET'
+    })
+    .done(function(data) {
+        $("#pluginDropdown option").remove();
+        $.each(data.plugins, function(index, item) {
+            $("#pluginDropdown").append(
+                $("<option></option>")
+                    .text(item.pretty_name)
+                    .val(item.name)
+            );
+        });
+    });
     $.ajax({
-            url: '/active',
-			type : 'POST'
-            })
-            .done(function(data) {
-                if (data.error) {
-                    $('#errorAlert').text(data.error).show();
-                    $('#successAlert').hide();
-                    $('#pluginList').text("Error").show();
-                }
-                else {
-                    $('#pluginList').text(data.DESCRIPTION).show();
-                    $("#pluginDropdown").val(data.NAME)
-                }
-            });
+            url: '/api/plugin',
+            type : 'GET'
+        })
+        .done(function(data) {
+            if (data.error) {
+                $('#errorAlert').text(data.error).show();
+                $('#successAlert').hide();
+                $('#pluginList').text("Error").show();
+            }
+            else {
+                $('#pluginList').text(data.plugin.description).show();
+                $("#pluginDropdown").val(data.plugin.name)
+            }
+        });
 
     $('select').on('change', function() {
 		$.ajax({
-			data : {
-				name : this.value
-			},
+			data : '{"name" : "' + this.value + '"}',
 			type : 'POST',
-			url : '/api'
+			contentType: "application/json",
+			url : '/api/plugin'
 		})
 		.done(function(data) {
-
 			if (data.error) {
 				$('#errorAlert').text(data.error).show();
 				$('#successAlert').hide();
@@ -50,19 +48,19 @@ $(document).ready(function() {
 			}
          });
         $.ajax({
-            url: '/active',
-			type : 'POST'
-            })
-            .done(function(data) {
-                if (data.error) {
-                    $('#errorAlert').text(data.error).show();
-                    $('#successAlert').hide();
-                    $('#pluginList').text("Error").show();
-                }
-                else {
-                    $('#pluginList').text(data.DESCRIPTION).show();
-                    $("#pluginDropdown").val(data.NAME)
-                }
-            });
+            url: '/api/plugin',
+			type : 'GET'
+        })
+        .done(function(data) {
+            if (data.error) {
+                $('#errorAlert').text(data.error).show();
+                $('#successAlert').hide();
+                $('#pluginList').text("Error").show();
+            }
+            else {
+                $('#pluginList').text(data.plugin.description).show();
+                $("#pluginDropdown").val(data.plugin.name)
+            }
+        });
     });
 });
