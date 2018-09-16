@@ -19,7 +19,7 @@ class wordclock_display:
         self.wcl = wiring.wiring(config)
         self.wci = wci
 
-        if config.get('wordclock', 'developer_mode', False):
+        if config.getboolean('wordclock', 'developer_mode'):
             from GTKstrip import GTKstrip
             self.strip = GTKstrip(wci)
             self.default_font = os.path.join('/usr/share/fonts/TTF/',
