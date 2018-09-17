@@ -149,3 +149,8 @@ Add here::
 
     @reboot sudo python /home/pi/rpi_wordclock/wordclock.py
 
+Access the wordclock via webinterface
+-------------------------------------
+
+Visit the wordclocks webinterface by entering the wordclocks IP to your browers address bar.
+

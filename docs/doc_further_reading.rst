@@ -27,6 +27,18 @@ Concepts and background
 Expanding the functionality of the wordclock
 ++++++++++++++++++++++++++++++++++++++++++++
 
+Remote control of the wordclock
+-------------------------------
+
+The wordclock comes with a REST-API to control the major functionality of the clock.
+
+To access the API documentation, visit::
+
+    http://wordclock-ip/api
+
+Adding a new plugin
+-------------------
+
 You might be interested in expanding the wordclocks functionality by adding a new
 plugin to the wordclock
 
