@@ -44,7 +44,7 @@ Required python dependencies:
 
 To install use::
 
-    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic
+    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic flask-restplus
 
 
 .. _temperature_sensor:
@@ -148,4 +148,9 @@ Add the python-script to crontab by calling the command::
 Add here::
 
     @reboot sudo python /home/pi/rpi_wordclock/wordclock.py
+
+Access the wordclock via webinterface
+-------------------------------------
+
+Visit the wordclocks webinterface by entering the wordclocks IP to your browers address bar.
 
