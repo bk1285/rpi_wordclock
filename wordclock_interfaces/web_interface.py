@@ -8,7 +8,7 @@ class web_interface:
     app = Flask(__name__)
     api = Api(app,
               validate=True,
-              version='4.0',
+              version='4.1',
               title='Wordclock API',
               description='The API to access the raspberry wordclock',
               contact='Bernd',
@@ -38,7 +38,11 @@ class web_interface:
     color_model = api.model('color', {
         'red': fields.Integer(min=0, max=255, example=50, required=True, description='Red value'),
         'green': fields.Integer(min=0, max=255, example=200, required=True, description='Green value'),
-        'blue': fields.Integer(min=0, max=255, example=100, required=True, description='Blue value')
+        'blue': fields.Integer(min=0, max=255, example=100, required=True, description='Blue value'),
+        'type': fields.String(enum=['all', 'words', 'minutes', 'background'],
+                              required=False,
+                              example='all',
+                              description='Optional: Set color only to specified parts of the wordclock. Defaults to all.')
     })
     brightness_model = api.model('brightness', {
         'brightness': fields.Integer(min=0, max=255, example=200, required=True, description='Brightness value')
@@ -132,29 +136,40 @@ class color(Resource):
                                    web_interface.api.payload.get('green'),
                                    web_interface.api.payload.get('blue'))
 
+        supplied_type = web_interface.api.payload.get('type')
+        supplied_type = 'all' if supplied_type is None else supplied_type
+
         default_plugin_idx = web_interface.app.wclk.default_plugin
         web_interface.app.wclk.runNext(default_plugin_idx)
         default_plugin = web_interface.app.wclk.plugins[default_plugin_idx]
-        default_plugin.bg_color = wcc.BLACK
-        default_plugin.word_color = supplied_color
-        default_plugin.minute_color = supplied_color
+        if supplied_type == 'all':
+            default_plugin.bg_color = wcc.BLACK
+            default_plugin.word_color = supplied_color
+            default_plugin.minute_color = supplied_color
+        elif supplied_type == 'words':
+            default_plugin.word_color = supplied_color
+        elif supplied_type == 'minutes':
+            default_plugin.minute_color = supplied_color
+        elif supplied_type == 'background':
+            default_plugin.bg_color = supplied_color
         default_plugin.show_time(web_interface.app.wclk.wcd, web_interface.app.wclk.wci)
-        return "Wordclock color set"
+        return "Wordclock color set to " + supplied_type
 
-    @web_interface.api.route('/brightness')
-    class brightness(Resource):
-        @web_interface.api.doc(
-            description='Takes an 8bit value to set the wordclock brightness',
-            responses={
-                200: 'Success',
-                400: 'Bad request'})
-        @web_interface.api.expect(web_interface.brightness_model)
-        def post(self):
-            brightness = web_interface.api.payload.get('brightness')
 
-            if web_interface.app.wclk.developer_mode_active:
-                print "Received brightness value of " + str(brightness)
-            else:
-                web_interface.app.wclk.wcd.setBrightness(brightness)
-            return "Wordclock brightness set to " + str(brightness)
+@web_interface.api.route('/brightness')
+class brightness(Resource):
+    @web_interface.api.doc(
+        description='Takes an 8bit value to set the wordclock brightness',
+        responses={
+            200: 'Success',
+            400: 'Bad request'})
+    @web_interface.api.expect(web_interface.brightness_model)
+    def post(self):
+        brightness = web_interface.api.payload.get('brightness')
+
+        if web_interface.app.wclk.developer_mode_active:
+            print "Received brightness value of " + str(brightness)
+        else:
+            web_interface.app.wclk.wcd.setBrightness(brightness)
+        return "Wordclock brightness set to " + str(brightness)
 
