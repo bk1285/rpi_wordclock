@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>Word Clock</title>
+	<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'>
+	<link rel='stylesheet prefetch' href='https://unpkg.com/vuetify@1.0.18/dist/vuetify.min.css'>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://unpkg.com/@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.js"></script>
+	<link href="https://unpkg.com/@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css" rel="stylesheet">
+	</head>
+<body>
+<div id="app">
+  <v-app id="inspire" dark>
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-toolbar dark color="primary">
+                <v-toolbar-title>Word Clock</v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+              <v-card-text>
+                <v-select v-if="apiData"
+                  v-bind:items="apiData.plugins"
+                  item-text="pretty_name"
+                  item-value="name"
+                  v-model="selectedPlugin"
+                  label="Select plugin"
+                  v-on:change="selectionChanged"
+                  single-line
+                  bottom
+		></v-select>
+              </v-card-text>
+              <v-card-actions>
+                <v-container fluid text-xs-center>
+                  <v-layout row>
+                    <v-flex xs6>
+                      <v-card tile flat>
+                        <v-card-text>
+                          <v-btn color="primary" v-on:click="buttonClick('left')">Left</v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs6>
+                      <v-card tile flat>
+                        <v-card-text>
+                          <v-btn color="primary" v-on:click="buttonClick('right')">Right</v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row justify-center>
+                    <v-flex xs12>
+                      <v-card tile flat>
+                        <v-card-text>
+                          <v-btn color="primary" v-on:click="buttonClick('return')"><v-icon>list</v-icon></v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row justify-center>
+                    <v-flex>
+                      <v-slider v-model="brightness" :max="255" label="Brightness" @input="updateBrightness(brightness)"></v-slider>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row justify-center>
+                      <color-picker v-model="color" v-on:select="setColourWheel"></color-picker>
+                  </v-layout>
+                  <v-layout row justify-center>
+                    <v-flex xs6>
+                      <v-card tile flat>
+                        <v-card-text>
+                          <v-btn fab small color="black" v-on:click="setColour(0,0,0)"></v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs6>
+                      <v-card tile flat>
+                        <v-card-text>
+                          <v-btn fab small color="white" v-on:click="setColour(255,255,255)"></v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout align-center justify-center>
+                    <v-flex xs6>
+                      <v-switch :label="'Words'" v-model="switchWords"></v-switch>
+                      </v-flex>
+                    <v-flex xs6>
+                      <v-switch :label="'Minutes'" v-model="switchMinutes"></v-switch>
+                      </v-flex>
+                    <v-flex xs6>
+                      <v-switch :label="'Background'" v-model="switchBackground"></v-switch>
+                      </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+          </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
+</div>
+
+</body>
+
+<script src='https://unpkg.com/babel-polyfill/dist/polyfill.min.js'></script>
+<script src='https://unpkg.com/vue/dist/vue.js'></script>
+<script src='https://unpkg.com/vuetify@1.0.18/dist/vuetify.min.js'></script>
+
+
+<!--script src="scripts/framework/vue_2_5_13.js"></script-->
+<!--script src="https://unpkg.com/vuetify/dist/vuetify.js"></script-->
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+<script src="scripts/scripts.js"></script>
+
+</html>

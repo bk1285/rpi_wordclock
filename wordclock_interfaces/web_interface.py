@@ -62,6 +62,10 @@ class web_interface:
 def index():
     return render_template('form.html')
 
+@web_interface.app.route('/app/<path:filename>')
+def vue(filename):
+    print("Get filename: "+filename)
+    return render_template(filename)
 
 @web_interface.api.route('/plugins')
 class plugins(Resource):
