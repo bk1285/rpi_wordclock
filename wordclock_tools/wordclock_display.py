@@ -25,7 +25,6 @@ class wordclock_display:
             self.default_font = os.path.join('/usr/share/fonts/TTF/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
         else:
-            from neopixel import Adafruit_NeoPixel
             try:
                 brightness = config.getint('wordclock_display', 'brightness')
             except:
@@ -33,14 +32,12 @@ class wordclock_display:
                 'WARNING: Brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
                 brightness = 255
             try:
+                from neopixel import Adafruit_NeoPixel
                 self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
-                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, brightness, 0,
-                                               ws.WS2811_STRIP_GRB)
+                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, brightness, 0, 0x00100800)
             except:
-                print(
-                'WARNING: Your NeoPixel dependency is to old to accept customized brightness values and correct RGB-settings.')
-                self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
-                                               self.wcl.LED_DMA, self.wcl.LED_INVERT)
+                print('Update deprecated external dependency rpi_ws281x. For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
+
             self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
 
