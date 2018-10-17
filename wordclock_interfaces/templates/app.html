@@ -25,7 +25,7 @@
                 <v-select v-if="apiData"
                   v-bind:items="apiData.plugins"
                   item-text="pretty_name"
-                  item-value="name"
+                  item-value="text"
                   v-model="selectedPlugin"
                   label="Select plugin"
                   v-on:change="selectionChanged"
