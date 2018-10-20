@@ -32,9 +32,9 @@ class wordclock_display:
                 'WARNING: Brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
                 brightness = 255
             try:
-                from neopixel import Adafruit_NeoPixel
+                from neopixel import Adafruit_NeoPixel, ws
                 self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
-                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, brightness, 0, 0x00100800)
+                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, brightness, 0, ws.WS2811_STRIP_GRB)
             except:
                 print('Update deprecated external dependency rpi_ws281x. For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
 
