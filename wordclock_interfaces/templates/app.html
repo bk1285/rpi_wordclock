@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Word Clock</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'>
+    <link rel='stylesheet prefetch' href='https://unpkg.com/vuetify/dist/vuetify.min.css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <script src='https://unpkg.com/vue/dist/vue.min.js'></script>
+    <script src='https://unpkg.com/vuetify/dist/vuetify.js'></script>
+    <script src='https://unpkg.com/babel-polyfill/dist/polyfill.min.js'></script>
+    <script src="https://unpkg.com/@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.js"></script>
+    <link rel="stylesheet" href="static/vue-color-picker.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+</head>
+
+<body>
+
+    <div id="app">
+        <v-app id="inspire" dark>
+            <v-content>
+                <v-container fluid fill-height>
+                    <v-layout align-center justify-center>
+                        <v-flex xs12 sm8 md4>
+                            <v-tabs dark color="primary" class="elevation-12">
+                                <v-tab ripple height="100%">
+                                    Control
+                                </v-tab>
+                                <v-tab ripple>
+                                    Colours
+                                </v-tab>
+                                <v-tab-item>
+                                    <v-card height=562>
+                                        <v-card-text>
+                                            <v-select v-if="apiData" v-bind:items="apiData.plugins" item-text="pretty_name" item-value="text" v-model="selectedPlugin" label="Select plugin" v-on:change="selectionChanged" single-line bottom></v-select>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-container fluid text-xs-center>
+                                                <v-layout row>
+                                                    <v-flex xs6>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn color="primary" v-on:click="buttonClick('left')">Left</v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                    <v-flex xs6>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn color="primary" v-on:click="buttonClick('right')">Right</v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                </v-layout>
+                                                <v-layout row justify-center>
+                                                    <v-flex xs12>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn color="primary" v-on:click="buttonClick('return')">
+                                                                    <v-icon>list</v-icon>
+                                                                </v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                </v-layout>
+                                            </v-container>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-tab-item>
+                                <v-tab-item>
+                                    <v-card height=562>
+                                        <v-card-actions>
+                                            <v-container fluid text-xs-center>
+                                                <v-layout row justify-center>
+                                                    <v-flex xs12>
+                                                        <v-slider prepend-icon="fa-sun" thumb-label v-model="brightness" :max="255" @input="updateBrightness(brightness)"></v-slider>
+                                                    </v-flex>
+                                                </v-layout>
+                                                <v-layout row justify-center>
+                                                    <color-picker v-model="color" v-on:select="setColourWheel"></color-picker>
+                                                </v-layout>
+                                                <v-layout row justify-center>
+                                                    <v-flex xs6>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn fab small color="black" v-on:click="setColour(0,0,0)"></v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                    <v-flex xs6>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn fab small color="white" v-on:click="setColour(255,255,255)"></v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                </v-layout>
+                                                <v-layout row justify-center>
+                                                    <v-flex xs4>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-checkbox :label="'Words'" v-model="switchWords"></v-checkbox>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                    <v-flex xs4>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-checkbox :label="'Mins'" v-model="switchMinutes"></v-checkbox>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                    <v-flex xs4>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-checkbox :label="'Back'" v-model="switchBackground"></v-checkbox>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                </v-layout>
+                                            </v-container>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-tab-item>
+                            </v-tabs>
+                      </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-content>
+        </v-app>
+    </div>
+
+</body>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+</html>
