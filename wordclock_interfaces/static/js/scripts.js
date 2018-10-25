@@ -47,7 +47,7 @@ new Vue(
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("POST", "/api/plugin");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-			xmlhttp.send(JSON.stringify({ "name": selectedPlugin.name}));
+			xmlhttp.send(JSON.stringify({ name: selectedPlugin}));
 		},
 		buttonClick: function(buttonClicked) {
 			console.log('buttonClicked', buttonClicked );

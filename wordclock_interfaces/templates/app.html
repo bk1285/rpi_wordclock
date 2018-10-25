@@ -34,7 +34,7 @@
                                 <v-tab-item>
                                     <v-card height=562>
                                         <v-card-text>
-                                            <v-select v-if="apiData" v-bind:items="apiData.plugins" item-text="pretty_name" item-value="text" v-model="selectedPlugin" label="Select plugin" v-on:change="selectionChanged" single-line bottom></v-select>
+                                            <v-select v-if="apiData" v-bind:items="apiData.plugins" item-text="pretty_name" item-value="name" v-model="selectedPlugin" label="Select plugin" v-on:change="selectionChanged" single-line bottom></v-select>
                                         </v-card-text>
                                         <v-card-actions>
                                             <v-container fluid text-xs-center>
