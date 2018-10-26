@@ -69,6 +69,7 @@ class wordclock_display:
         Sets the color for a pixel, while considering the brightness, set within the config file
         """
         self.strip.setBrightness(brightness)
+        self.show()
 
     def setColorBy1DCoordinates(self, *args, **kwargs):
         """
