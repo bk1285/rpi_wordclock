@@ -133,12 +133,15 @@ class color(Resource):
     def get(self):
         default_plugin = web_interface.app.wclk.plugins[web_interface.app.wclk.default_plugin]
 
-        color_format = lambda x: {'red': x.r, 'green': x.g, 'blue': x.b}
+        if web_interface.app.wclk.developer_mode_active:
+            channel_wise = lambda(x): {'red': x.r, 'green': x.g, 'blue': x.b}
+        else:
+            channel_wise = lambda(x): {'blue': x & 255, 'green': (x >> 8) & 255, 'red': (x >> 16) & 255}
 
         return {
-            'background': color_format(default_plugin.bg_color),
-            'words': color_format(default_plugin.word_color),
-            'minutes': color_format(default_plugin.minute_color)
+            'background': channel_wise(default_plugin.bg_color),
+            'words': channel_wise(default_plugin.word_color),
+            'minutes': channel_wise(default_plugin.minute_color)
         }
 
     @web_interface.api.doc(
@@ -192,4 +195,3 @@ class brightness(Resource):
         brightness = web_interface.api.payload.get('brightness')
         web_interface.app.wclk.wcd.setBrightness(brightness)
         return "Wordclock brightness set to " + str(brightness)
-
