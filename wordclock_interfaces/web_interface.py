@@ -8,7 +8,7 @@ class web_interface:
     app = Flask(__name__)
     api = Api(app,
               validate=True,
-              version='4.1',
+              version='4.2',
               title='Wordclock API',
               description='The API to access the raspberry wordclock',
               contact='Bernd',
@@ -42,10 +42,10 @@ class web_interface:
         'type': fields.String(enum=['all', 'words', 'minutes', 'background'],
                               required=False,
                               example='all',
-                              description='Optional: Set color only to specified parts of the wordclock. Defaults to all.')
+                              description='Set color only to specified parts of the wordclock. Defaults to all.')
     })
     brightness_model = api.model('brightness', {
-        'brightness': fields.Integer(min=0, max=255, example=200, required=True, description='Brightness value')
+        'brightness': fields.Integer(min=0, max=255, example=180, required=True, description='Brightness value')
     })
 
     def __init__(self, wordclock):
@@ -126,6 +126,25 @@ class button(Resource):
 @web_interface.api.route('/color')
 class color(Resource):
     @web_interface.api.doc(
+        description='Returns 8bit RGB color values of the displayed time',
+        responses={
+            200: 'Success',
+            400: 'Bad request'})
+    def get(self):
+        default_plugin = web_interface.app.wclk.plugins[web_interface.app.wclk.default_plugin]
+
+        if web_interface.app.wclk.developer_mode_active:
+            channel_wise = lambda(x): {'red': x.r, 'green': x.g, 'blue': x.b}
+        else:
+            channel_wise = lambda(x): {'blue': x & 255, 'green': (x >> 8) & 255, 'red': (x >> 16) & 255}
+
+        return {
+            'background': channel_wise(default_plugin.bg_color),
+            'words': channel_wise(default_plugin.word_color),
+            'minutes': channel_wise(default_plugin.minute_color)
+        }
+
+    @web_interface.api.doc(
         description='Takes 8bit RGB color values to display the time with',
         responses={
             200: 'Success',
@@ -159,6 +178,14 @@ class color(Resource):
 @web_interface.api.route('/brightness')
 class brightness(Resource):
     @web_interface.api.doc(
+        description='Returns 8bit value representing the current wordclock brightness',
+        responses={
+            200: 'Success',
+            400: 'Bad request'})
+    def get(self):
+        return web_interface.app.wclk.wcd.getBrightness()
+
+    @web_interface.api.doc(
         description='Takes an 8bit value to set the wordclock brightness',
         responses={
             200: 'Success',
@@ -166,10 +193,5 @@ class brightness(Resource):
     @web_interface.api.expect(web_interface.brightness_model)
     def post(self):
         brightness = web_interface.api.payload.get('brightness')
-
-        if web_interface.app.wclk.developer_mode_active:
-            print "Received brightness value of " + str(brightness)
-        else:
-            web_interface.app.wclk.wcd.setBrightness(brightness)
+        web_interface.app.wclk.wcd.setBrightness(brightness)
         return "Wordclock brightness set to " + str(brightness)
-

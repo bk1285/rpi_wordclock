@@ -28,6 +28,7 @@ class GTKstrip(threading.Thread):
 
         self.labels = []
         self.colors = []
+        self.brightness = 180
 
         self.weh = weh
 
@@ -90,6 +91,13 @@ class GTKstrip(threading.Thread):
 
     def setPixelColor(self, index, color):
         self.colors[index] = color
+
+    def getBrightness(self):
+        return self.brightness
+
+    def setBrightness(self, brightness):
+        self.brightness = brightness
+        print "Set mock brightness value to " + str(self.brightness)
 
     def update(self):
         for label, color in zip(self.labels, self.colors):
