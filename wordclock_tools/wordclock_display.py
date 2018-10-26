@@ -54,6 +54,12 @@ class wordclock_display:
         """
         self.strip.setPixelColor(pixel, color)
 
+    def getBrightness(self):
+        """
+        Sets the color for a pixel, while considering the brightness, set within the config file
+        """
+        return self.strip.getBrightness()
+
     def setBrightness(self, brightness):
         """
         Sets the color for a pixel, while considering the brightness, set within the config file
