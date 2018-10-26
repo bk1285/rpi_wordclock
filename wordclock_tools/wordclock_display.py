@@ -19,6 +19,14 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
+        try:
+            default_brightness = config.getint('wordclock_display', 'brightness')
+        except:
+            default_brightness = 255
+            print(
+                'WARNING: Default brightness value not set in config-file: '
+                'To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
+
         if config.getboolean('wordclock', 'developer_mode'):
             from GTKstrip import GTKstrip
             self.strip = GTKstrip(wci)
@@ -26,17 +34,13 @@ class wordclock_display:
                                              config.get('wordclock_display', 'default_font') + '.ttf')
         else:
             try:
-                brightness = config.getint('wordclock_display', 'brightness')
-            except:
-                print(
-                'WARNING: Brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
-                brightness = 255
-            try:
                 from neopixel import Adafruit_NeoPixel, ws
                 self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
-                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, brightness, 0, ws.WS2811_STRIP_GRB)
+                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, default_brightness , 0,
+                                               ws.WS2811_STRIP_GRB)
             except:
-                print('Update deprecated external dependency rpi_ws281x. For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
+                print('Update deprecated external dependency rpi_ws281x. '
+                      'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
 
             self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
