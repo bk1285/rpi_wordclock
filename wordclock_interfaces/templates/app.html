@@ -29,38 +29,48 @@
                                     Control
                                 </v-tab>
                                 <v-tab ripple>
-                                    Colours
+                                    Colors
                                 </v-tab>
                                 <v-tab-item>
                                     <v-card height=562>
                                         <v-card-text>
-                                            <v-select v-if="apiData" v-bind:items="apiData.plugins" item-text="pretty_name" item-value="name" v-model="selectedPlugin" label="Select plugin" v-on:change="selectionChanged" single-line bottom></v-select>
+                                            <v-select
+                                                v-if="apiData"
+                                                v-bind:items="apiData.plugins"
+                                                item-text="pretty_name"
+                                                item-value="name"
+                                                v-model="selectedPlugin"
+                                                :hint="`${selectedPlugin.description}`"
+                                                persistent-hint
+                                                return-object
+                                                label="Select plugin"
+                                                v-on:change="selectionChanged"
+                                                single-line bottom>
+                                            </v-select>
                                         </v-card-text>
                                         <v-card-actions>
-                                            <v-container fluid text-xs-center>
-                                                <v-layout row>
-                                                    <v-flex xs6>
-                                                        <v-card tile flat>
+                                            <v-container fluid text-xs-center px-0>
+                                                <v-layout row px-0>
+                                                    <v-flex xs4>
+                                                        <v-card tile flat px-0>
                                                             <v-card-text>
-                                                                <v-btn color="primary" v-on:click="buttonClick('left')">Left</v-btn>
+                                                                <v-btn small color="primary" v-on:click="buttonClick('left')">Left</v-btn>
                                                             </v-card-text>
                                                         </v-card>
                                                     </v-flex>
-                                                    <v-flex xs6>
+                                                    <v-flex xs4>
                                                         <v-card tile flat>
                                                             <v-card-text>
-                                                                <v-btn color="primary" v-on:click="buttonClick('right')">Right</v-btn>
-                                                            </v-card-text>
-                                                        </v-card>
-                                                    </v-flex>
-                                                </v-layout>
-                                                <v-layout row justify-center>
-                                                    <v-flex xs12>
-                                                        <v-card tile flat>
-                                                            <v-card-text>
-                                                                <v-btn color="primary" v-on:click="buttonClick('return')">
+                                                                <v-btn small color="primary" v-on:click="buttonClick('return')">
                                                                     <v-icon>list</v-icon>
                                                                 </v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                    <v-flex xs4>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn small color="primary" v-on:click="buttonClick('right')">Right</v-btn>
                                                             </v-card-text>
                                                         </v-card>
                                                     </v-flex>

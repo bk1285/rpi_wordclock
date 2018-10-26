@@ -15,10 +15,12 @@ new Vue(
                 },
 		apiData: undefined,
 		selectedPlugin: {
-		    name: 'time_default'
+		    name: 'time_default',
+		    description: '...........'
 		},
 		currentPlugin: {
-		    name: 'time_default'
+		    name: 'time_default',
+		    description: '...........'
 		},
 		switchWords: true,
 		switchMinutes: true,
@@ -47,7 +49,7 @@ new Vue(
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("POST", "/api/plugin");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-			xmlhttp.send(JSON.stringify({ name: selectedPlugin}));
+			xmlhttp.send(JSON.stringify({ name: selectedPlugin.name}));
 		},
 		buttonClick: function(buttonClicked) {
 			console.log('buttonClicked', buttonClicked );
