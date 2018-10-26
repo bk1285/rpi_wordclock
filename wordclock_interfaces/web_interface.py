@@ -132,10 +132,13 @@ class color(Resource):
             400: 'Bad request'})
     def get(self):
         default_plugin = web_interface.app.wclk.plugins[web_interface.app.wclk.default_plugin]
+
+        color_format = lambda x: {'red': x.r, 'green': x.g, 'blue': x.b}
+
         return {
-            'background': default_plugin.bg_color,
-            'words': default_plugin.word_color,
-            'minutes': default_plugin.minute_color
+            'background': color_format(default_plugin.bg_color),
+            'words': color_format(default_plugin.word_color),
+            'minutes': color_format(default_plugin.minute_color)
         }
 
     @web_interface.api.doc(
