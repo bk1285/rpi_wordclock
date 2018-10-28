@@ -24,7 +24,8 @@ new Vue(
 		},
 		switchWords: true,
 		switchMinutes: true,
-		switchBackground: false
+		switchBackground: false,
+		about: false
 	},
 	methods: {
 		loadApi: function () {
@@ -114,7 +115,7 @@ new Vue(
 			this.selectedPlugin = this.currentPlugin;
 			console.log('currentPlugin:', this.currentPlugin);
 			console.log('selectedPlugin:', this.selectedPlugin);
-		}, 1000);
+		}, 100);
 	}
 }
 );
