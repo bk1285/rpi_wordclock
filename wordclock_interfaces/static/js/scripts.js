@@ -18,10 +18,6 @@ new Vue(
 		    name: 'time_default',
 		    description: '...........'
 		},
-		currentPlugin: {
-		    name: 'time_default',
-		    description: '...........'
-		},
 		switchWords: true,
 		switchMinutes: true,
 		switchBackground: false,
@@ -39,8 +35,8 @@ new Vue(
 			console.log('successCallback this.apiData:' , this.apiData);
 		},
 		successCallbackPlugin: function(response) {
-			this.currentPlugin = response.data.plugin;
-			console.log('successCallback this.currentPlugin:' , this.currentPlugin);
+                        this.selectedPlugin = response.data.plugin;
+			console.log('successCallback this.selectedPlugin:' , this.selectedPlugin);
 		},
 		errorCallback: function(response) {
 			console.log('errorCallback response:' , response);
@@ -109,13 +105,6 @@ new Vue(
 	},
 	beforeMount(){
 		this.loadApi();
-	},
-	created() {
-		setTimeout(() => {
-			this.selectedPlugin = this.currentPlugin;
-			console.log('currentPlugin:', this.currentPlugin);
-			console.log('selectedPlugin:', this.selectedPlugin);
-		}, 100);
 	}
 }
 );
