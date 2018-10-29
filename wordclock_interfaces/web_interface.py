@@ -60,11 +60,8 @@ class web_interface:
 
 @web_interface.app.route('/')
 def index():
-    return render_template('form.html')
-
-@web_interface.app.route('/app.html')
-def app():
     return render_template('app.html')
+
 
 @web_interface.api.route('/plugins')
 class plugins(Resource):
