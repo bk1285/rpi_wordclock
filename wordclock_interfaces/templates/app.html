@@ -55,10 +55,11 @@
                                         <v-icon>fa fa-question-circle</v-icon>
                                     </v-btn>
                                     <v-card>
-                                        <v-card-title>The Raspberry wordclock</v-card-title>
+                                        <v-card-title>The Raspberry Wordclock</v-card-title>
                                         <v-card-text>
-                                            The project page: <br><a href="https://github.com/bk1285/rpi_wordclock">https://github.com/bk1285/rpi_wordclock</a><br><br>
-                                            The API: <br><a href="/api">wordclock-ip/api</a>
+                                            <v-icon>fa fa-link</v-icon>  <a href="https://github.com/bk1285/rpi_wordclock">Project page</a><br><br>
+                                            <v-icon>fa fa-link</v-icon>  <a href="https://github.com/bk1285/rpi_wordclock/graphs/contributors">Contributors</a><br><br>
+                                            <v-icon>fa fa-cogs</v-icon>  <a href="/api">API of this clock</a><br><br>
                                         </v-card-text>
                                     </v-card>
                                 </v-dialog>
@@ -85,15 +86,8 @@
                                                     <v-flex xs4>
                                                         <v-card tile flat>
                                                             <v-card-text>
-                                                                <v-btn small color="primary" v-on:click="buttonClick('left')">Left</v-btn>
-                                                            </v-card-text>
-                                                        </v-card>
-                                                    </v-flex>
-                                                    <v-flex xs4>
-                                                        <v-card tile flat>
-                                                            <v-card-text>
-                                                                <v-btn small color="primary" v-on:click="buttonClick('return')">
-                                                                    <v-icon>list</v-icon>
+                                                                <v-btn small color="primary" v-on:click="buttonClick('left')">
+                                                                <v-icon>fa-caret-left</v-icon>
                                                                 </v-btn>
                                                             </v-card-text>
                                                         </v-card>
@@ -101,7 +95,18 @@
                                                     <v-flex xs4>
                                                         <v-card tile flat>
                                                             <v-card-text>
-                                                                <v-btn small color="primary" v-on:click="buttonClick('right')">Right</v-btn>
+                                                                <v-btn small color="primary" v-on:click="buttonClick('return')">
+                                                                    <v-icon>fa-circle </v-icon>
+                                                                </v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                    <v-flex xs4>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn small color="primary" v-on:click="buttonClick('right')">
+                                                                <v-icon>fa-caret-right</v-icon>
+                                                                </v-btn>
                                                             </v-card-text>
                                                         </v-card>
                                                     </v-flex>
