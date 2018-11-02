@@ -11,11 +11,10 @@
 
 ### ⏳ In progress: Remote control via webinterface
 * Control the wordclock with a browser within your local network
-* Linking the webinterface to your smartphones homescreen provides you an "app"-like usage of the interface
-* Hardware buttons are not "mandatory" anymore.
+* Linking the webinterface to your smartphones homescreen provides an app-like usage of the interface
+* Hardware buttons are not mandatory anymore.
 * Merge to develop is currently planned for November 18th, 2018
-* See currrent [PR](https://github.com/bk1285/rpi_wordclock/pull/100)
-* Credits to [@FrankX0](https://github.com/FrankX0) 
+* See currrent [PR](https://github.com/bk1285/rpi_wordclock/pull/100), credits to [@FrankX0](https://github.com/FrankX0) 
 
 ### :books: Further reading
 
