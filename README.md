@@ -9,7 +9,7 @@
 * RESTful, [swagger](https://swagger.io/specification/)-based API to access and control the wordclock functionality
 * [Documentation](http://rpi-wordclock.readthedocs.io/en/master/) on how to build the clock.
 
-### ⏳ In progress: Remote control your wordclock via webinterface
+### ⏳ In progress: Remote control via webinterface
 * Control the wordclock with a browser within your local network
 * Linking the webinterface to your smartphones homescreen provides you an "app"-like usage of the interface
 * Hardware buttons are not "mandatory" anymore.
