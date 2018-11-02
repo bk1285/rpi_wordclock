@@ -87,7 +87,6 @@ new Vue(
 			xmlhttp.send(JSON.stringify({ "blue": b, "green": g, "red": r , "type": type}));
 		},
 		updateBrightness: function(brightness) {
-			console.log('updateBrightness:' , brightness);
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("POST", "/api/brightness");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
