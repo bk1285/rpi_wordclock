@@ -16,6 +16,7 @@
   * Hardware buttons are not mandatory anymore.
   * Merge to develop is currently planned for November 18th, 2018
   * See currrent [PR](https://github.com/bk1285/rpi_wordclock/pull/100) (credits to [@FrankX0](https://github.com/FrankX0))
+* Integration of a brightness sensor
 
 ### :books: Further reading
 
