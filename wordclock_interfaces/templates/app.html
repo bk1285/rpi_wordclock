@@ -115,7 +115,7 @@
                                             <v-container fluid text-xs-center>
                                                 <v-layout row justify-center>
                                                     <v-flex xs12>
-                                                        <v-slider prepend-icon="fa-sun" thumb-label v-model="brightness" :max="255" @input="updateBrightness(brightness)"></v-slider>
+                                                        <v-slider prepend-icon="fa-sun" thumb-label v-model="brightness" :max="255" v-on:input="updateBrightness(brightness)"></v-slider>
                                                     </v-flex>
                                                 </v-layout>
                                                 <v-layout row justify-center>
