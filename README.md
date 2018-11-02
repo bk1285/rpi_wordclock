@@ -1,8 +1,8 @@
 ## Software to create a Raspberry Pi based wordclock
 
 ### ✔️ Currently available
-* Various supported [language layouts](https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts)
-* Various plugins to
+* [Various language layouts](https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts)
+* [Various plugins](https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_plugins) to
   * display the current time
   * get information on current temperature, sunrise, sunset, IP-settings, ...
   * play tetris (credits to [@mrksngl](https://github.com/mrksngl))
