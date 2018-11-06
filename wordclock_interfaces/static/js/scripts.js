@@ -6,17 +6,17 @@ new Vue(
                 ColorPicker: ColorPicker
 	},
 	data: {
-		brightness: 50,
-                color: {
-                    hue: 50,
-                    saturation: 100,
-                    luminosity: 50,
-                    alpha: 1
-                },
+		brightness: undefined,
+        color: {
+            hue: undefined,
+            saturation: undefined,
+            luminosity: undefined,
+            alpha: 1
+        },
 		apiData: undefined,
 		selectedPlugin: {
-		    name: 'time_default',
-		    description: '...........'
+		    name: undefined,
+		    description: undefined
 		},
 		switchWords: true,
 		switchMinutes: true,
@@ -29,34 +29,46 @@ new Vue(
 			  then(this.successCallbackPlugin, this.errorCallback);
 			this.$http.get('/api/plugins').
 			  then(this.successCallbackPlugins, this.errorCallback);
+			this.$http.get('/api/color').
+			  then(this.successCallbackColor, this.errorCallback);
+			this.$http.get('/api/brightness').
+			  then(this.successCallbackBrightness, this.errorCallback);
 		},
 		successCallbackPlugins: function(response) {
 			this.apiData = response.data;
-			console.log('successCallback this.apiData:' , this.apiData);
 		},
 		successCallbackPlugin: function(response) {
-                        this.selectedPlugin = response.data.plugin;
-			console.log('successCallback this.selectedPlugin:' , this.selectedPlugin);
+            this.selectedPlugin = response.data.plugin;
+		},
+		successCallbackColor: function(response) {
+			var h,s,l,r,g,b;
+			r = response.data.words.red;
+			g = response.data.words.green;
+			b = response.data.words.blue;
+			[h,s,l] = rgbToHsl(r, g, b);
+			this.color.hue = h * 360;
+			this.color.saturation = s * 100;
+			this.color.luminosity = l * 100;
+		},
+		successCallbackBrightness: function(response) {
+            this.brightness = response.data;
 		},
 		errorCallback: function(response) {
 			console.log('errorCallback response:' , response);
 		},
 		selectionChanged: function(selectedPlugin) {
-			console.log('selectionChanged: ', selectedPlugin);
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("POST", "/api/plugin");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 			xmlhttp.send(JSON.stringify({ name: selectedPlugin.name}));
 		},
 		buttonClick: function(buttonClicked) {
-			console.log('buttonClicked', buttonClicked );
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("POST", "/api/button");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 			xmlhttp.send(JSON.stringify({ button: buttonClicked}));
 		},
 		setColour: function(r,g,b) {
-			console.log('setColour:' , r,g,b);
 			if (this.switchWords) {
 				type = "words"
 			};
@@ -75,7 +87,6 @@ new Vue(
 			xmlhttp.send(JSON.stringify({ "blue": b, "green": g, "red": r , "type": type}));
 		},
 		updateBrightness: function(brightness) {
-			console.log('updateBrightness:' , brightness);
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("POST", "/api/brightness");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -84,7 +95,6 @@ new Vue(
 		setColourWheel: function(wheel) {
 			var r,g,b,type;
 			[r,g,b] = hslToRgb(wheel.hue/360, wheel.saturation/100, wheel.luminosity/100);
-			console.log('setColourWheel:' , r,g,b);
 			if (this.switchWords) {
 				type = "words"
 			};
@@ -143,4 +153,36 @@ function hslToRgb(h, s, l){
     }
 
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param   {number}  r       The red color value
+ * @param   {number}  g       The green color value
+ * @param   {number}  b       The blue color value
+ * @return  {Array}           The HSL representation
+ */
+function rgbToHsl(r, g, b){
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if(max == min){
+        h = s = 0; // achromatic
+    }else{
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return [h, s, l];
 }
