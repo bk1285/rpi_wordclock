@@ -1,21 +1,22 @@
-## Software to create a Raspberry Pi based wordclock.
+## Software to create a Raspberry Pi based wordclock
 
 ### ✔️ Currently available
-* Various supported [language layouts](https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts)
-* Various plugins to
+* [Various language layouts](https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts)
+* [Various plugins](https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_plugins) to
   * display the current time
   * get information on current temperature, sunrise, sunset, IP-settings, ...
   * play tetris (credits to [@mrksngl](https://github.com/mrksngl))
 * RESTful, [swagger](https://swagger.io/specification/)-based API to access and control the wordclock functionality
 * [Documentation](http://rpi-wordclock.readthedocs.io/en/master/) on how to build the clock.
 
-### ⏳ In progress: Remote control via webinterface
-* Control the wordclock with a browser within your local network
-* Linking the webinterface to your smartphones homescreen provides you an "app"-like usage of the interface
-* Hardware buttons are not "mandatory" anymore.
-* Merge to develop is currently planned for November 18th, 2018
-* See currrent [PR](https://github.com/bk1285/rpi_wordclock/pull/100)
-* Credits to [@FrankX0](https://github.com/FrankX0) 
+### ⏳ In progress
+* Remote control via webinterface
+  * Control the wordclock with a browser within your local network
+  * Linking the webinterface to your smartphones homescreen provides an app-like usage of the interface
+  * Hardware buttons are not mandatory anymore.
+  * Merge to develop is currently planned for November 18th, 2018
+  * See currrent [PR](https://github.com/bk1285/rpi_wordclock/pull/100) (credits to [@FrankX0](https://github.com/FrankX0))
+* Integration of a brightness sensor
 
 ### :books: Further reading
 
