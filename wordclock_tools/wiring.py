@@ -22,14 +22,17 @@ class wiring:
         self.LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
         self.LED_DMA = 10  # DMA channel to use for generating signal
         self.LED_INVERT = False  # True to invert the signal (when using NPN transistor level shift)
+        wiring_layout = config.get('wordclock_display', 'wiring_layout')
+
         print('Wiring configuration')
         print('  WCA_WIDTH: ' + str(self.WCA_WIDTH))
         print('  WCA_HEIGHT: ' + str(self.WCA_HEIGHT))
         print('  Num of LEDs: ' + str(self.LED_COUNT))
+        print('  Wiring layout: ' + str(wiring_layout))
 
-        wiring_layout = config.get('wordclock_display', 'wiring_layout')
         if config.getboolean('wordclock', 'developer_mode'):
             self.wcl = gtk_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+            print('Developer mode overwrites wiring layout to gtk_wiring!')
         elif wiring_layout == 'bernds_wiring':
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'christians_wiring':
@@ -45,6 +48,10 @@ class wiring:
         elif wiring_layout == 'mini_wiring2':
             self.LED_COUNT = self.WCA_HEIGHT * (self.WCA_WIDTH + 1) + 4
             self.wcl = mini_wiring2(self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'micro_net_wiring':
+            self.wcl = micro_net_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'webdisaster_wiring':
+            self.wcl = webdisaster_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
             print('Warning: No valid wiring layout found. Falling back to default!')
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
@@ -101,7 +108,7 @@ class bernds_wiring:
         if x % 2 == 0:
             pos = (self.WCA_WIDTH - x - 1) * self.WCA_HEIGHT + y + 2
         else:
-            pos = (self.WCA_WIDTH * self.WCA_HEIGHT) - (self.WCA_HEIGHT * x) - y + 1
+            pos = (self.WCA_WIDTH - x) * self.WCA_HEIGHT - y + 1
         return pos
 
     def mapMinutes(self, min):
@@ -187,7 +194,7 @@ class christians_wiring:
         if y % 2 == 0:
             pos = (self.WCA_HEIGHT - y - 1) * self.WCA_WIDTH + x
         else:
-            pos = (self.WCA_HEIGHT * self.WCA_WIDTH) - (self.WCA_WIDTH * y) - x - 1
+            pos = (self.WCA_HEIGHT - y) * self.WCA_WIDTH - x - 1
         return pos
 
     def mapMinutes(self, min):
@@ -401,3 +408,104 @@ class mini_wiring2:
             print('WARNING: Out of range, when mapping minutes...')
             print(min)
             return 0
+
+
+class micro_net_wiring:
+    """
+    A class, holding all information of the wordclock's layout to map given
+    timestamps, 2d-coordinates to the corresponding LEDs (corresponding to
+    the individual wiring/layout of any wordclock).
+    This class implements the wiring layout as described in
+    https://www.mikrocontroller.net/articles/WordClock_mit_WS2812#Anschluss_WS2812-Streifen_f.C3.BCr_WordClock12h
+    If a different wordclock wiring/layout is chosen, this class needs to be
+    adopted.
+    """
+
+    def __init__(self, WCA_WIDTH, WCA_HEIGHT):
+        self.WCA_WIDTH = WCA_WIDTH
+        self.WCA_HEIGHT = WCA_HEIGHT
+        self.LED_COUNT = self.WCA_WIDTH * self.WCA_HEIGHT + 4
+
+    def getStripIndexFrom2D(self, x, y):
+        """
+        Mapping coordinates to the wordclocks display
+        Needs hardware/wiring dependent implementation
+        Final range:
+             (0,0): top-left
+             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        """
+        if y % 2 == 0:
+            pos = y * self.WCA_WIDTH + x + 4
+        else:
+            pos = (y + 1) * self.WCA_WIDTH - x + 3
+        return pos
+
+    def mapMinutes(self, min):
+        """
+        Access minutes (1,2,3,4)
+        Needs hardware/wiring dependent implementation
+        This implementation assumes the minutes to be wired as the last four leds of the led-strip
+        """
+        if min == 1:
+            return 3
+        elif min == 2:
+            return 0
+        elif min == 3:
+            return 2
+        elif min == 4:
+            return 1
+        else:
+            print('WARNING: Out of range, when mapping minutes...')
+            print(min)
+            return 0
+
+
+class webdisaster_wiring:
+    """
+    A class, holding all information of the wordclock's layout to map given
+    timestamps, 2d-coordinates to the corresponding LEDs (corresponding to
+    the individual wiring/layout of any wordclock).
+    This class implements the wiring layout as described in
+    https://www.mikrocontroller.net/articles/WordClock_mit_WS2812#Anschluss_WS2812-Streifen_f.C3.BCr_WordClock12h
+    If a different wordclock wiring/layout is chosen, this class needs to be
+    adopted.
+    """
+
+    def __init__(self, WCA_WIDTH, WCA_HEIGHT):
+        self.WCA_WIDTH = WCA_WIDTH
+        self.WCA_HEIGHT = WCA_HEIGHT
+        self.LED_COUNT = self.WCA_WIDTH * self.WCA_HEIGHT + 4
+
+    def getStripIndexFrom2D(self, x, y):
+        """
+        Mapping coordinates to the wordclocks display
+        Needs hardware/wiring dependent implementation
+        Final range:
+             (0,0): top-left
+             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        """
+        if y % 2 == 0:
+            pos = y * self.WCA_WIDTH + x
+        else:
+            pos = (y + 1) * self.WCA_WIDTH - x - 1
+        return pos
+
+    def mapMinutes(self, min):
+        """
+        Access minutes (1,2,3,4)
+        Needs hardware/wiring dependent implementation
+        This implementation assumes the minutes to be wired as the last four leds of the led-strip
+        """
+        if min == 1:
+            return self.LED_COUNT - 4
+        elif min == 2:
+            return self.LED_COUNT - 3
+        elif min == 3:
+            return self.LED_COUNT - 2
+        elif min == 4:
+            return self.LED_COUNT - 1
+        else:
+            print('WARNING: Out of range, when mapping minutes...')
+            print(min)
+            return 0
+

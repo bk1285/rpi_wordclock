@@ -123,19 +123,13 @@
                                                     <color-picker v-model="color" v-on:select="setColourWheel"></color-picker>
                                                 </v-layout>
                                                 <v-layout row justify-center>
-                                                    <v-flex xs6>
-                                                        <v-card tile flat>
-                                                            <v-card-text>
-                                                                <v-btn fab small color="black" v-on:click="setColour(0,0,0)"></v-btn>
-                                                            </v-card-text>
-                                                        </v-card>
+                                                    <v-flex xs12>
+                                                        <v-slider label="S" thumb-label v-model="color.saturation" :max="100"></v-slider>
                                                     </v-flex>
-                                                    <v-flex xs6>
-                                                        <v-card tile flat>
-                                                            <v-card-text>
-                                                                <v-btn fab small color="white" v-on:click="setColour(255,255,255)"></v-btn>
-                                                            </v-card-text>
-                                                        </v-card>
+                                                </v-layout>
+                                                <v-layout row justify-center>
+                                                    <v-flex xs12>
+                                                        <v-slider label="L" thumb-label v-model="color.luminosity" :max="100"></v-slider>
                                                     </v-flex>
                                                 </v-layout>
                                                 <v-layout row justify-center>
