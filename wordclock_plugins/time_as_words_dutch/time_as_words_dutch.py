@@ -1,9 +1,8 @@
-import datetime as dt
 
 class time_as_words_dutch():
-    '''
+    """
     This class returns a given time as words (string)::
-    '''
+    """
 
     def __init__(self):
         self.prefix = "HET IS "
@@ -38,12 +37,12 @@ class time_as_words_dutch():
         hour=time.hour%12+(1 if time.minute/5 > 4 else 0)
         minute=time.minute/5
         # Assemble string
-        return str( \
-            (self.prefix if withPrefix else "") + \
-            self.minutes[minute] + \
+        return str(
+            (self.prefix if withPrefix else "") +
+            self.minutes[minute] +
             self.hours[hour] + \
             # Append "S" to "EIN" (in case of "EIN UHR")
             ("" if (hour == 1 and minute != 0) else "") + \
             (self.full_hour_suffix if (minute == 0) else "")) + " " + \
-            ('*' * int(time.minute%5))
+            ('*' * int(time.minute % 5))
 

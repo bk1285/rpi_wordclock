@@ -44,7 +44,7 @@ Required python dependencies:
 
 To install use::
 
-    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces
+    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic flask-restplus
 
 
 .. _temperature_sensor:
@@ -58,7 +58,7 @@ These dependencies are http://www.airspayce.com/mikem/bcm2835/index.html
 
 and::
 
-    sudo pip install am2303_rpi
+    sudo pip install am2302_rpi
 
 
 .. _3rd_party_deps_git:
@@ -67,7 +67,6 @@ and::
 +++++++++++++++++++++++++++++++++++++++++
 
 Install 3rd-party dependencies (compiled on your own).
-.. todo:: Improve installation location.
 
 Install rpi_ws281x to your home-directory (to access leds)::
 
@@ -81,13 +80,6 @@ Install rpi_ws281x to your home-directory (to access leds)::
 .. note::
     Since this library is continiously updated: A version, which is tested to work with the wordclock is commit 2f9e03c45:
     https://github.com/jgarff/rpi_ws281x/tree/2f9e03c45ba0964029204db565ad9d6233b3a1a6
-
-Install fontdemo to your home-directory (to render strings)::
-
-    cd ~
-    git clone https://gist.github.com/5488053.git
-
-This installs fontdemo.py to ~/5488053.
 
 Install pywapi::
 
@@ -115,11 +107,6 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
 
     cd ~
     git clone https://github.com/bk1285/rpi_wordclock.git
-
-Link the previously installed file fontdemo.py to ~/rpi_wordclock using a softlink::
-
-    ln -s ~/5488053/fontdemo.py ~/rpi_wordclock/fontdemo.py
-
 
 .. _adopt_software:
 
@@ -161,4 +148,9 @@ Add the python-script to crontab by calling the command::
 Add here::
 
     @reboot sudo python /home/pi/rpi_wordclock/wordclock.py
+
+Access the wordclock via webinterface
+-------------------------------------
+
+Visit the wordclocks webinterface by entering the wordclocks IP to your browers address bar.
 

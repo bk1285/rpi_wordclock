@@ -5,8 +5,6 @@
 doc/_build*
 doc/_apidoc/*
 
-fontdemo.py
-
 # ignore highlighted files: no checkin
 *NOCI*
 
