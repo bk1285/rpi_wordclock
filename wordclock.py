@@ -1,14 +1,15 @@
+#!/usr/bin/env python
 import ConfigParser
 from importlib import import_module
 import netifaces
 import inspect
 import os
 import time
+import threading
 from shutil import copyfile
 import wordclock_tools.wordclock_display as wcd
 import wordclock_interfaces.event_handler as wci
 import wordclock_interfaces.web_interface as wciweb
-
 
 class wordclock:
     """
@@ -40,7 +41,11 @@ class wordclock:
         # to other classes/plugins for further usage
         self.config.set('wordclock', 'base_path', self.basePath)
 
-        self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')
+        self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')        
+        if self.developer_mode_active:
+            # must be created first
+            import wx        
+            self.app = wx.App()
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
@@ -160,9 +165,24 @@ class wordclock:
                         if self.plugin_index == len(self.plugins):
                             self.plugin_index = 0
                         time.sleep(self.wci.lock_time)
+    def run_forever(self):
+        self.startup()        
+        self.run()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
+    #word_clock = wordclock()
+    #word_clock.startup()
+    #word_clock.run()
     word_clock = wordclock()
-    word_clock.startup()
-    word_clock.run()
+    developer_mode = word_clock.developer_mode_active
+    if not developer_mode:
+        word_clock.run_forever()
+    else:
+        print("We are not on raspberry...open simulation window")        
+        wordclock_thread = threading.Thread(target=word_clock.run_forever)
+        # Exit the server thread when the main thread terminates
+        wordclock_thread.daemon = True
+        wordclock_thread.start()
+        word_clock.app.MainLoop()
+    

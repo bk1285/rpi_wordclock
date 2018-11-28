@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import ConfigParser
 import fontdemo
 import os
@@ -28,8 +29,8 @@ class wordclock_display:
                 'To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
-            from GTKstrip import GTKstrip
-            self.strip = GTKstrip(wci)
+            from WXstrip import WXstrip
+            self.strip = WXstrip(wci)
             self.default_font = os.path.join('/usr/share/fonts/TTF/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
         else:
@@ -41,7 +42,7 @@ class wordclock_display:
             except:
                 print('Update deprecated external dependency rpi_ws281x. '
                       'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
-
+                      
             self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
 
