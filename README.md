@@ -6,6 +6,7 @@
   * display the current time
   * get information on current temperature, sunrise, sunset, IP-settings, ...
   * play tetris (credits to [@mrksngl](https://github.com/mrksngl))
+  * View a demo [here](https://youtu.be/wcLQDykRBbM?t=84)
 * RESTful, [swagger](https://swagger.io/specification/)-based API to access and control the wordclock functionality
 * [Documentation](http://rpi-wordclock.readthedocs.io/en/master/) on how to build the clock.
 * Remote control via webinterface (credits to [@FrankX0](https://github.com/FrankX0))
