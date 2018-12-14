@@ -1,5 +1,8 @@
 import os
-from neopixel import *
+try:
+    from neopixel import Color
+except:
+    from WXcolors import Color
 
 
 class plugin:

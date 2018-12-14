@@ -5,8 +5,6 @@ from wordclock_interfaces import event_handler as weh
 import sys
 from WXcolors import Color
 import wx
-# from wx import *
-
 
 class Example(wx.Frame):
 
