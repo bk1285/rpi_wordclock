@@ -36,6 +36,14 @@ class wordclock:
         self.config = ConfigParser.ConfigParser()
         self.config.read(pathToConfigFile)
 
+	pathToStandardsFile = self.basePath + '/wordclock_config/wordclock_config-standards.cfg'
+	self.standards = ConfigParser.ConfigParser()
+	self.standards.read(pathToStandardsFile)
+
+	pathToColorsFile = self.basePath + '/wordclock_config/wordclock_config-colors.cfg'
+	self.colors = ConfigParser.ConfigParser()
+	self.colors.read(pathToColorsFile)
+
         # Add to the loaded configuration the current base path to provide it
         # to other classes/plugins for further usage
         self.config.set('wordclock', 'base_path', self.basePath)
@@ -51,7 +59,7 @@ class wordclock:
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
-        self.wcd = wcd.wordclock_display(self.config, self.wci)
+        self.wcd = wcd.wordclock_display(self.config, self.colors, self.wci)
 
         # Define path to general icons (not plugin-specific)
         self.pathToGeneralIcons = os.path.join(self.basePath, 'icons', self.wcd.dispRes())
