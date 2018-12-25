@@ -4,6 +4,7 @@
 import datetime
 import os
 import wordclock_plugins.time_default.time_german as time_german
+import wordclock_plugins.time_default.time_german2 as time_german2
 import wordclock_plugins.time_default.time_dutch as time_dutch
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_tools.wordclock_colors as wcc
@@ -35,6 +36,8 @@ class plugin:
             language = ''
         if language == 'german':
             self.taw = time_german.time_german()
+        elif language == 'german2':
+            self.taw = time_german2.time_german2()
         elif language == 'dutch':
             self.taw = time_dutch.time_dutch()
         elif language == 'swiss_german':

@@ -3,6 +3,7 @@ import datetime
 import os
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_plugins.time_default.time_german as wcp_time_german
+import wordclock_plugins.time_default.time_german2 as wcp_time_german2
 import wordclock_plugins.time_default.time_dutch as wcp_time_dutch
 import wordclock_plugins.time_default.time_swiss_german as wcp_swiss_german
 
@@ -28,6 +29,8 @@ class plugin:
         language = config.get('plugin_time_default', 'language')
         if language == 'german':
             self.taw = wcp_time_german.time_german()
+        elif language == 'german2':
+            self.taw = wcp_time_german2.time_german2()
         elif language == 'dutch':
             self.taw = wcp_time_dutch.time_dutch()
         elif language == 'swiss_german':

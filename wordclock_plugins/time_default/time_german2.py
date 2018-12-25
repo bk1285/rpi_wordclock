@@ -21,7 +21,7 @@ class time_german2:
             range(11,15) + range(33,36), \
             range(7,11) + range(33,36) ]
         self.hours= [range(94,99), \
-            range(55,59), \
+            range(55,58), \
             range(62,66), \
             range(66,70), \
             range(73,77), \
@@ -43,6 +43,6 @@ class time_german2:
             (self.prefix if withPrefix else []) + \
             self.minutes[minute] + \
             self.hours[hour] + \
-            ([60] if (hour == 1 and minute != 0) else []) + \
+            ([58] if (hour == 1 and minute != 0) else []) + \
             (self.full_hour if (minute == 0) else [])
 
