@@ -2,10 +2,14 @@ from astral import Astral
 import datetime
 import os
 import wordclock_tools.wordclock_colors as wcc
-import wordclock_plugins.time_default.time_german as wcp_time_german
-import wordclock_plugins.time_default.time_german2 as wcp_time_german2
-import wordclock_plugins.time_default.time_dutch as wcp_time_dutch
-import wordclock_plugins.time_default.time_swiss_german as wcp_swiss_german
+import wordclock_plugins.time_default.time_english as time_english
+import wordclock_plugins.time_default.time_german as time_german
+import wordclock_plugins.time_default.time_german2 as time_german2
+import wordclock_plugins.time_default.time_dutch as time_dutch
+import wordclock_plugins.time_default.time_swabian as time_swabian
+import wordclock_plugins.time_default.time_bavarian as time_bavarian
+import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
+import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 
 
 class plugin:
@@ -27,14 +31,22 @@ class plugin:
 
         # Choose language to display sunrise
         language = config.get('plugin_time_default', 'language')
-        if language == 'german':
-            self.taw = wcp_time_german.time_german()
+        if language == 'english':
+            self.taw = time_english.time_english()
+        elif language == 'german':
+            self.taw = time_german.time_german()
         elif language == 'german2':
-            self.taw = wcp_time_german2.time_german2()
+            self.taw = time_german2.time_german2()
+	elif language == 'swabian':
+            self.taw = time_swabian.time_swabian()
         elif language == 'dutch':
-            self.taw = wcp_time_dutch.time_dutch()
+            self.taw = time_dutch.time_dutch()
+	elif language == 'bavarian':
+            self.taw = time_bavarian.time_bavarian()
         elif language == 'swiss_german':
-            self.taw = wcp_swiss_german.time_swiss_german()
+            self.taw = time_swiss_german.time_swiss_german()
+	elif language == 'swiss_german2':
+            self.taw = time_swiss_german2.time_swiss_german2()
         else:
             print('Could not detect language: ' + language + '.')
             print('Choosing default: german')
