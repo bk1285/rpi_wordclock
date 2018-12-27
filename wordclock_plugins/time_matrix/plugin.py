@@ -8,6 +8,7 @@ import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
 import wordclock_plugins.time_default.time_dutch as time_dutch
 import wordclock_plugins.time_default.time_swabian as time_swabian
+import wordclock_plugins.time_default.time_swabian as time_swabian2
 import wordclock_plugins.time_default.time_bavarian as time_bavarian
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2

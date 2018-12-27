@@ -5,6 +5,7 @@ import time_english
 import time_german
 import time_german2
 import time_swabian
+import time_swabian2
 import time_dutch
 import time_bavarian
 import time_swiss_german
