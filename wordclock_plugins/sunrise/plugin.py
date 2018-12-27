@@ -68,7 +68,7 @@ class plugin:
         # Display data of sunrise
         wcd.animate(self.name, 'sunrise', invert=True)
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
-        taw_indices = self.taw.get_time(sun_data['sunrise'], withPrefix=False)
+        taw_indices = self.taw.get_time(sun_data['sunrise'], purist=True)
         wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         if wci.waitForExit(3.0):
@@ -76,7 +76,7 @@ class plugin:
         # Display data of sunset
         wcd.animate(self.name, 'sunrise')
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
-        taw_indices = self.taw.get_time(sun_data['sunset'], withPrefix=False)
+        taw_indices = self.taw.get_time(sun_data['sunset'], purist=True)
         wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         if wci.waitForExit(3.0):
