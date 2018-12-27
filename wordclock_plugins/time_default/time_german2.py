@@ -1,4 +1,3 @@
-
 class time_german2:
     """
     This class returns a given time as a range of LED-indices.
