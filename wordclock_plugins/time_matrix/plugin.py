@@ -47,6 +47,8 @@ class plugin:
             self.taw = time_german2.time_german2()
 	elif language == 'swabian':
             self.taw = time_swabian.time_swabian()
+	elif language == 'swabian2':
+            self.taw = time_swabian2.time_swabian2()
         elif language == 'dutch':
             self.taw = time_dutch.time_dutch()
 	elif language == 'bavarian':
