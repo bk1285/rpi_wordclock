@@ -7,7 +7,7 @@ import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
 import wordclock_plugins.time_default.time_dutch as time_dutch
 import wordclock_plugins.time_default.time_swabian as time_swabian
-import wordclock_plugins.time_default.time_swabian as time_swabian2
+import wordclock_plugins.time_default.time_swabian2 as time_swabian2
 import wordclock_plugins.time_default.time_bavarian as time_bavarian
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
@@ -31,7 +31,7 @@ class plugin:
         self.astral_at_location = Astral()[config.get('plugin_' + self.name, 'location')]
 
         # Choose language to display sunrise
-        language = config.get('plugin_time_default', 'language')
+        language = ''.join(config.get('plugin_time_default', 'language'))
         if language == 'english':
             self.taw = time_english.time_english()
         elif language == 'german':
