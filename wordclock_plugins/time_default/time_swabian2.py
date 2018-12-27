@@ -1,7 +1,8 @@
 class time_swabian2:
     """
     This class returns a given time as a range of LED-indices.
-    Illuminating these LEDs represents the current time on a german WCA in swabian
+    Illuminating these LEDs represents the current time on a german WCA in swabian using the german2 layout
+    Based on work from SebVoss, adapted by plotaBot
     """
 
     def __init__(self):
