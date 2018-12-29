@@ -14,10 +14,10 @@ class wiring:
 
         # LED strip configuration:
         try:
-            language = config.get('wordclock_display', 'language')
+            language = ''.join(config.get('wordclock_display', 'language'))
         except:
             # For backward compatibility
-            language = config.get('plugin_time_default', 'language')
+            language = ''.join(config.get('plugin_time_default', 'language'))
         stencil_content = ast.literal_eval(config.get('language_options', language))
         self.WCA_HEIGHT = len(stencil_content)
         self.WCA_WIDTH = len(stencil_content[0].decode('utf-8'))
