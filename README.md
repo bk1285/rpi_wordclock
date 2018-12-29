@@ -1,21 +1,22 @@
-## Software to create a Raspberry Pi based wordclock.
+## Software to create a Raspberry Pi based wordclock
 
-### ✔️ Currently available
-* Various supported [language layouts](https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts)
-* Various plugins to
+### ✔️ Features
+* [Various language layouts](https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_layouts)
+* [Various plugins](https://github.com/bk1285/rpi_wordclock/tree/master/wordclock_plugins) to
   * display the current time
   * get information on current temperature, sunrise, sunset, IP-settings, ...
   * play tetris (credits to [@mrksngl](https://github.com/mrksngl))
+  * View a demo [here](https://youtu.be/wcLQDykRBbM?t=84)
 * RESTful, [swagger](https://swagger.io/specification/)-based API to access and control the wordclock functionality
 * [Documentation](http://rpi-wordclock.readthedocs.io/en/master/) on how to build the clock.
-
-### ⏳ In progress: Remote control your wordclock via webinterface
-* Control the wordclock with a browser within your local network
-* Linking the webinterface to your smartphones homescreen provides you an "app"-like usage of the interface
-* Hardware buttons are not "mandatory" anymore.
-* Merge to develop is currently planned for November 18th, 2018
-* See currrent [PR](https://github.com/bk1285/rpi_wordclock/pull/100)
-* Credits to [@FrankX0](https://github.com/FrankX0) 
+* Remote control via webinterface (credits to [@FrankX0](https://github.com/FrankX0))
+  * Control the wordclock with a browser within your local network
+  * Linking the webinterface to your smartphones homescreen provides an app-like usage of the interface
+  * Hardware buttons are not mandatory anymore.
+  
+### ⏳ In progress
+* Integration of a brightness sensor
+* Make the clock available at [home-assistant](https://www.home-assistant.io/components/)
 
 ### :books: Further reading
 

@@ -5,6 +5,7 @@ import time_english
 import time_german
 import time_german2
 import time_swabian
+import time_swabian2
 import time_dutch
 import time_bavarian
 import time_swiss_german
@@ -30,7 +31,7 @@ class plugin:
         self.description = "The minimum, you should expect from a wordclock."
 
         # Choose language
-        language = ''.join(config.get('plugin_' + self.name, 'language'))
+        language = ''.join(config.get('plugin_time_default', 'language'))
         print('  Setting language to ' + language + '.')
         if language == 'dutch':
             self.taw = time_dutch.time_dutch()
@@ -42,6 +43,8 @@ class plugin:
             self.taw = time_german2.time_german2()
         elif language == 'swabian':
             self.taw = time_swabian.time_swabian()
+        elif language == 'swabian2':
+            self.taw = time_swabian2.time_swabian2()
         elif language == 'bavarian':
             self.taw = time_bavarian.time_bavarian()
         elif language == 'swiss_german':
