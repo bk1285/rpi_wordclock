@@ -203,11 +203,11 @@ class Brightness(Resource):
 @web_interface.api.route('/color_temperature')
 class ColorTemperature(Resource):
     @web_interface.api.doc(
-        description='Takes an integer value to set the wordclock brightness',
+        description='Takes an integer value to set the wordclock color temperature',
         responses={
             200: 'Success',
             400: 'Bad request'})
-    @web_interface.api.expect(web_interface.brightness_model)
+    @web_interface.api.expect(web_interface.color_temperature_model)
     def post(self):
         color_temperature = web_interface.api.payload.get('color_temperature')
         web_interface.app.wclk.wcd.setColorTemperatureToAll(color_temperature)

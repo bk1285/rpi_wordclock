@@ -81,4 +81,4 @@ def color_temperature_to_rgb(color_temperature):
         else:
             blue = tmp_blue
 
-    return Color(red, green, blue)
+    return Color(int(red), int(green), int(blue))
