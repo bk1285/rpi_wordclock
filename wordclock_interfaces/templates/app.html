@@ -58,8 +58,8 @@
                                         <v-card-title>The Raspberry Wordclock</v-card-title>
                                         <v-card-text>
                                             <v-icon>fa fa-link</v-icon>  <a href="https://github.com/bk1285/rpi_wordclock">Project page</a><br><br>
-                                            <v-icon>fa fa-link</v-icon>  <a href="https://github.com/bk1285/rpi_wordclock/graphs/contributors">Contributors</a><br><br>
-                                            <v-icon>fa fa-cogs</v-icon>  <a href="/api">API of this clock</a><br><br>
+                                            <v-icon>fa fa-users</v-icon>  <a href="https://github.com/bk1285/rpi_wordclock/graphs/contributors">Contributors</a><br><br>
+                                            <v-icon>fa fa-cogs</v-icon>  <a href="/api#/API">API of this clock</a><br><br>
                                         </v-card-text>
                                     </v-card>
                                 </v-dialog>
@@ -129,13 +129,26 @@
                                                     <color-picker v-model="color" v-on:select="setColourWheel"></color-picker>
                                                 </v-layout>
                                                 <v-layout row justify-center>
-                                                    <v-flex xs12>
-                                                        <v-slider label="S" thumb-label v-model="color.saturation" :max="100"></v-slider>
+                                                    <v-flex xs6>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn fab small color="black" v-on:click="setColour(0,0,0)"></v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
                                                     </v-flex>
-                                                </v-layout>
-                                                <v-layout row justify-center>
-                                                    <v-flex xs12>
-                                                        <v-slider label="L" thumb-label v-model="color.luminosity" :max="100"></v-slider>
+                                                    <v-flex xs6>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn fab small color="white" v-on:click="setColour(255,255,255)"></v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </v-flex>
+                                                     <v-flex xs6>
+                                                        <v-card tile flat>
+                                                            <v-card-text>
+                                                                <v-btn fab small color="rgb(255, 255, 150)" v-on:click="setColour(255,255,50)"></v-btn>
+                                                            </v-card-text>
+                                                        </v-card>
                                                     </v-flex>
                                                 </v-layout>
                                                 <v-layout row justify-center>
