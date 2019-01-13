@@ -210,5 +210,11 @@ class ColorTemperature(Resource):
     @web_interface.api.expect(web_interface.color_temperature_model)
     def post(self):
         color_temperature = web_interface.api.payload.get('color_temperature')
-        web_interface.app.wclk.wcd.setColorTemperatureToAll(color_temperature)
+        default_plugin_idx = web_interface.app.wclk.default_plugin
+        web_interface.app.wclk.runNext(default_plugin_idx)
+        default_plugin = web_interface.app.wclk.plugins[default_plugin_idx]
+        default_plugin.bg_color = wcc.BLACK
+        default_plugin.word_color = wcc.color_temperature_to_rgb(color_temperature)
+        default_plugin.minute_color = wcc.color_temperature_to_rgb(color_temperature)
+        default_plugin.show_time(web_interface.app.wclk.wcd, web_interface.app.wclk.wci)
         return "Wordclock color temperature set to " + str(color_temperature)
