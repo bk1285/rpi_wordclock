@@ -51,7 +51,7 @@ class plugin:
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
         
-	for i in range(150, -1, -150/15):
+	for i in range(110, -1, -110/11):
 		taw_indices = self.taw.get_time(now, current=False)
 		wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.Color(i, i, i))
 		taw_indices = self.taw.get_time(now, current=True)
