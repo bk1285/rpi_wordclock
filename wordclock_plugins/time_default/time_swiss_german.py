@@ -60,11 +60,11 @@ class time_swiss_german:
             range(99,105)]
         self.full_hour= range(107,110)
 
-    def get_time(self, time, withPrefix=True):
+    def get_time(self, time, purist):
         hour=time.hour%12+(1 if time.minute/5 > 4 else 0)
         minute=time.minute/5
         # Assemble indices
         return  \
-            (self.prefix if withPrefix else []) + \
+            (self.prefix if not purist else []) + \
             self.minutes[minute] + \
             self.hours[hour]
