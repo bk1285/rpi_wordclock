@@ -1,5 +1,5 @@
 
-class time_seconds:
+class font_matrix:
     """
     This class returns a given time as a range of LED-indices.
     Illuminating these LEDs represents the current time on a german WCA
@@ -17,18 +17,9 @@ class time_seconds:
             range(23,26) + range(33,34) + range(37,38) + range(44,45) + range(48,49) + range(56,59) + range(66,67) + range(70,71) + range(77,78) + range(81,82) + range(89,92), \
             range(23,26) + range(33,34) + range(37,38) + range(44,45) + range(48,49) + range(56,60) + range(70,71) + range(80,81) + range(89,91) ]
 
-    def get_time(self, time, current):
-	if current:
-		seconds = time.second 
-	else:
-		seconds = time.second-1
-        decimal=seconds/10
-	ones=seconds%10
-	self.rightDigit = []
-	for i in self.leftDigit[ones]:
-		self.rightDigit.insert(i, i+6)
+    def getC(self, currentC):
         # Assemble indices
-        return  \
-            (self.leftDigit[decimal] + \
-             self.rightDigit)
+        return (self.leftDigit[currentC])
 
+    def getCharCount(self):
+	return (len(self.leftDigit)-1)
