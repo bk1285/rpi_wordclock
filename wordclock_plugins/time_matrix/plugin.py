@@ -59,6 +59,13 @@ class plugin:
             print('Choosing default: german')
             self.taw = time_german.time_german()
 
+	try:
+            self.purist = config.getboolean('plugin_time_default', 'purist')
+        except:
+            print(
+            '  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
+            self.purist = False
+
         self.bg_color = wcc.BLACK  # default background color
         self.word_color = wcc.WHITE  # default word color
         self.minute_color = wcc.WHITE  # default minute color
@@ -85,7 +92,7 @@ class plugin:
             # Set current time
             now = datetime.datetime.now()
             # Returns indices, which represent the current time, when beeing illuminated
-            taw_indices = self.taw.get_time(now)
+            taw_indices = self.taw.get_time(now, self.purist)
 
             wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
