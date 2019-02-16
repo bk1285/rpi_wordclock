@@ -1,5 +1,5 @@
 import ast
-
+import wordclock_colors as wcc
 
 class wiring:
     """
@@ -71,6 +71,7 @@ class wiring:
              (0,0): top-left
              (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
         """
+	if x == 6 and y == 9: color = wcc.BLACK
         strip.setPixelColor(self.wcl.getStripIndexFrom2D(x, y), color)
 
     def getStripIndexFrom2D(self, x, y):
