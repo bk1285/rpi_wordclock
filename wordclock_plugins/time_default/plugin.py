@@ -161,7 +161,7 @@ class plugin:
             self.brightness_mode_pos += self.brightness_change
             # TODO: Evaluate taw_indices only every n-th loop (saving resources)
             now = datetime.datetime.now()  # Set current time
-            taw_indices = self.taw.get_time(now, self.purist)
+            taw_indices = wcd.taw.get_time(now, self.purist)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
             wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
