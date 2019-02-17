@@ -24,32 +24,7 @@ class plugin:
         self.name = os.path.dirname(__file__).split('/')[-1]
         self.pretty_name = "Matrix with time"
         self.description = "There is no spoon?"
-
-        # Choose language
-        language = ''.join(config.get('plugin_time_default', 'language'))
-	if language == 'english':
-            self.taw = time_english.time_english()
-        elif language == 'german':
-            self.taw = time_german.time_german()
-        elif language == 'german2':
-            self.taw = time_german2.time_german2()
-	elif language == 'swabian':
-            self.taw = time_swabian.time_swabian()
-	elif language == 'swabian2':
-            self.taw = time_swabian2.time_swabian2()
-        elif language == 'dutch':
-            self.taw = time_dutch.time_dutch()
-	elif language == 'bavarian':
-            self.taw = time_bavarian.time_bavarian()
-        elif language == 'swiss_german':
-            self.taw = time_swiss_german.time_swiss_german()
-	elif language == 'swiss_german2':
-            self.taw = time_swiss_german2.time_swiss_german2()
-        else:
-            print('Could not detect language: ' + language + '.')
-            print('Choosing default: german')
-            self.taw = time_german.time_german()
-
+	
 	try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
