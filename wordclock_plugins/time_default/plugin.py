@@ -30,32 +30,6 @@ class plugin:
         self.pretty_name = "The time"
         self.description = "The minimum, you should expect from a wordclock."
 
-        # Choose language
-        language = ''.join(config.get('plugin_time_default', 'language'))
-        print('  Setting language to ' + language + '.')
-        if language == 'dutch':
-            self.taw = time_dutch.time_dutch()
-        elif language == 'english':
-            self.taw = time_english.time_english()
-        elif language == 'german':
-            self.taw = time_german.time_german()
-        elif language == 'german2':
-            self.taw = time_german2.time_german2()
-        elif language == 'swabian':
-            self.taw = time_swabian.time_swabian()
-        elif language == 'swabian2':
-            self.taw = time_swabian2.time_swabian2()
-        elif language == 'bavarian':
-            self.taw = time_bavarian.time_bavarian()
-        elif language == 'swiss_german':
-            self.taw = time_swiss_german.time_swiss_german()
-        elif language == 'swiss_german2':
-            self.taw = time_swiss_german2.time_swiss_german2()
-        else:
-            print('Could not detect language: ' + language + '.')
-            print('Choosing default: german')
-            self.taw = time_german.time_german()
-
         try:
             self.typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
         except:

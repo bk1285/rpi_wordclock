@@ -247,7 +247,7 @@ def main():
     if process_all:
         all_languages = cfg.options('language_options')
     else:
-        all_languages = [cfg.get('stencil_parameter', 'language')]
+        all_languages = [cfg.get('wordclock_display', 'language')]
 
     for lang in all_languages:
         print('Processing layouts for ' + str(lang) + '.')
