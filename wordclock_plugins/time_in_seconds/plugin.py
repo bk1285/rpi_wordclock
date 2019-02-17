@@ -7,7 +7,9 @@ import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
     """
-    Description for lazy reader
+    Drink mate and do some yoga while watching the time being over and over the same again.
+    'The definition of insanity is doing the same thing over and over and expecting different results.' - Albert Einstein
+    Credits: plotaBot
     """
 
     def __init__(self, config):
@@ -17,7 +19,7 @@ class plugin:
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
         self.pretty_name = "Seconds"
-        self.description = "Shows the current seconds. The fool thinks no time flies"
+        self.description = "Shows the current seconds. The fool thinks no time flies;)"
 
 	self.taw = time_seconds.time_seconds()
 
@@ -29,7 +31,7 @@ class plugin:
         """
         Displays time until aborted by user interaction on pin button_return
         """
-        # Some initializations of the "previous" minute
+        # Some initializations of the "previous" second
         prev_sec = -1
 
         while True:
@@ -50,10 +52,12 @@ class plugin:
         now = datetime.datetime.now()
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
-        
+        #show seconds based on numbers defined in time_seconds
 	for i in range(110, -1, -110/11):
+		#previous seconds, dimming down
 		taw_indices = self.taw.get_time(now, current=False)
 		wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.Color(i, i, i))
+		#current seconds
 		taw_indices = self.taw.get_time(now, current=True)
 		wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
 		wcd.setMinutes(now, self.minute_color)

@@ -2,16 +2,6 @@ from astral import Astral
 import datetime
 import os
 import wordclock_tools.wordclock_colors as wcc
-import wordclock_plugins.time_default.time_english as time_english
-import wordclock_plugins.time_default.time_german as time_german
-import wordclock_plugins.time_default.time_german2 as time_german2
-import wordclock_plugins.time_default.time_dutch as time_dutch
-import wordclock_plugins.time_default.time_swabian as time_swabian
-import wordclock_plugins.time_default.time_swabian2 as time_swabian2
-import wordclock_plugins.time_default.time_bavarian as time_bavarian
-import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
-import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
-
 
 class plugin:
     """
@@ -30,31 +20,6 @@ class plugin:
 
         self.astral_at_location = Astral()[config.get('plugin_' + self.name, 'location')]
 
-        # Choose language to display sunrise
-        language = ''.join(config.get('plugin_time_default', 'language'))
-        if language == 'english':
-            self.taw = time_english.time_english()
-        elif language == 'german':
-            self.taw = time_german.time_german()
-        elif language == 'german2':
-            self.taw = time_german2.time_german2()
-	elif language == 'swabian':
-            self.taw = time_swabian.time_swabian()
-	elif language == 'swabian2':
-            self.taw = time_swabian2.time_swabian2()
-        elif language == 'dutch':
-            self.taw = time_dutch.time_dutch()
-	elif language == 'bavarian':
-            self.taw = time_bavarian.time_bavarian()
-        elif language == 'swiss_german':
-            self.taw = time_swiss_german.time_swiss_german()
-	elif language == 'swiss_german2':
-            self.taw = time_swiss_german2.time_swiss_german2()
-        else:
-            print('Could not detect language: ' + language + '.')
-            print('Choosing default: german')
-            self.taw = wcp_time_german.time_german()
-
         self.bg_color_index = 0  # default background color: black
         self.word_color_index = 2  # default word color: warm white
         self.minute_color_index = 2  # default minute color: warm white
@@ -68,7 +33,7 @@ class plugin:
         # Display data of sunrise
         wcd.animate(self.name, 'sunrise', invert=True)
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
-        taw_indices = self.taw.get_time(sun_data['sunrise'], purist=True)
+        taw_indices = wcd.taw.get_time(sun_data['sunrise'], purist=True)
         wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         if wci.waitForExit(3.0):
@@ -76,7 +41,7 @@ class plugin:
         # Display data of sunset
         wcd.animate(self.name, 'sunrise')
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
-        taw_indices = self.taw.get_time(sun_data['sunset'], purist=True)
+        taw_indices = wcd.taw.get_time(sun_data['sunset'], purist=True)
         wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         if wci.waitForExit(3.0):
