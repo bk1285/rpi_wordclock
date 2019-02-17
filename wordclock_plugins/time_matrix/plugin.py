@@ -58,7 +58,7 @@ class plugin:
             # Set current time
             now = datetime.datetime.now()
             # Returns indices, which represent the current time, when beeing illuminated
-            taw_indices = self.taw.get_time(now, self.purist)
+            taw_indices = wcd.taw.get_time(now, self.purist)
 
             wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
