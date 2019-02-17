@@ -146,7 +146,7 @@ class plugin:
             # END: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
             # TODO: Evaluate taw_indices only every n-th loop (saving resources)
             now = datetime.datetime.now()  # Set current time
-            taw_indices = self.taw.get_time(now, self.purist)
+            taw_indices = wcd.taw.get_time(now, self.purist)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
             wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
