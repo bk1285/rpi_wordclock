@@ -182,7 +182,7 @@ class wordclock_display:
             bg_color = self.default_bg_color
 
         text = '    ' + text + '    '
-		
+
 		if config.getboolean('wordclock', 'developer_mode'):
 			fnt = fontdemo.Font('/usr/share/fonts/truetype/freefont/FreeSans.ttf', self.wcl.WCA_HEIGHT)
 		else:
