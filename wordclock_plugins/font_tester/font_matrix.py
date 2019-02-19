@@ -5,36 +5,8 @@ class font_matrix:
     """
 
     def __init__(self):
-	
-
-	self.charList = (self.replacement + \
-		self.a + \
-		self.b + \
-		self.c + \
-		self.d + \
-		self.e + \
-		self.f + \
-		self.g + \
-		self.h + \
-		self.i + \
-		self.j + \
-		self.k + \
-		self.l + \
-		self.m + \
-		self.n + \
-		self.o + \
-		self.p + \
-		self.q + \
-		self.r + \
-		self.s + \
-		self.t + \
-		self.u + \
-		self.v + \
-		self.w + \
-		self.x + \
-		self.y + \
-		self.z)
-    def getC(self, currentC):
+		
+    def showText(self, currentC):
         return (self.charList[currentC*2] + \
 	    self.charList[(currentC*2)+1])
 
@@ -46,7 +18,10 @@ class font_matrix:
 	return [range(11,16) + range(22,24) + range(25,27) + [33] + [35] + [37] + range(44,47) + [48] + range(55,57) + range(58,60) + range (66,71) + range(77,79) + range(80,82) + range(88,93), \
 	    []]
 
-	#A
+	switch (char){
+		case 20:
+			
+			break;
     def a(self):
         return [[24] + [34] + [36] + [44] + [48] + range(55,60) + [66] + [70] + [77] + [81] + [88] + [92], \
 	    range(62,64) + [72] + [75] + [83] + [86] + range(95,98)]
