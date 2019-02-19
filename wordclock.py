@@ -111,7 +111,7 @@ class wordclock:
         """
 
         #try:
-	    print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+		print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
 	    self.plugins[self.plugin_index].run(self.wcd, self.wci)
         #except:
             #print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
