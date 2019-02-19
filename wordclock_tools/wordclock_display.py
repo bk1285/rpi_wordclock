@@ -19,6 +19,7 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
+	self.config = config
         try:
             default_brightness = config.getint('wordclock_display', 'brightness')
         except:
@@ -183,10 +184,10 @@ class wordclock_display:
 
         text = '    ' + text + '    '
 
-        if config.getboolean('wordclock', 'developer_mode'):
+        if self.config.getboolean('wordclock', 'developer_mode'):
             fnt = fontdemo.Font('/usr/share/fonts/truetype/freefont/FreeSans.ttf', self.wcl.WCA_HEIGHT)
-		else:
-			fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
+	else:
+	    fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
         text_as_pixel = fnt.render_text(text)
 
