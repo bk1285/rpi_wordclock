@@ -183,8 +183,8 @@ class wordclock_display:
 
         text = '    ' + text + '    '
 
-		if config.getboolean('wordclock', 'developer_mode'):
-			fnt = fontdemo.Font('/usr/share/fonts/truetype/freefont/FreeSans.ttf', self.wcl.WCA_HEIGHT)
+        if config.getboolean('wordclock', 'developer_mode'):
+            fnt = fontdemo.Font('/usr/share/fonts/truetype/freefont/FreeSans.ttf', self.wcl.WCA_HEIGHT)
 		else:
 			fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
