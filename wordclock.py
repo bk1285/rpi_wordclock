@@ -110,12 +110,12 @@ class wordclock:
         Runs the currently selected plugin
         """
 
-        try:
+        #try:
 	    print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
 	    self.plugins[self.plugin_index].run(self.wcd, self.wci)
-        except:
-            print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
-            self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+        #except:
+            #print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
+            #self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
 
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()
