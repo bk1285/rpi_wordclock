@@ -8,7 +8,7 @@ class web_interface:
     app = Flask(__name__)
     api = Api(app,
               validate=True,
-              version='4.2',
+              version='4.3',
               title='Wordclock API',
               description='The API to access the raspberry wordclock',
               contact='Bernd',
@@ -47,6 +47,9 @@ class web_interface:
     brightness_model = api.model('brightness', {
         'brightness': fields.Integer(min=0, max=255, example=180, required=True, description='Brightness value')
     })
+    color_temperature_model = api.model('color_temperature', {
+        'color_temperature': fields.Integer(min=1000, max=40000, example=2000, required=True, description='Color temperature in Kelvin')
+    })
 
     def __init__(self, wordclock):
         self.app.wclk = wordclock
@@ -64,7 +67,7 @@ def index():
 
 
 @web_interface.api.route('/plugins')
-class plugins(Resource):
+class Plugins(Resource):
     @web_interface.api.marshal_with(
         web_interface.plugin_model,
         envelope='plugins')
@@ -78,7 +81,7 @@ class plugins(Resource):
 
 
 @web_interface.api.route('/plugin')
-class plugin(Resource):
+class Plugin(Resource):
     @web_interface.api.marshal_with(
         web_interface.plugin_model,
         envelope='plugin')
@@ -109,7 +112,7 @@ class plugin(Resource):
 
 
 @web_interface.api.route('/button')
-class button(Resource):
+class Button(Resource):
     @web_interface.api.doc(
         description='Takes a name of the button, to be pressed: left, right, return',
         responses={
@@ -124,7 +127,7 @@ class button(Resource):
 
 
 @web_interface.api.route('/color')
-class color(Resource):
+class Color(Resource):
     @web_interface.api.doc(
         description='Returns 8bit RGB color values of the displayed time',
         responses={
@@ -176,7 +179,7 @@ class color(Resource):
 
 
 @web_interface.api.route('/brightness')
-class brightness(Resource):
+class Brightness(Resource):
     @web_interface.api.doc(
         description='Returns 8bit value representing the current wordclock brightness',
         responses={
@@ -195,3 +198,23 @@ class brightness(Resource):
         brightness = web_interface.api.payload.get('brightness')
         web_interface.app.wclk.wcd.setBrightness(brightness)
         return "Wordclock brightness set to " + str(brightness)
+
+
+@web_interface.api.route('/color_temperature')
+class ColorTemperature(Resource):
+    @web_interface.api.doc(
+        description='Takes an integer value to set the wordclock color temperature',
+        responses={
+            200: 'Success',
+            400: 'Bad request'})
+    @web_interface.api.expect(web_interface.color_temperature_model)
+    def post(self):
+        color_temperature = web_interface.api.payload.get('color_temperature')
+        default_plugin_idx = web_interface.app.wclk.default_plugin
+        web_interface.app.wclk.runNext(default_plugin_idx)
+        default_plugin = web_interface.app.wclk.plugins[default_plugin_idx]
+        default_plugin.bg_color = wcc.BLACK
+        default_plugin.word_color = wcc.color_temperature_to_rgb(color_temperature)
+        default_plugin.minute_color = wcc.color_temperature_to_rgb(color_temperature)
+        default_plugin.show_time(web_interface.app.wclk.wcd, web_interface.app.wclk.wci)
+        return "Wordclock color temperature set to " + str(color_temperature)
