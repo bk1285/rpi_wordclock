@@ -4,6 +4,15 @@ import fontdemo
 import os
 from PIL import Image
 import wiring
+import wordclock_plugins.time_default.time_english as time_english
+import wordclock_plugins.time_default.time_german as time_german
+import wordclock_plugins.time_default.time_german2 as time_german2
+import wordclock_plugins.time_default.time_dutch as time_dutch
+import wordclock_plugins.time_default.time_swabian as time_swabian
+import wordclock_plugins.time_default.time_swabian2 as time_swabian2
+import wordclock_plugins.time_default.time_bavarian as time_bavarian
+import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
+import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
 
 
@@ -52,6 +61,37 @@ class wordclock_display:
         self.default_fg_color = wcc.WWHITE
         self.default_bg_color = wcc.BLACK
         self.base_path = config.get('wordclock', 'base_path')
+
+        # Choose language
+        try:
+            language = ''.join(config.get('wordclock_display', 'language'))
+        except:
+            # For backward compatibility
+            language = ''.join(config.get('plugin_time_default', 'language'))
+
+        print('  Setting language to ' + language + '.')
+        if language == 'dutch':
+            self.taw = time_dutch.time_dutch()
+        elif language == 'english':
+            self.taw = time_english.time_english()
+        elif language == 'german':
+            self.taw = time_german.time_german()
+        elif language == 'german2':
+            self.taw = time_german2.time_german2()
+        elif language == 'swabian':
+            self.taw = time_swabian.time_swabian()
+        elif language == 'swabian2':
+            self.taw = time_swabian2.time_swabian2()
+        elif language == 'bavarian':
+            self.taw = time_bavarian.time_bavarian()
+        elif language == 'swiss_german':
+            self.taw = time_swiss_german.time_swiss_german()
+        elif language == 'swiss_german2':
+            self.taw = time_swiss_german2.time_swiss_german2()
+        else:
+            print('Could not detect language: ' + language + '.')
+            print('Choosing default: german')
+            self.taw = time_german.time_german()
 
     def setPixelColor(self, pixel, color):
         """
@@ -120,6 +160,13 @@ class wordclock_display:
         else:
             for i in self.wcl.getWcaIndices():
                 self.setPixelColor(i, color)
+
+    def setColorTemperatureToAll(self, temperature, includeMinutes=True):
+        """
+        Sets a color to all leds based on the provided temperature in Kelvin
+        If includeMinutes is set to True, color will also be applied to the minute-leds.
+        """
+        self.setColorToAll(wcc.color_temperature_to_rgb(temperature), includeMinutes)
 
     def resetDisplay(self):
         """

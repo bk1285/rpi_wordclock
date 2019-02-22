@@ -5,6 +5,7 @@ import time_english
 import time_german
 import time_german2
 import time_swabian
+import time_swabian2
 import time_dutch
 import time_bavarian
 import time_swiss_german
@@ -28,30 +29,6 @@ class plugin:
         self.name = os.path.dirname(__file__).split('/')[-1]
         self.pretty_name = "The time"
         self.description = "The minimum, you should expect from a wordclock."
-
-        # Choose language
-        language = ''.join(config.get('plugin_' + self.name, 'language'))
-        print('  Setting language to ' + language + '.')
-        if language == 'dutch':
-            self.taw = time_dutch.time_dutch()
-        elif language == 'english':
-            self.taw = time_english.time_english()
-        elif language == 'german':
-            self.taw = time_german.time_german()
-        elif language == 'german2':
-            self.taw = time_german2.time_german2()
-        elif language == 'swabian':
-            self.taw = time_swabian.time_swabian()
-        elif language == 'bavarian':
-            self.taw = time_bavarian.time_bavarian()
-        elif language == 'swiss_german':
-            self.taw = time_swiss_german.time_swiss_german()
-        elif language == 'swiss_german2':
-            self.taw = time_swiss_german2.time_swiss_german2()
-        else:
-            print('Could not detect language: ' + language + '.')
-            print('Choosing default: german')
-            self.taw = time_german.time_german()
 
         try:
             self.typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
@@ -182,7 +159,7 @@ class plugin:
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
         # Returns indices, which represent the current time, when beeing illuminated
-        taw_indices = self.taw.get_time(now)
+        taw_indices = wcd.taw.get_time(now)
         if self.typewriter and now.minute % 5 == 0:
             for i in range(len(taw_indices)):
                 wcd.setColorBy1DCoordinates(wcd.strip, taw_indices[0:i + 1], self.word_color)
@@ -210,7 +187,7 @@ class plugin:
             # END: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
             # TODO: Evaluate taw_indices only every n-th loop (saving resources)
             now = datetime.datetime.now()  # Set current time
-            taw_indices = self.taw.get_time(now)
+            taw_indices = wcd.taw.get_time(now)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
             wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
@@ -226,7 +203,7 @@ class plugin:
                 self.brightness_mode_pos += self.brightness_change
                 # TODO: Evaluate taw_indices only every n-th loop (saving resources)
                 now = datetime.datetime.now()  # Set current time
-                taw_indices = self.taw.get_time(now)
+                taw_indices = wcd.taw.get_time(now)
                 wcd.setColorToAll(self.bg_color, includeMinutes=True)
                 wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
                 wcd.setMinutes(now, self.minute_color)

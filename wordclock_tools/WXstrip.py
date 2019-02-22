@@ -5,6 +5,8 @@ from wordclock_interfaces import event_handler as weh
 import sys
 from WXcolors import Color
 import wx
+# in all modules that use pubsub 
+from wx.lib.pubsub import pub as Publisher
 
 class Example(wx.Frame):
 
@@ -12,15 +14,18 @@ class Example(wx.Frame):
         super(Example, self).__init__(parent, title=title, 
             size=(500, 500))            
         self.weh = weh
-        panel = wx.Panel(self, wx.ID_ANY, style= wx.WANTS_CHARS)
-        panel.Bind(wx.EVT_KEY_DOWN, self.onKeyPress)
+        self.panel = wx.Panel(self, wx.ID_ANY, style= wx.WANTS_CHARS)
+        self.panel.Bind(wx.EVT_KEY_DOWN, self.onKeyPress)
         self.SetBackgroundColour('#000000')
+        # create a pubsub receiver
+        
         #self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         #self.Bind(wx.EVT_KEY_UP, self.OnKeyDown)
         #self.Bind(wx.EVT_CHAR, self.OnKeyDown)
         self.SetFocus()
         #self.SetBackgroundColour(wx.BLACK)
         self.Show()
+        
     
     def onKeyPress(self, event=None):
         keycode = event.GetKeyCode()
@@ -30,6 +35,12 @@ class Example(wx.Frame):
             self.weh.setEvent(weh.event_handler.EVENT_BUTTON_RIGHT)
         elif(keycode == wx.WXK_RETURN):
             self.weh.setEvent(weh.event_handler.EVENT_BUTTON_RETURN)
+
+    def updateDisplay(self):
+        """
+        Receives data from thread and updates the display
+        """
+        self.Update()
 
 class WXstrip():
     def __init__(self, weh):        
@@ -41,7 +52,7 @@ class WXstrip():
         self.colors = []
         
         self.weh = weh        
-        
+        Publisher.subscribe(self.update, "update")
         self.brightness = 255;
         if(isinstance(threading.current_thread(), threading._MainThread)):                
             self.w =  Example(None, title='Wordclock',weh=weh)            
@@ -78,7 +89,6 @@ class WXstrip():
         return False
         
     def setBrightness(self, brightness):
-        print('set Brighness')
         self.brightness = brightness
     
     def getBrightness(self):
@@ -89,20 +99,20 @@ class WXstrip():
         #self.app.exec_()
         #os._exit(1)
     
-    def setPixelColor(self, index, color):                
+    def setPixelColor(self, index, color):
         self.colors[int(index)] = color
         #if(self.w != None):
             
     
-    def update(self):          
+    def update(self):  
+        
         if(self.w != None):
-            #if(isinstance(threading.current_thread(), threading._MainThread)):                
-            for label,color in zip(self.labels, self.colors):            
-               label.SetForegroundColour((color.r,color.g,color.b)) # set text color
-                #label.setStyleSheet("color:rgba(" + str(color.r) + "," + str(color.g) + ","+ str(color.b)  + "," + str(self.brightness) + ");")
-                #label.ensurePolished()
-            #else:
-            #    self.updateGui.emit()                
+            if(isinstance(threading.current_thread(), threading._MainThread)):
+                for label,color in zip(self.labels, self.colors):            
+                    label.SetForegroundColour((color.r,color.g,color.b)) # set text color
+            else:
+                wx.CallAfter(Publisher.sendMessage, "update")
+                
     
     def show(self):        
         self.update()        
