@@ -39,8 +39,8 @@ class plugin:
             now = datetime.datetime.now()
             # Check, if a second has passed (to render the new time)
             if prev_sec < now.second:
-                # Set background color
-                self.show_time(wcd, wci)
+                currentSecond = now.second
+                self.show_time(wcd, wci, currentSecond)
                 prev_sec = -1 if now.second == 59 else now.second
 	    event = wci.waitForEvent(0.1)
             if (event == wci.EVENT_BUTTON_RETURN) \
@@ -48,18 +48,16 @@ class plugin:
 		    or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
 		return
 
-    def show_time(self, wcd, wci):
-        now = datetime.datetime.now()
+    def show_time(self, wcd, wci, currentSecond):
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
         #show seconds based on numbers defined in time_seconds
 	for i in range(110, -1, -110/11):
 		#previous seconds, dimming down
-		taw_indices = self.taw.get_time(now, current=False)
+		taw_indices = self.taw.get_time(currentSecond, current=False)
 		wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.Color(i, i, i))
 		#current seconds
-		taw_indices = self.taw.get_time(now, current=True)
+		taw_indices = self.taw.get_time(currentSecond, current=True)
 		wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
-		wcd.setMinutes(now, self.minute_color)
 		wcd.show()
 		time.sleep(0.05)
