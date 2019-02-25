@@ -42,7 +42,7 @@ class plugin:
                 currentSecond = now.second
                 self.show_time(wcd, wci, currentSecond)
                 prev_sec = -1 if now.second == 59 else now.second
-	    event = wci.waitForEvent(0.1)
+	    event = wci.waitForEvent(0.4)
             if (event == wci.EVENT_BUTTON_RETURN) \
                     or (event == wci.EVENT_EXIT_PLUGIN) \
 		    or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
@@ -54,10 +54,10 @@ class plugin:
         #show seconds based on numbers defined in time_seconds
 	for i in range(110, -1, -110/11):
 		#previous seconds, dimming down
-		taw_indices = self.taw.get_time(currentSecond, current=False)
+		taw_indices = self.taw.get_time(currentSecond-1 if currentSecond != 0 else 59)
 		wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.Color(i, i, i))
 		#current seconds
-		taw_indices = self.taw.get_time(currentSecond, current=True)
+		taw_indices = self.taw.get_time(currentSecond)
 		wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
 		wcd.show()
 		time.sleep(0.05)
