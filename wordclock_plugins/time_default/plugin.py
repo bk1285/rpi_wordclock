@@ -47,8 +47,7 @@ class plugin:
 	try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
-            print(
-            '  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
+            print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
             self.purist = False
 
         self.bg_color = wcc.BLACK  # default background color
