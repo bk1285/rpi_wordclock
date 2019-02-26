@@ -160,6 +160,13 @@ class wordclock_display:
             for i in self.wcl.getWcaIndices():
                 self.setPixelColor(i, color)
 
+    def setColorTemperatureToAll(self, temperature, includeMinutes=True):
+        """
+        Sets a color to all leds based on the provided temperature in Kelvin
+        If includeMinutes is set to True, color will also be applied to the minute-leds.
+        """
+        self.setColorToAll(wcc.color_temperature_to_rgb(temperature), includeMinutes)
+
     def resetDisplay(self):
         """
         Reset display
