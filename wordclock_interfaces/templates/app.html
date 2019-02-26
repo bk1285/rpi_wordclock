@@ -117,12 +117,17 @@
                                     </v-card>
                                 </v-tab-item>
                                 <v-tab-item>
-                                    <v-card height=562>
+                                    <v-card height=630>
                                         <v-card-actions>
                                             <v-container fluid text-xs-center>
                                                 <v-layout row justify-center>
                                                     <v-flex xs12>
                                                         <v-slider prepend-icon="fa-sun" thumb-label v-model="brightness" :max="255" v-on:input="updateBrightness(brightness)"></v-slider>
+                                                    </v-flex>
+                                                </v-layout>
+						<v-layout row justify-center>
+                                                    <v-flex xs12>
+                                                        <v-slider prepend-icon="fa-thermometer-half" thumb-label v-model="color_temperature" :min="1000" :max="10000" v-on:input="updateColorTemperature(color_temperature)"></v-slider>
                                                     </v-flex>
                                                 </v-layout>
                                                 <v-layout row justify-center>
