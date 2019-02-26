@@ -230,7 +230,10 @@ class wordclock_display:
 
         text = '    ' + text + '    '
 
-        fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
+        fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)if self.config.getboolean('wordclock', 'developer_mode'):
+            fnt = fontdemo.Font('FreeSans.ttf', self.wcl.WCA_HEIGHT)
+	else:
+fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
         text_as_pixel = fnt.render_text(text)
 
