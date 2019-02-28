@@ -36,17 +36,16 @@ class plugin:
 
         while True:
             # Get current time
-            now = datetime.datetime.now()
+            now_sec = datetime.datetime.now().second
             # Check, if a second has passed (to render the new time)
-            if prev_sec < now.second:
-                currentSecond = now.second
-                self.show_time(wcd, wci, currentSecond)
-                prev_sec = -1 if now.second == 59 else now.second
-	    event = wci.waitForEvent(0.4)
+            if prev_sec != now_sec:
+                self.show_time(wcd, wci, now_sec)
+                prev_sec = now_sec
+            event = wci.waitForEvent(0.05)
             if (event == wci.EVENT_BUTTON_RETURN) \
                     or (event == wci.EVENT_EXIT_PLUGIN) \
-		    or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
-		return
+		            or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
+                return
 
     def show_time(self, wcd, wci, currentSecond):
         # Set background color
