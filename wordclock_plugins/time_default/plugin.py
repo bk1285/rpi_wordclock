@@ -44,6 +44,12 @@ class plugin:
             print('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
                 self.typewriter_speed) + '.')
 
+	try:
+            self.purist = config.getboolean('plugin_time_default', 'purist')
+        except:
+            print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
+            self.purist = False
+
         self.bg_color = wcc.BLACK  # default background color
         self.word_color = wcc.WWHITE  # default word color
         self.minute_color = wcc.WWHITE  # default minute color
@@ -159,7 +165,7 @@ class plugin:
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
         # Returns indices, which represent the current time, when beeing illuminated
-        taw_indices = wcd.taw.get_time(now)
+        taw_indices = wcd.taw.get_time(now, self.purist)
         if self.typewriter and now.minute % 5 == 0:
             for i in range(len(taw_indices)):
                 wcd.setColorBy1DCoordinates(wcd.strip, taw_indices[0:i + 1], self.word_color)
@@ -187,7 +193,7 @@ class plugin:
             # END: Rainbow generation as done in rpi_ws281x strandtest example! Thanks to Tony DiCola for providing :)
             # TODO: Evaluate taw_indices only every n-th loop (saving resources)
             now = datetime.datetime.now()  # Set current time
-            taw_indices = wcd.taw.get_time(now)
+            taw_indices = wcd.taw.get_time(now, self.purist)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
             wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
@@ -203,7 +209,7 @@ class plugin:
                 self.brightness_mode_pos += self.brightness_change
                 # TODO: Evaluate taw_indices only every n-th loop (saving resources)
                 now = datetime.datetime.now()  # Set current time
-                taw_indices = wcd.taw.get_time(now)
+                taw_indices = wcd.taw.get_time(now, self.purist)
                 wcd.setColorToAll(self.bg_color, includeMinutes=True)
                 wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
                 wcd.setMinutes(now, self.minute_color)

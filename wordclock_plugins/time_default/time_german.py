@@ -34,12 +34,12 @@ class time_german:
             range(49,54)]
         self.full_hour= range(107,110)
 
-    def get_time(self, time, withPrefix=True):
+    def get_time(self, time, purist):
         hour=time.hour%12+(1 if time.minute/5 > 4 else 0)
         minute=time.minute/5
         # Assemble indices
         return  \
-            (self.prefix if withPrefix else []) + \
+            (self.prefix if not purist else []) + \
             self.minutes[minute] + \
             self.hours[hour] + \
             ([60] if (hour == 1 and minute != 0) else []) + \
