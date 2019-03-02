@@ -28,6 +28,8 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
+	self.config = config
+
         try:
             default_brightness = config.getint('wordclock_display', 'brightness')
         except:
@@ -160,6 +162,13 @@ class wordclock_display:
             for i in self.wcl.getWcaIndices():
                 self.setPixelColor(i, color)
 
+    def setColorTemperatureToAll(self, temperature, includeMinutes=True):
+        """
+        Sets a color to all leds based on the provided temperature in Kelvin
+        If includeMinutes is set to True, color will also be applied to the minute-leds.
+        """
+        self.setColorToAll(wcc.color_temperature_to_rgb(temperature), includeMinutes)
+
     def resetDisplay(self):
         """
         Reset display
@@ -223,7 +232,10 @@ class wordclock_display:
 
         text = '    ' + text + '    '
 
-        fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
+	if self.config.getboolean('wordclock', 'developer_mode'):
+            fnt = fontdemo.Font('FreeSans.ttf', self.wcl.WCA_HEIGHT)
+	else:
+	    fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
         text_as_pixel = fnt.render_text(text)
 
