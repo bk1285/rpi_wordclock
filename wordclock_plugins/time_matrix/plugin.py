@@ -25,7 +25,7 @@ class plugin:
         self.pretty_name = "Matrix with time"
         self.description = "There is no spoon?"
 	
-	try:
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
             print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
@@ -59,7 +59,7 @@ class plugin:
             # Returns indices, which represent the current time, when beeing illuminated
             taw_indices = wcd.taw.get_time(now, self.purist)
 
-            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
 
             for x, y in enumerate(rain):
@@ -74,7 +74,7 @@ class plugin:
                     ci = y0 - (y - 10)
                     for yi, yn in enumerate(range(y0, y1 + 1)):
                         color = self.colors[ci + yi]
-                        wcd.setColorBy2DCoordinates(wcd.strip, x, yn, color)
+                        wcd.setColorBy2DCoordinates(x, yn, color)
                     # advance y coordinate
                     rain[x] = y + 1
 

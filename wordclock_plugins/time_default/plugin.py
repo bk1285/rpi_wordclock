@@ -122,13 +122,13 @@ class plugin:
         taw_indices = wcd.taw.get_time(now, self.purist)
         if self.typewriter and now.minute % 5 == 0:
             for i in range(len(taw_indices)):
-                wcd.setColorBy1DCoordinates(wcd.strip, taw_indices[0:i + 1], self.word_color)
+                wcd.setColorBy1DCoordinates(taw_indices[0:i + 1], self.word_color)
                 wcd.show()
                 time.sleep(1.0 / self.typewriter_speed)
             wcd.setMinutes(now, self.minute_color)
             wcd.show()
         else:
-            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
             wcd.show()
 
@@ -147,7 +147,7 @@ class plugin:
             now = datetime.datetime.now()  # Set current time
             taw_indices = wcd.taw.get_time(now, self.purist)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
-            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
             wcd.show()
             self.rb_pos += 1
@@ -162,7 +162,7 @@ class plugin:
             now = datetime.datetime.now()  # Set current time
             taw_indices = wcd.taw.get_time(now, self.purist)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
-            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
             wcd.setBrightness(self.brightness_mode_pos)
             wcd.show()

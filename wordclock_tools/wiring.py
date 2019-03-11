@@ -60,12 +60,18 @@ class wiring:
             print('Warning: No valid wiring layout found. Falling back to default!')
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
 
+    def setColorBy1DCoordinate(self, strip, i, color):
+        """
+        Linear mapping from top-left to bottom right
+        """
+        self.setColorBy2DCoordinates(strip, i % self.WCA_WIDTH, i / self.WCA_WIDTH, color)
+
     def setColorBy1DCoordinates(self, strip, ledCoordinates, color):
         """
         Linear mapping from top-left to bottom right
         """
         for i in ledCoordinates:
-            self.setColorBy2DCoordinates(strip, i % self.WCA_WIDTH, i / self.WCA_WIDTH, color)
+            self.setColorBy1DCoordinate(strip, i % self.WCA_WIDTH, i / self.WCA_WIDTH, color)
 
     def setColorBy2DCoordinates(self, strip, x, y, color):
         """

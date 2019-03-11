@@ -28,6 +28,10 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
+
+        self.transition_cache_next = [wcc.BLACK for _ in range(self.get_led_count())]
+        self.transition_cache_curr = [wcc.BLACK for _ in range(self.get_led_count())]
+
         try:
             default_brightness = config.getint('wordclock_display', 'brightness')
         except:
@@ -96,7 +100,7 @@ class wordclock_display:
         """
         Sets the color for a pixel, while considering the brightness, set within the config file
         """
-        self.strip.setPixelColor(pixel, color)
+        self.transition_cache_next[pixel] = color
 
     def getBrightness(self):
         """
@@ -109,19 +113,21 @@ class wordclock_display:
         Sets the color for a pixel, while considering the brightness, set within the config file
         """
         self.strip.setBrightness(brightness)
-        self.show()
+        self.strip.show()
 
-    def setColorBy1DCoordinates(self, *args, **kwargs):
+    def setColorBy1DCoordinates(self, ledCoordinates, color):
         """
         Sets a pixel at given 1D coordinates
         """
-        return self.wcl.setColorBy1DCoordinates(*args, **kwargs)
 
-    def setColorBy2DCoordinates(self, *args, **kwargs):
+        for i in ledCoordinates:
+            self.setColorBy2DCoordinates(i % self.get_wca_width(), i / self.get_wca_width(), color)
+
+    def setColorBy2DCoordinates(self, x, y, color):
         """
         Sets a pixel at given 2D coordinates
         """
-        return self.wcl.setColorBy2DCoordinates(*args, **kwargs)
+        self.setPixelColor(self.wcl.getStripIndexFrom2D(x, y), color)
 
     def get_wca_height(self):
         """
@@ -191,7 +197,7 @@ class wordclock_display:
             for y in range(0, height):
                 rgb_img = img.convert('RGB')
                 r, g, b = rgb_img.getpixel((x, y))
-                self.wcl.setColorBy2DCoordinates(self.strip, x, y, wcc.Color(r, g, b))
+                self.setColorBy2DCoordinates(x, y, wcc.Color(r, g, b))
         self.show()
 
     def animate(self, plugin, animationName, fps=10, count=1, invert=False):
@@ -244,8 +250,7 @@ class wordclock_display:
             render_range = self.wcl.WCA_WIDTH if self.wcl.WCA_WIDTH < text_width else text_width
             for y in range(text_height):
                 for x in range(render_range):
-                    self.wcl.setColorBy2DCoordinates(self.strip, x, y,
-                                                     fg_color if text_as_pixel.pixels[y * text_width + x] else bg_color)
+                    self.setColorBy2DCoordinates(x, y, fg_color if text_as_pixel.pixels[y * text_width + x] else bg_color)
 
             # Show first frame for 0.5 seconds
             self.show()
@@ -256,8 +261,7 @@ class wordclock_display:
             for cur_offset in range(text_width - self.wcl.WCA_WIDTH + 1):
                 for y in range(text_height):
                     for x in range(self.wcl.WCA_WIDTH):
-                        self.wcl.setColorBy2DCoordinates(self.strip, x, y, fg_color if text_as_pixel.pixels[
-                            y * text_width + x + cur_offset] else bg_color)
+                        self.setColorBy2DCoordinates(x, y, fg_color if text_as_pixel.pixels[y * text_width + x + cur_offset] else bg_color)
                 self.show()
                 if self.wci.waitForExit(1.0 / fps):
                     return
@@ -267,8 +271,16 @@ class wordclock_display:
             for i in range(1, time.minute % 5 + 1):
                 self.setPixelColor(self.wcl.mapMinutes(i), color)
 
+    def render_transition_step(self, transition_cache_step):
+        for i in range(self.get_led_count()):
+            self.wcl.setColorBy1DCoordinate(self.strip, i, transition_cache_step[i])
+        self.strip.show()
+
     def show(self):
         """
         This function provides the current color settings to the LEDs
         """
-        self.strip.show()
+
+        self.transition_cache_curr = self.transition_cache_next
+        self.render_transition_step(self.transition_cache_curr)
+

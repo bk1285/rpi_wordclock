@@ -153,9 +153,9 @@ class plugin:
                 for r, row in enumerate(self.field):
                     for c, cell in enumerate(row):
                         if k % 2 == 0 and r in rows:
-                            wcd.setColorBy2DCoordinates(wcd.strip, c, r, self.bg_color)
+                            wcd.setColorBy2DCoordinates(c, r, self.bg_color)
                         else:
-                            wcd.setColorBy2DCoordinates(wcd.strip, c, r,
+                            wcd.setColorBy2DCoordinates(c, r,
                                                         cell.color if cell is not None else self.bg_color)
                 # redraw
                 wcd.show()
@@ -171,9 +171,9 @@ class plugin:
             for r, row in enumerate(self.field):
                 for c, cell in enumerate(row):
                     if k % 2 == 0:
-                        wcd.setColorBy2DCoordinates(wcd.strip, c, r, self.bg_color)
+                        wcd.setColorBy2DCoordinates(c, r, self.bg_color)
                     else:
-                        wcd.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
+                        wcd.setColorBy2DCoordinates(c, r, cell.color if cell is not None else self.bg_color)
             wcd.show()
             sleep(0.3)
 
@@ -181,7 +181,7 @@ class plugin:
         # redraw field
         for r, row in enumerate(self.field):
             for c, cell in enumerate(row):
-                wcd.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
+                wcd.setColorBy2DCoordinates(c, r, cell.color if cell is not None else self.bg_color)
         wcd.show()
 
     def carve(self, brick, x, y):
