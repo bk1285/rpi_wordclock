@@ -118,7 +118,7 @@ class plugin:
         now = datetime.datetime.now()
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
-        # Returns indices, which represent the current time, when beeing illuminated
+        # Returns indices, which represent the current time, when being illuminated
         taw_indices = wcd.taw.get_time(now, self.purist)
         if self.typewriter and now.minute % 5 == 0:
             for i in range(len(taw_indices)):
