@@ -44,7 +44,7 @@ class plugin:
             print('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
                 self.typewriter_speed) + '.')
 
-	try:
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
             print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
