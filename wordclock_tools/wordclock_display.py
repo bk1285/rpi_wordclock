@@ -13,6 +13,7 @@ import wordclock_plugins.time_default.time_bavarian as time_bavarian
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
+import wordclock_screen
 
 
 class wordclock_display:
@@ -29,8 +30,8 @@ class wordclock_display:
         self.wcl = wiring.wiring(config)
         self.wci = wci
 
-        self.transition_cache_next = [wcc.BLACK for _ in range(self.get_led_count())]
-        self.transition_cache_curr = [wcc.BLACK for _ in range(self.get_led_count())]
+        self.transition_cache_next = wordclock_screen.wordclock_screen(self)
+        self.transition_cache_curr = wordclock_screen.wordclock_screen(self)
 
         try:
             default_brightness = config.getint('wordclock_display', 'brightness')
@@ -96,12 +97,6 @@ class wordclock_display:
             print('Choosing default: german')
             self.taw = time_german.time_german()
 
-    def setPixelColor(self, pixel, color):
-        """
-        Sets the color for a pixel, while considering the brightness, set within the config file
-        """
-        self.transition_cache_next[pixel] = color
-
     def getBrightness(self):
         """
         Sets the color for a pixel, while considering the brightness, set within the config file
@@ -127,7 +122,7 @@ class wordclock_display:
         """
         Sets a pixel at given 2D coordinates
         """
-        self.setPixelColor(self.wcl.getStripIndexFrom2D(x, y), color)
+        self.transition_cache_next.matrix[x][y] = color
 
     def get_wca_height(self):
         """
@@ -159,12 +154,12 @@ class wordclock_display:
         Sets a given color to all leds
         If includeMinutes is set to True, color will also be applied to the minute-leds.
         """
+        for x in range(self.get_wca_width()):
+            for y in range(self.get_wca_height()):
+                self.transition_cache_next.matrix[x][y] = color;
         if includeMinutes:
-            for i in range(self.wcl.LED_COUNT):
-                self.setPixelColor(i, color)
-        else:
-            for i in self.wcl.getWcaIndices():
-                self.setPixelColor(i, color)
+            for m in range(4):
+                self.transition_cache_next.minutes[m] = color
 
     def setColorTemperatureToAll(self, temperature, includeMinutes=True):
         """
@@ -268,12 +263,15 @@ class wordclock_display:
 
     def setMinutes(self, time, color):
         if time.minute % 5 != 0:
-            for i in range(1, time.minute % 5 + 1):
-                self.setPixelColor(self.wcl.mapMinutes(i), color)
+            for i in range(time.minute % 5):
+                self.transition_cache_next.minutes[i] = color
 
     def render_transition_step(self, transition_cache_step):
-        for i in range(self.get_led_count()):
-            self.wcl.setColorBy1DCoordinate(self.strip, i, transition_cache_step[i])
+        for x in range(self.get_wca_width()):
+            for y in range(self.get_wca_height()):
+                self.wcl.setColorBy2DCoordinates(self.strip, x, y, transition_cache_step.matrix[x][y])
+        for m in range(4):
+            self.strip.setPixelColor(self.wcl.mapMinutes(m + 1), transition_cache_step.minutes[m])
         self.strip.show()
 
     def show(self):
