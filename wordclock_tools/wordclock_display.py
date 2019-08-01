@@ -263,7 +263,7 @@ class wordclock_display:
 
     def setMinutes(self, time, color):
         if time.minute % 5 != 0:
-            for i in range(time.minute % 5):
+            for i in range(0, time.minute % 5):
                 self.transition_cache_next.minutes[i] = color
 
     def render_transition_step(self, transition_cache_step):
