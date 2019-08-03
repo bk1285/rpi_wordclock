@@ -2,10 +2,6 @@ from astral import Astral
 import datetime
 import os
 import wordclock_tools.wordclock_colors as wcc
-import wordclock_plugins.time_default.time_german as wcp_time_german
-import wordclock_plugins.time_default.time_dutch as wcp_time_dutch
-import wordclock_plugins.time_default.time_swiss_german as wcp_swiss_german
-
 
 class plugin:
     """
@@ -24,19 +20,6 @@ class plugin:
 
         self.astral_at_location = Astral()[config.get('plugin_' + self.name, 'location')]
 
-        # Choose language to display sunrise
-        language = config.get('plugin_time_default', 'language')
-        if language == 'german':
-            self.taw = wcp_time_german.time_german()
-        elif language == 'dutch':
-            self.taw = wcp_time_dutch.time_dutch()
-        elif language == 'swiss_german':
-            self.taw = wcp_swiss_german.time_swiss_german()
-        else:
-            print('Could not detect language: ' + language + '.')
-            print('Choosing default: german')
-            self.taw = wcp_time_german.time_german()
-
         self.bg_color_index = 0  # default background color: black
         self.word_color_index = 2  # default word color: warm white
         self.minute_color_index = 2  # default minute color: warm white
@@ -50,7 +33,7 @@ class plugin:
         # Display data of sunrise
         wcd.animate(self.name, 'sunrise', invert=True)
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
-        taw_indices = self.taw.get_time(sun_data['sunrise'], withPrefix=False)
+        taw_indices = wcd.taw.get_time(sun_data['sunrise'], purist=True)
         wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         if wci.waitForExit(3.0):
@@ -58,7 +41,7 @@ class plugin:
         # Display data of sunset
         wcd.animate(self.name, 'sunrise')
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
-        taw_indices = self.taw.get_time(sun_data['sunset'], withPrefix=False)
+        taw_indices = wcd.taw.get_time(sun_data['sunset'], purist=True)
         wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         if wci.waitForExit(3.0):

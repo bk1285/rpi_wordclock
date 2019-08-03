@@ -1,8 +1,8 @@
-class time_german2:
+class time_swabian2:
     """
     This class returns a given time as a range of LED-indices.
-    Illuminating these LEDs represents the current time on a german WCA in alternative layout german2
-    Credits to SebVoss
+    Illuminating these LEDs represents the current time on a german WCA in swabian using the german2 layout
+    Based on work from SebVoss, adapted by plotaBot
     """
 
     def __init__(self):
@@ -10,13 +10,13 @@ class time_german2:
         self.minutes=[[], \
             range(7,11) + range(40,44), \
             range(11,15) + range(40,44), \
-            range(26,33) + range(40,44), \
-            range(15,22) + range(40,44), \
+            range(26,33), \
+            range(11,15) + range(33,36) + range(44,48), \
             range(7,11) + range(33,36) + range(44,48), \
             range(44,48), \
             range(7,11) + range(40,44) + range(44,48), \
             range(15,22) + range(33,36), \
-            range(26,33) + range(33,36), \
+            range(22,33), \
             range(11,15) + range(33,36), \
             range(7,11) + range(33,36) ]
         self.hours= [range(94,99), \
@@ -35,7 +35,7 @@ class time_german2:
         self.full_hour= range(107,110)
 
     def get_time(self, time, purist):
-        hour=time.hour%12+(1 if time.minute/5 > 4 else 0)
+        hour=time.hour%12+(1 if time.minute/5 > 2 else 0)
         minute=time.minute/5
         # Assemble indices
         return  \
@@ -44,4 +44,3 @@ class time_german2:
             self.hours[hour] + \
             ([58] if (hour == 1 and minute != 0) else []) + \
             (self.full_hour if (minute == 0) else [])
-

@@ -3,9 +3,6 @@
 
 import datetime
 import os
-import wordclock_plugins.time_default.time_german as time_german
-import wordclock_plugins.time_default.time_dutch as time_dutch
-import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_tools.wordclock_colors as wcc
 import random
 from ConfigParser import NoSectionError
@@ -27,22 +24,12 @@ class plugin:
         self.name = os.path.dirname(__file__).split('/')[-1]
         self.pretty_name = "Matrix with time"
         self.description = "There is no spoon?"
-
-        # Choose language
-        try:
-            language = config.get('plugin_' + self.name, 'language')
-        except NoSectionError:
-            language = ''
-        if language == 'german':
-            self.taw = time_german.time_german()
-        elif language == 'dutch':
-            self.taw = time_dutch.time_dutch()
-        elif language == 'swiss_german':
-            self.taw = time_swiss_german.time_swiss_german()
-        else:
-            print('Could not detect language: ' + language + '.')
-            print('Choosing default: german')
-            self.taw = time_german.time_german()
+	
+	try:
+            self.purist = config.getboolean('plugin_time_default', 'purist')
+        except:
+            print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
+            self.purist = False
 
         self.bg_color = wcc.BLACK  # default background color
         self.word_color = wcc.WHITE  # default word color
@@ -70,7 +57,7 @@ class plugin:
             # Set current time
             now = datetime.datetime.now()
             # Returns indices, which represent the current time, when beeing illuminated
-            taw_indices = self.taw.get_time(now)
+            taw_indices = wcd.taw.get_time(now, self.purist)
 
             wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
