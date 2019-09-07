@@ -80,6 +80,9 @@ If you want to build a wordclock
 * You should be ready to...
 
   * Setup the hardware (glueing, soldering, etc.)
+  
+    * Consider double connectors, if you want to minimize soldering efforts: https://github.com/bk1285/rpi_wordclock/issues/118
+    
   * Setup a Raspberry Pi (raspbian)
 
     * Connect to the RPi via ssh

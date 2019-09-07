@@ -13,10 +13,10 @@
   * Control the wordclock with a browser within your local network
   * Linking the webinterface to your smartphones homescreen provides an app-like usage of the interface
   * Hardware buttons are not mandatory anymore.
+* Integration to your instance of [home-assistant](https://www.home-assistant.io/) using [this repository](https://github.com/bk1285/rpi_wordclock_for_homeassistant/)
   
 ### ⏳ In progress
 * Integration of a brightness sensor
-* Make the clock available at [home-assistant](https://www.home-assistant.io/components/)
 
 ### :books: Further reading
 
