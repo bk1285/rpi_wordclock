@@ -64,10 +64,10 @@ class wordclock_display:
 
         # Choose language
         try:
-            language = ''.join(config.get('wordclock_display', 'language'))
+            language = ''.join(config.get('plugin_time_default', 'language'))
         except:
             # For backward compatibility
-            language = ''.join(config.get('plugin_time_default', 'language'))
+            language = ''.join(config.get('wordclock_display', 'language'))
 
         print('  Setting language to ' + language + '.')
         if language == 'dutch':
