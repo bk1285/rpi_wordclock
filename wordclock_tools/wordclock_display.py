@@ -185,11 +185,13 @@ class wordclock_display:
         text = '    ' + text + '    '
 
         if self.config.getboolean('wordclock', 'developer_mode'):
-            fnt = fontdemo.Font('/usr/share/fonts/truetype/freefont/FreeSans.ttf', self.wcl.WCA_HEIGHT)
+            fnt = fontdemo.Font(self.config.get('wordclock', 'path_to_font'), self.wcl.WCA_HEIGHT)
 	else:
 	    fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
         text_as_pixel = fnt.render_text(text)
+
+	print text_as_pixel
 
         # Display text count times
         for i in range(count):
