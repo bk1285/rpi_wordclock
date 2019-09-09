@@ -28,6 +28,7 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
+	self.config = config
         try:
             default_brightness = config.getint('wordclock_display', 'brightness')
         except:
@@ -39,8 +40,7 @@ class wordclock_display:
         if config.getboolean('wordclock', 'developer_mode'):
             from GTKstrip import GTKstrip
             self.strip = GTKstrip(wci)
-            self.default_font = os.path.join('/usr/share/fonts/TTF/',
-                                             config.get('wordclock_display', 'default_font') + '.ttf')
+            self.default_font = 'wcfont.ttf'
         else:
             try:
                 from neopixel import Adafruit_NeoPixel, ws
@@ -51,8 +51,11 @@ class wordclock_display:
                 print('Update deprecated external dependency rpi_ws281x. '
                       'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
 
-            self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
-                                             config.get('wordclock_display', 'default_font') + '.ttf')
+            if config.get('wordclock_display', 'default_font') is 'wcfont':
+				self.default_font = 'wcfont.ttf'
+            else:
+                self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
+												 config.get('wordclock_display', 'default_font') + '.ttf')
 
         # Initialize the NeoPixel object
         self.strip.begin()
@@ -229,10 +232,15 @@ class wordclock_display:
             bg_color = self.default_bg_color
 
         text = '    ' + text + '    '
-
         fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
-        text_as_pixel = fnt.render_text(text)
+		
+		
+        text_as_pixel = fnt.render_text(text, text_width, self.wcl.WCA_HEIGHT, 1)
+	
+	if self.config.getboolean('wordclock', 'developer_mode'):
+		print text
+		print text_as_pixel
 
         # Display text count times
         for i in range(count):
@@ -242,7 +250,7 @@ class wordclock_display:
 
             # Assure here correct rendering, if the text does not fill the whole display
             render_range = self.wcl.WCA_WIDTH if self.wcl.WCA_WIDTH < text_width else text_width
-            for y in range(text_height):
+            for y in range(self.wcl.WCA_HEIGHT):
                 for x in range(render_range):
                     self.wcl.setColorBy2DCoordinates(self.strip, x, y,
                                                      fg_color if text_as_pixel.pixels[y * text_width + x] else bg_color)
@@ -254,7 +262,7 @@ class wordclock_display:
 
             # Shift text from left to right to show all.
             for cur_offset in range(text_width - self.wcl.WCA_WIDTH + 1):
-                for y in range(text_height):
+                for y in range(self.wcl.WCA_HEIGHT):
                     for x in range(self.wcl.WCA_WIDTH):
                         self.wcl.setColorBy2DCoordinates(self.strip, x, y, fg_color if text_as_pixel.pixels[
                             y * text_width + x + cur_offset] else bg_color)
