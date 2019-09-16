@@ -52,7 +52,7 @@ class wordclock_display:
                 print('Update deprecated external dependency rpi_ws281x. '
                       'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
 
-            if config.get('wordclock_display', 'default_font') is 'wcfont':
+            if config.get('wordclock_display', 'default_font') == 'wcfont':
 				        self.default_font = 'wcfont.ttf'
             else:
                 self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
