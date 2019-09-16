@@ -111,8 +111,8 @@ class wordclock:
         """
 
         try:
-        print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-        self.plugins[self.plugin_index].run(self.wcd, self.wci)
+            print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+            self.plugins[self.plugin_index].run(self.wcd, self.wci)
         except:
             print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
