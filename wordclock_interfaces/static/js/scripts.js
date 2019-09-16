@@ -7,6 +7,7 @@ new Vue(
 	},
 	data: {
 		brightness: undefined,
+		color_temperature: undefined,
         color: {
             hue: undefined,
             saturation: undefined,
@@ -33,6 +34,8 @@ new Vue(
 			  then(this.successCallbackColor, this.errorCallback);
 			this.$http.get('/api/brightness').
 			  then(this.successCallbackBrightness, this.errorCallback);
+			this.$http.get('/api/color_temperature').
+			  then(this.successCallbackColorTemperature, this.errorCallback);
 		},
 		successCallbackPlugins: function(response) {
 			this.apiData = response.data;
@@ -52,6 +55,9 @@ new Vue(
 		},
 		successCallbackBrightness: function(response) {
             this.brightness = response.data;
+		},
+		successCallbackColorTemperature: function(response) {
+            this.color_temperature = response.data;
 		},
 		errorCallback: function(response) {
 			console.log('errorCallback response:' , response);
@@ -91,6 +97,12 @@ new Vue(
 			xmlhttp.open("POST", "/api/brightness");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 			xmlhttp.send(JSON.stringify({ "brightness": brightness }));
+		},
+		updateColorTemperature: function(color_temperature) {
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("POST", "/api/color_temperature");
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify({ "color_temperature": color_temperature }));
 		},
 		setColourWheel: function(wheel) {
 			var r,g,b,type;

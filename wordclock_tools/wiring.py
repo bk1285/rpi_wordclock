@@ -1,5 +1,5 @@
 import ast
-
+import wordclock_colors as wcc
 
 class wiring:
     """
@@ -13,7 +13,11 @@ class wiring:
     def __init__(self, config):
 
         # LED strip configuration:
-        language = config.get('stencil_parameter', 'language')
+        try:
+            language = ''.join(config.get('wordclock_display', 'language'))
+        except:
+            # For backward compatibility
+            language = ''.join(config.get('plugin_time_default', 'language'))
         stencil_content = ast.literal_eval(config.get('language_options', language))
         self.WCA_HEIGHT = len(stencil_content)
         self.WCA_WIDTH = len(stencil_content[0].decode('utf-8'))
@@ -71,6 +75,7 @@ class wiring:
              (0,0): top-left
              (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
         """
+	if x == 6 and y == 9: color = wcc.BLACK
         strip.setPixelColor(self.wcl.getStripIndexFrom2D(x, y), color)
 
     def getStripIndexFrom2D(self, x, y):

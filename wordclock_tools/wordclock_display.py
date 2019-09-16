@@ -3,6 +3,15 @@ import fontdemo
 import os
 from PIL import Image
 import wiring
+import wordclock_plugins.time_default.time_english as time_english
+import wordclock_plugins.time_default.time_german as time_german
+import wordclock_plugins.time_default.time_german2 as time_german2
+import wordclock_plugins.time_default.time_dutch as time_dutch
+import wordclock_plugins.time_default.time_swabian as time_swabian
+import wordclock_plugins.time_default.time_swabian2 as time_swabian2
+import wordclock_plugins.time_default.time_bavarian as time_bavarian
+import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
+import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
 
 
@@ -19,7 +28,8 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
-	self.config = config
+	      self.config = config
+
         try:
             default_brightness = config.getint('wordclock_display', 'brightness')
         except:
@@ -43,7 +53,7 @@ class wordclock_display:
                       'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
 
             if config.get('wordclock_display', 'default_font') is 'wcfont':
-				self.default_font = 'wcfont.ttf'
+				        self.default_font = 'wcfont.ttf'
             else:
                 self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
 												 config.get('wordclock_display', 'default_font') + '.ttf')
@@ -54,6 +64,37 @@ class wordclock_display:
         self.default_fg_color = wcc.WWHITE
         self.default_bg_color = wcc.BLACK
         self.base_path = config.get('wordclock', 'base_path')
+
+        # Choose language
+        try:
+            language = ''.join(config.get('wordclock_display', 'language'))
+        except:
+            # For backward compatibility
+            language = ''.join(config.get('plugin_time_default', 'language'))
+
+        print('  Setting language to ' + language + '.')
+        if language == 'dutch':
+            self.taw = time_dutch.time_dutch()
+        elif language == 'english':
+            self.taw = time_english.time_english()
+        elif language == 'german':
+            self.taw = time_german.time_german()
+        elif language == 'german2':
+            self.taw = time_german2.time_german2()
+        elif language == 'swabian':
+            self.taw = time_swabian.time_swabian()
+        elif language == 'swabian2':
+            self.taw = time_swabian2.time_swabian2()
+        elif language == 'bavarian':
+            self.taw = time_bavarian.time_bavarian()
+        elif language == 'swiss_german':
+            self.taw = time_swiss_german.time_swiss_german()
+        elif language == 'swiss_german2':
+            self.taw = time_swiss_german2.time_swiss_german2()
+        else:
+            print('Could not detect language: ' + language + '.')
+            print('Choosing default: german')
+            self.taw = time_german.time_german()
 
     def setPixelColor(self, pixel, color):
         """
@@ -123,6 +164,13 @@ class wordclock_display:
             for i in self.wcl.getWcaIndices():
                 self.setPixelColor(i, color)
 
+    def setColorTemperatureToAll(self, temperature, includeMinutes=True):
+        """
+        Sets a color to all leds based on the provided temperature in Kelvin
+        If includeMinutes is set to True, color will also be applied to the minute-leds.
+        """
+        self.setColorToAll(wcc.color_temperature_to_rgb(temperature), includeMinutes)
+
     def resetDisplay(self):
         """
         Reset display
@@ -185,10 +233,10 @@ class wordclock_display:
             bg_color = self.default_bg_color
 
         text = '    ' + text + '    '
+
         fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
+
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
-		
-		
         text_as_pixel = fnt.render_text(text, text_width, self.wcl.WCA_HEIGHT, 1)
 	
 	if self.config.getboolean('wordclock', 'developer_mode'):
