@@ -28,7 +28,7 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
-	      self.config = config
+        self.config = config
 
         try:
             default_brightness = config.getint('wordclock_display', 'brightness')
