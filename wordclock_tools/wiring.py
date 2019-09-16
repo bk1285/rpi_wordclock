@@ -74,6 +74,7 @@ class wiring:
              (0,0): top-left
              (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
         """
+        strip.setPixelColor(self.wcl.getStripIndexFrom2D(x, y), color)
 
     def getStripIndexFrom2D(self, x, y):
         return self.wcl.getStripIndexFrom2D(x, y)
