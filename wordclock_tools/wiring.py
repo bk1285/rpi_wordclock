@@ -1,6 +1,5 @@
 import ast
 
-
 class wiring:
     """
     A class, holding all information of the wordclock's layout to map given
