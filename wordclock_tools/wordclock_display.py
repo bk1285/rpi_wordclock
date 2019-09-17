@@ -30,6 +30,8 @@ class wordclock_display:
         self.wci = wci
         self.config = config
 
+        self.base_path = config.get('wordclock', 'base_path')
+
         try:
             default_brightness = config.getint('wordclock_display', 'brightness')
         except:
@@ -53,7 +55,7 @@ class wordclock_display:
                       'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
 
             if config.get('wordclock_display', 'default_font') == 'wcfont':
-				        self.default_font = 'wcfont.ttf'
+				        self.default_font =  self.base_path + '/wcfont.ttf'
             else:
                 self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
 												 config.get('wordclock_display', 'default_font') + '.ttf')
@@ -63,7 +65,6 @@ class wordclock_display:
 
         self.default_fg_color = wcc.WWHITE
         self.default_bg_color = wcc.BLACK
-        self.base_path = config.get('wordclock', 'base_path')
 
         # Choose language
         try:
