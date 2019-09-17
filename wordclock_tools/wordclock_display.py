@@ -136,7 +136,7 @@ class wordclock_display:
 
     def get_wca_width(self):
         """
-        Returns the height of the WCA
+        Returns the width of the WCA
         """
         return self.wcl.WCA_WIDTH
 
