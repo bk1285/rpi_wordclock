@@ -55,10 +55,9 @@ class wordclock_display:
                       'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
 
             if config.get('wordclock_display', 'default_font') == 'wcfont':
-				        self.default_font =  self.base_path + '/wcfont.ttf'
+                self.default_font =  self.base_path + '/wcfont.ttf'
             else:
-                self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
-												 config.get('wordclock_display', 'default_font') + '.ttf')
+                self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/', config.get('wordclock_display', 'default_font') + '.ttf')
 
         # Initialize the NeoPixel object
         self.strip.begin()
