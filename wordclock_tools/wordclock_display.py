@@ -241,8 +241,8 @@ class wordclock_display:
         text_as_pixel = fnt.render_text(text, text_width, self.wcl.WCA_HEIGHT, 1)
 	
 	if self.config.getboolean('wordclock', 'developer_mode'):
-		print text
-		print text_as_pixel
+		print (text)
+		print (text_as_pixel)
 
         # Display text count times
         for i in range(count):
