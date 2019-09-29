@@ -237,11 +237,7 @@ class wordclock_display:
         fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
 
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
-        text_as_pixel = fnt.render_text(text, text_width, self.wcl.WCA_HEIGHT, 1)
-	
-	if self.config.getboolean('wordclock', 'developer_mode'):
-		print (text)
-		print (text_as_pixel)
+        text_as_pixel = fnt.render_text(text)
 
         # Display text count times
         for i in range(count):
@@ -251,7 +247,7 @@ class wordclock_display:
 
             # Assure here correct rendering, if the text does not fill the whole display
             render_range = self.wcl.WCA_WIDTH if self.wcl.WCA_WIDTH < text_width else text_width
-            for y in range(self.wcl.WCA_HEIGHT):
+            for y in range(text_height):
                 for x in range(render_range):
                     self.wcl.setColorBy2DCoordinates(self.strip, x, y,
                                                      fg_color if text_as_pixel.pixels[y * text_width + x] else bg_color)
@@ -263,7 +259,7 @@ class wordclock_display:
 
             # Shift text from left to right to show all.
             for cur_offset in range(text_width - self.wcl.WCA_WIDTH + 1):
-                for y in range(self.wcl.WCA_HEIGHT):
+                for y in range(text_height):
                     for x in range(self.wcl.WCA_WIDTH):
                         self.wcl.setColorBy2DCoordinates(self.strip, x, y, fg_color if text_as_pixel.pixels[
                             y * text_width + x + cur_offset] else bg_color)
