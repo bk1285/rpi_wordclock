@@ -13,6 +13,7 @@
     <script src='https://unpkg.com/babel-polyfill/dist/polyfill.min.js'></script>
     <!--script src="https://unpkg.com/@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.js"></script-->
 	<script src="static/js/vue-color-picker.js"></script>
+	<script src="static/js/iro.min.js"></script>
     <link rel="stylesheet" href="static/vue-color-picker.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
 
@@ -49,6 +50,9 @@
                                 <v-tab ripple>
                                     Colors
                                 </v-tab>
+                                <v-tab ripple>
+                                    Colors 2
+                                </v-tab>
                                 <v-spacer></v-spacer>
                                 <v-dialog v-model="about" width="400">
                                     <v-btn icon slot="activator">
@@ -78,7 +82,7 @@
                                                 return-object
                                                 label="Select plugin"
                                                 v-on:change="selectionChanged"
-                                                single-line bottom>
+                                                single-line menu-props="bottom">
                                             </v-select>
                                         </v-card-text>
                                         <v-card-actions>
@@ -125,7 +129,7 @@
                                                         <v-slider prepend-icon="fa-sun" thumb-label v-model="brightness" :max="255" v-on:input="updateBrightness(brightness)"></v-slider>
                                                     </v-flex>
                                                 </v-layout>
-						<v-layout row justify-center>
+                                                <v-layout row justify-center>
                                                     <v-flex xs12>
                                                         <v-slider prepend-icon="fa-thermometer-half" thumb-label v-model="color_temperature" :min="1000" :max="10000" v-on:input="updateColorTemperature(color_temperature)"></v-slider>
                                                     </v-flex>
@@ -178,6 +182,17 @@
                                                             </v-card-text>
                                                         </v-card>
                                                     </v-flex>
+                                                </v-layout>
+                                            </v-container>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-tab-item>
+                                <v-tab-item>
+                                    <v-card height=630>
+                                        <v-card-actions>
+                                            <v-container fluid text-xs-center>
+                                                <v-layout row justify-center>
+                                                    <div id="color-picker-container"></div>
                                                 </v-layout>
                                             </v-container>
                                         </v-card-actions>

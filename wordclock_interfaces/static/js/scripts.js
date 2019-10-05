@@ -1,5 +1,18 @@
 var ColorPicker = window.VueColorPicker;
-new Vue(
+var IroColorPicker = window.iro.ColorPicker("#color-picker-container", {
+	// Set the size of the color picker
+	width: 320,
+	// Set the initial color to pure red
+	color: "#fcc"
+  });
+
+function onColorChange(color, changes) {
+	// print the color's new hex value to the developer console
+	this.$root.$emit('clickedSomething')
+	console.log(color.hexString);
+}
+
+var vm = new Vue(
 {
 	el: '#app',
 	components: {
@@ -123,6 +136,10 @@ new Vue(
 			xmlhttp.open("POST", "/api/color");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 			xmlhttp.send(JSON.stringify({ "blue": b, "green": g, "red": r , "type": type}));
+		},
+		doSomething: function(color) {
+			console.log("we did it!");
+			console.log(color.rgb.r)
 		}
 	},
 	beforeMount(){
@@ -130,6 +147,9 @@ new Vue(
 	}
 }
 );
+
+IroColorPicker.on('color:change', vm.doSomething);
+
 
 /**
  * Converts an HSL color value to RGB. Conversion formula
