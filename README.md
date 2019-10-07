@@ -21,5 +21,10 @@
 ### :books: Further reading
 
 * Exemplary builds are available at [pinterest](https://www.pinterest.de/berndkrolla/wordclock-gallery/)
-* [How to create your own plugin](https://rpi-wordclock.readthedocs.io/en/master/doc_further_reading.html#adding-a-new-plugin)
 * [Roadmap](https://github.com/bk1285/rpi_wordclock/projects)
+
+### :+1: Support 
+
+* Request a new feature by [opening a issue](https://github.com/bk1285/rpi_wordclock/issues), describing your feature request.
+* Contribute your code: [Learn how to create your own plugin](https://rpi-wordclock.readthedocs.io/en/master/doc_further_reading.html#adding-a-new-plugin)
+* Simply :star2: this repo, if you like this project. 
