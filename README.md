@@ -25,6 +25,6 @@
 
 ### :+1: Support 
 
+* :star2: Star this repo, if you like the project. 
 * Request a new feature by [opening a issue](https://github.com/bk1285/rpi_wordclock/issues), describing your feature request.
 * Contribute your code: [Learn how to create your own plugin](https://rpi-wordclock.readthedocs.io/en/master/doc_further_reading.html#adding-a-new-plugin)
-* Simply :star2: this repo, if you like this project. 
