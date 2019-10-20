@@ -128,4 +128,5 @@ var vm = new Vue(
 	}
 });
 
-IroColorPicker.on('color:change', vm.setColourWheel);
+IroColorPicker.on('input:start', vm.setColourWheel);
+IroColorPicker.on('input:end', vm.setColourWheel);
