@@ -13,6 +13,7 @@
     <script src='https://unpkg.com/babel-polyfill/dist/polyfill.min.js'></script>
     <!--script src="https://unpkg.com/@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.js"></script-->
 	<script src="static/js/vue-color-picker.js"></script>
+	<script src="static/js/iro.min.js"></script>
     <link rel="stylesheet" href="static/vue-color-picker.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
 
@@ -78,7 +79,7 @@
                                                 return-object
                                                 label="Select plugin"
                                                 v-on:change="selectionChanged"
-                                                single-line bottom>
+                                                single-line menu-props="bottom">
                                             </v-select>
                                         </v-card-text>
                                         <v-card-actions>
@@ -121,65 +122,45 @@
                                         <v-card-actions>
                                             <v-container fluid text-xs-center>
                                                 <v-layout row justify-center>
-                                                    <v-flex xs12>
-                                                        <v-slider prepend-icon="fa-sun" thumb-label v-model="brightness" :max="255" v-on:input="updateBrightness(brightness)"></v-slider>
-                                                    </v-flex>
-                                                </v-layout>
-						<v-layout row justify-center>
-                                                    <v-flex xs12>
-                                                        <v-slider prepend-icon="fa-thermometer-half" thumb-label v-model="color_temperature" :min="1000" :max="10000" v-on:input="updateColorTemperature(color_temperature)"></v-slider>
-                                                    </v-flex>
-                                                </v-layout>
-                                                <v-layout row justify-center>
-                                                    <color-picker v-model="color" v-on:select="setColourWheel"></color-picker>
-                                                </v-layout>
-                                                <v-layout row justify-center>
-                                                    <v-flex xs6>
-                                                        <v-card tile flat>
-                                                            <v-card-text>
-                                                                <v-btn fab small color="black" v-on:click="setColour(0,0,0)"></v-btn>
-                                                            </v-card-text>
-                                                        </v-card>
-                                                    </v-flex>
-                                                    <v-flex xs6>
-                                                        <v-card tile flat>
-                                                            <v-card-text>
-                                                                <v-btn fab small color="white" v-on:click="setColour(255,255,255)"></v-btn>
-                                                            </v-card-text>
-                                                        </v-card>
-                                                    </v-flex>
-                                                     <v-flex xs6>
-                                                        <v-card tile flat>
-                                                            <v-card-text>
-                                                                <v-btn fab small color="rgb(255, 255, 150)" v-on:click="setColour(255,255,50)"></v-btn>
-                                                            </v-card-text>
-                                                        </v-card>
-                                                    </v-flex>
+                                                    <div id="color-picker-container"></div>
                                                 </v-layout>
                                                 <v-layout row justify-center>
                                                     <v-flex xs4>
                                                         <v-card tile flat>
                                                             <v-card-text>
-                                                                <v-checkbox :label="'Words'" v-model="switchWords"></v-checkbox>
+                                                                <v-checkbox label="Words" v-model="switchWords"></v-checkbox>
                                                             </v-card-text>
                                                         </v-card>
                                                     </v-flex>
                                                     <v-flex xs4>
                                                         <v-card tile flat>
                                                             <v-card-text>
-                                                                <v-checkbox :label="'Mins'" v-model="switchMinutes"></v-checkbox>
+                                                                <v-checkbox label="Mins" v-model="switchMinutes"></v-checkbox>
                                                             </v-card-text>
                                                         </v-card>
                                                     </v-flex>
                                                     <v-flex xs4>
                                                         <v-card tile flat>
                                                             <v-card-text>
-                                                                <v-checkbox :label="'Back'" v-model="switchBackground"></v-checkbox>
+                                                                <v-checkbox label="Back" v-model="switchBackground"></v-checkbox>
                                                             </v-card-text>
                                                         </v-card>
                                                     </v-flex>
+                                                    <v-layout row justify-center>
+                                                        <v-dialog v-model="colorByTemp" width="400">
+                                                            <v-btn icon slot="activator">
+                                                                <v-icon>fa fa-thermometer-half</v-icon>
+                                                            </v-btn>
+                                                            <v-card>
+                                                                <v-card-title>Set color temperature </v-card-title>
+                                                                <v-flex xs12>
+                                                                    <v-slider prepend-icon="fa-thermometer-half" thumb-label v-model="color_temperature" :min="1000" :max="10000" v-on:input="updateColorTemperature(color_temperature)"></v-slider>
+                                                                </v-flex>
+                                                            </v-card>
+                                                        </v-dialog>
+                                                    </v-layout>
                                                 </v-layout>
-                                            </v-container>
+                                           </v-container>
                                         </v-card-actions>
                                     </v-card>
                                 </v-tab-item>

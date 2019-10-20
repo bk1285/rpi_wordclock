@@ -29,13 +29,13 @@ class wordclock_display:
         self.wcl = wiring.wiring(config)
         self.wci = wci
         self.config = config
-
         self.base_path = config.get('wordclock', 'base_path')
+        max_brightness = 255
 
         try:
-            default_brightness = config.getint('wordclock_display', 'brightness')
+            self.setBrightness(config.getint('wordclock_display', 'brightness'))
         except:
-            default_brightness = 255
+            self.brightness = max_brightness
             print(
                 'WARNING: Default brightness value not set in config-file: '
                 'To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
@@ -48,7 +48,7 @@ class wordclock_display:
             try:
                 from neopixel import Adafruit_NeoPixel, ws
                 self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
-                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, default_brightness , 0,
+                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, max_brightness , 0,
                                                ws.WS2811_STRIP_GRB)
             except:
                 print('Update deprecated external dependency rpi_ws281x. '
@@ -106,13 +106,21 @@ class wordclock_display:
         """
         Sets the color for a pixel, while considering the brightness, set within the config file
         """
-        return self.strip.getBrightness()
+        return self.brightness
 
     def setBrightness(self, brightness):
         """
         Sets the color for a pixel, while considering the brightness, set within the config file
         """
-        self.strip.setBrightness(brightness)
+        brightness_before = self.getBrightness()
+        brightness = max(min(255, brightness), 0)
+
+        for i in range(self.wcl.LED_COUNT):
+            color = self.getPixelColor(i)
+            color = (color/brightness_before)^(1/2.2) * brightness
+            self.setPixelColor(i, color)
+
+        self.brightness = brightness
         self.show()
 
     def setColorBy1DCoordinates(self, *args, **kwargs):
