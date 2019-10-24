@@ -58,9 +58,9 @@
                                     <v-card>
                                         <v-card-title>The Raspberry Wordclock</v-card-title>
                                         <v-card-text>
-                                            <v-icon>fa fa-link</v-icon>  <a href="https://github.com/bk1285/rpi_wordclock">Project page</a><br><br>
-                                            <v-icon>fa fa-users</v-icon>  <a href="https://github.com/bk1285/rpi_wordclock/graphs/contributors">Contributors</a><br><br>
-                                            <v-icon>fa fa-cogs</v-icon>  <a href="/api#/API">API of this clock</a><br><br>
+                                            <v-icon>fa fa-link fa-fw</v-icon>  <a href="https://github.com/bk1285/rpi_wordclock">Project page</a><br><br>
+                                            <v-icon>fa fa-users fa-fw</v-icon>  <a href="https://github.com/bk1285/rpi_wordclock/graphs/contributors">Contributors</a><br><br>
+                                            <v-icon>fa fa-cogs fa-fw</v-icon>  <a href="/api#/API">API of this clock</a><br><br>
                                         </v-card-text>
                                     </v-card>
                                 </v-dialog>
@@ -118,7 +118,7 @@
                                     </v-card>
                                 </v-tab-item>
                                 <v-tab-item>
-                                    <v-card height=630>
+                                    <v-card height=562>
                                         <v-card-actions>
                                             <v-container fluid text-xs-center>
                                                 <v-layout row justify-center>
@@ -152,10 +152,10 @@
                                                                 <v-icon>fa fa-thermometer-half</v-icon>
                                                             </v-btn>
                                                             <v-card>
-                                                                <v-card-title>Set color temperature </v-card-title>
-                                                                <v-flex xs12>
-                                                                    <v-slider prepend-icon="fa-thermometer-half" thumb-label v-model="color_temperature" :min="1000" :max="10000" v-on:input="updateColorTemperature(color_temperature)"></v-slider>
-                                                                </v-flex>
+                                                                <v-card-title><v-icon>fa fa-thermometer-half fa-fw</v-icon>  Set color temperature </v-card-title>
+                                                                <v-card-text>
+                                                                    <v-slider thumb-label v-model="color_temperature" :min="1000" :max="10000" v-on:input="updateColorTemperature(color_temperature)"></v-slider>
+                                                                </v-card-text>
                                                             </v-card>
                                                         </v-dialog>
                                                     </v-layout>
