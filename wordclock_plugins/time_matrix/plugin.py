@@ -6,7 +6,6 @@ import logging
 import os
 import wordclock_tools.wordclock_colors as wcc
 import random
-from ConfigParser import NoSectionError
 
 
 class plugin:

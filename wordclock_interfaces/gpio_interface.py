@@ -25,16 +25,15 @@ class gpio_interface:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup([self.button_left, self.button_return, self.button_right], GPIO.IN)
 
-        interface_type = config.get('wordclock_interface', 'type')
-        if interface_type == 'gpio_low':
-            self.polarity = GPIO.RISING
-        elif interface_type == 'gpio_high':
+        if interface_type == 'gpio_high':
             self.polarity = GPIO.FALLING
         else:
-            logging.warning('Unknown interface_type ' + interface_type)
-            logging.warning('  Falling back to default')
+            if interface_type != 'gpio_low':
+                logging.warning('Unknown interface_type ' + interface_type)
+                logging.warning('  Falling back to default')
+                interface_type = 'gpio_low'
             self.polarity = GPIO.RISING
-        
+
         logging.info('Interface type set to ' + interface_type)
 
         GPIO.add_event_detect(self.button_left,
