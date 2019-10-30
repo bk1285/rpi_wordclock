@@ -1,5 +1,6 @@
 import ConfigParser
 import fontdemo
+import logging
 import os
 from PIL import Image
 import wiring
@@ -37,8 +38,8 @@ class wordclock_display:
             default_brightness = config.getint('wordclock_display', 'brightness')
         except:
             default_brightness = 255
-            print(
-                'WARNING: Default brightness value not set in config-file: '
+            logging.warning(
+                'Default brightness value not set in config-file: '
                 'To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
@@ -53,7 +54,7 @@ class wordclock_display:
                                                self.wcl.LED_DMA, self.wcl.LED_INVERT, default_brightness , 0,
                                                ws.WS2811_STRIP_GRB)
             except:
-                print('Update deprecated external dependency rpi_ws281x. '
+                logging.error('Update deprecated external dependency rpi_ws281x. '
                       'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
 
             self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
@@ -73,7 +74,7 @@ class wordclock_display:
             # For backward compatibility
             language = ''.join(config.get('plugin_time_default', 'language'))
 
-        print('  Setting language to ' + language + '.')
+        logging.info('Setting language to ' + language + '.')
         if language == 'dutch':
             self.taw = time_dutch.time_dutch()
         elif language == 'english':
@@ -93,8 +94,8 @@ class wordclock_display:
         elif language == 'swiss_german2':
             self.taw = time_swiss_german2.time_swiss_german2()
         else:
-            print('Could not detect language: ' + language + '.')
-            print('Choosing default: german')
+            logging.error('Could not detect language: ' + language + '.')
+            logging.info('Choosing default: german')
             self.taw = time_german.time_german()
 
     def getBrightness(self):

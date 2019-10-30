@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 import time
 import time_english
@@ -33,21 +34,20 @@ class plugin:
         try:
             self.typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
         except:
-            print(
-            '  No typewriter-flag set for default plugin within the config-file. Typewriter animation will be used.')
+            logging.warning('No typewriter-flag set for default plugin within the config-file. Typewriter animation will be used.')
             self.typewriter = True
 
         try:
             self.typewriter_speed = config.getint('plugin_' + self.name, 'typewriter_speed')
         except:
             self.typewriter_speed = 5
-            print('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
+            logging.warning('No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
                 self.typewriter_speed) + '.')
 
         try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
-            print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
+            logging.warning('No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
             self.purist = False
 
         self.bg_color = wcc.BLACK  # default background color
@@ -75,8 +75,7 @@ class plugin:
         try:
             self.brightness_mode_pos = config.getint('wordclock_display', 'brightness')
         except:
-            print(
-                "WARNING: Brightness value not set in config-file: To do so, add a \"brightness\" between 1..255 to the [wordclock_display]-section.")
+            logging.warning("Brightness value not set in config-file: To do so, add a \"brightness\" between 1..255 to the [wordclock_display]-section.")
             self.brightness_mode_pos = 255
         self.brightness_change = 8
 

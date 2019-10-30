@@ -2,6 +2,7 @@
 # https://github.com/mrksngl
 
 import datetime
+import logging
 import os
 import wordclock_tools.wordclock_colors as wcc
 import random
@@ -28,7 +29,7 @@ class plugin:
         try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
-            print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
+            logging.warning('No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
             self.purist = False
 
         self.bg_color = wcc.BLACK  # default background color
