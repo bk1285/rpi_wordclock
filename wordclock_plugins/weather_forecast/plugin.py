@@ -1,3 +1,4 @@
+import logging
 import os
 import pywapi
 import time
@@ -26,9 +27,9 @@ class plugin:
             import am2302_ths
             self.pin_temp_sensor = int(config.get('wordclock_interface', 'pin_temp_sensor'))
             self.temp_sensor_registered = True
-            print('  Registered temperature sensor at pin ' + str(self.pin_temp_sensor) + '.')
+            logging.info('Registered temperature sensor at pin ' + str(self.pin_temp_sensor) + '.')
         except:
-            print('  Assumes no temperature sensor to be attached.')
+            logging.warning('Assumes no temperature sensor to be attached.')
             self.temp_sensor_registered = False
 
     def run(self, wcd, wci):
@@ -41,7 +42,7 @@ class plugin:
         elif self.weather_service == 'weather_dot_com':
             current_weather_forecast = pywapi.get_weather_from_weather_com(self.location_id)
         else:
-            print('Warning: No valid weather_forecast found!')
+            logging.warning('No valid weather_forecast found!')
             return
         outdoor_temp = current_weather_forecast['current_conditions']['temperature']
         if self.temp_sensor_registered:
@@ -52,7 +53,7 @@ class plugin:
                 wcd.showText(outdoor_temp + '*', count=1, fps=8)
                 wcd.showText(indoor_temp + '*', count=1, fg_color=wcc.GREEN, fps=8)
             except:
-                print('  Failed to read temperature sensor!')
+                logging.error('Failed to read temperature sensor!')
                 wcd.showText(outdoor_temp + '*   ' + outdoor_temp + '*   ' + outdoor_temp + '*', count=1, fps=8)
         else:
             wcd.showText(outdoor_temp + '*   ' + outdoor_temp + '*   ' + outdoor_temp + '*', count=1, fps=8)

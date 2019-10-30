@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import logging
 
 
 class gpio_interface:
@@ -6,11 +7,10 @@ class gpio_interface:
         '''
         Initialization
         '''
-
         interface_type = config.get('wordclock_interface', 'type')
 
         if interface_type == 'no_gpio':
-            print('GPIO interface disabled. If hardware buttons are attached, any input is ignored. Webinterface can be used instead.')
+            logging.info('GPIO interface disabled. If hardware buttons are attached, any input is ignored. Webinterface can be used instead.')
             return
 
         self.evtHandler = evtHandler
@@ -29,11 +29,12 @@ class gpio_interface:
             self.polarity = GPIO.FALLING
         else:
             if interface_type != 'gpio_low':
-                print('Warning: Unknown interface_type ' + interface_type + '. Falling back to default.')
+                logging.warning('Unknown interface_type ' + interface_type)
+                logging.warning('  Falling back to default')
                 interface_type = 'gpio_low'
             self.polarity = GPIO.RISING
 
-        print('Interface type set to ' + interface_type)
+        logging.info('Interface type set to ' + interface_type)
 
         GPIO.add_event_detect(self.button_left,
                               self.polarity,

@@ -1,4 +1,5 @@
 import ast
+import logging
 
 class wiring:
     """
@@ -27,15 +28,15 @@ class wiring:
         self.LED_INVERT = False  # True to invert the signal (when using NPN transistor level shift)
         wiring_layout = config.get('wordclock_display', 'wiring_layout')
 
-        print('Wiring configuration')
-        print('  WCA_WIDTH: ' + str(self.WCA_WIDTH))
-        print('  WCA_HEIGHT: ' + str(self.WCA_HEIGHT))
-        print('  Num of LEDs: ' + str(self.LED_COUNT))
-        print('  Wiring layout: ' + str(wiring_layout))
+        logging.info('Wiring configuration')
+        logging.info('  WCA_WIDTH: ' + str(self.WCA_WIDTH))
+        logging.info('  WCA_HEIGHT: ' + str(self.WCA_HEIGHT))
+        logging.info('  Num of LEDs: ' + str(self.LED_COUNT))
+        logging.info('  Wiring layout: ' + str(wiring_layout))
 
         if config.getboolean('wordclock', 'developer_mode'):
             self.wcl = gtk_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
-            print('Developer mode overwrites wiring layout to gtk_wiring!')
+            logging.warning('Developer mode overwrites wiring layout to gtk_wiring!')
         elif wiring_layout == 'bernds_wiring':
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'christians_wiring':
@@ -56,15 +57,21 @@ class wiring:
         elif wiring_layout == 'webdisaster_wiring':
             self.wcl = webdisaster_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
-            print('Warning: No valid wiring layout found. Falling back to default!')
+            logging.warning('No valid wiring layout found. Falling back to default!')
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+
+    def setColorBy1DCoordinate(self, strip, i, color):
+        """
+        Linear mapping from top-left to bottom right
+        """
+        self.setColorBy2DCoordinates(strip, i % self.WCA_WIDTH, i / self.WCA_WIDTH, color)
 
     def setColorBy1DCoordinates(self, strip, ledCoordinates, color):
         """
         Linear mapping from top-left to bottom right
         """
         for i in ledCoordinates:
-            self.setColorBy2DCoordinates(strip, i % self.WCA_WIDTH, i / self.WCA_WIDTH, color)
+            self.setColorBy1DCoordinate(strip, i % self.WCA_WIDTH, i / self.WCA_WIDTH, color)
 
     def setColorBy2DCoordinates(self, strip, x, y, color):
         """
@@ -129,8 +136,7 @@ class bernds_wiring:
         elif min == 4:
             return 0
         else:
-            print('WARNING: Out of range, when mapping minutes...')
-            print(min)
+            logging.error('Out of range, when mapping minutes...: Index is ' + min)
             return 0
 
 
@@ -167,8 +173,7 @@ class gtk_wiring:
         if min >= 1 and min <= 4:
             return self.LED_COUNT - (4 - min + 1)
         else:
-            print('WARNING: Out of range, when mapping minutes...')
-            print(min)
+            logging.error('Out of range, when mapping minutes...: Index is ' + min)
             return 0
 
 
@@ -215,8 +220,7 @@ class christians_wiring:
         elif min == 4:
             return self.LED_COUNT - 1
         else:
-            print('WARNING: Out of range, when mapping minutes...')
-            print(min)
+            logging.error('Out of range, when mapping minutes...: Index is ' + min)
             return 0
 
 
@@ -263,8 +267,7 @@ class timos_wiring:
         elif min == 4:
             return 0
         else:
-            print('WARNING: Out of range, when mapping minutes...')
-            print(min)
+            logging.error('Out of range, when mapping minutes...: Index is ' + min)
             return 0
 
 
@@ -312,8 +315,7 @@ class mini_wiring:
         elif min == 4:
             return 3
         else:
-            print('WARNING: Out of range, when mapping minutes...')
-            print(min)
+            logging.error('Out of range, when mapping minutes...: Index is ' + min)
             return 0
 
 
@@ -360,8 +362,7 @@ class sebastians_wiring:
         elif min == 4:
             return 0
         else:
-            print('WARNING: Out of range, when mapping minutes...')
-            print(min)
+            logging.error('Out of range, when mapping minutes...: Index is ' + min)
             return 0
 
 
@@ -408,8 +409,7 @@ class mini_wiring2:
         elif min == 4:
             return 0
         else:
-            print('WARNING: Out of range, when mapping minutes...')
-            print(min)
+            logging.error('Out of range, when mapping minutes...: Index is ' + min)
             return 0
 
 
@@ -458,8 +458,7 @@ class micro_net_wiring:
         elif min == 4:
             return 1
         else:
-            print('WARNING: Out of range, when mapping minutes...')
-            print(min)
+            logging.error('Out of range, when mapping minutes...: Index is ' + min)
             return 0
 
 
@@ -508,7 +507,6 @@ class webdisaster_wiring:
         elif min == 4:
             return self.LED_COUNT - 1
         else:
-            print('WARNING: Out of range, when mapping minutes...')
-            print(min)
+            logging.error('Out of range, when mapping minutes...: Index is ' + min)
             return 0
 

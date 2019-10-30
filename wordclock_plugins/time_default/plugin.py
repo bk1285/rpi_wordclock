@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 import time
 import time_english
@@ -34,21 +35,20 @@ class plugin:
         try:
             self.typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
         except:
-            print(
-            '  No typewriter-flag set for default plugin within the config-file. Typewriter animation will be used.')
+            logging.warning('No typewriter-flag set for default plugin within the config-file. Typewriter animation will be used.')
             self.typewriter = True
 
         try:
             self.typewriter_speed = config.getint('plugin_' + self.name, 'typewriter_speed')
         except:
             self.typewriter_speed = 5
-            print('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
+            logging.warning('No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
                 self.typewriter_speed) + '.')
 
-	try:
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
-            print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
+            logging.warning('No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
             self.purist = False
 
         # sleep mode
@@ -106,8 +106,7 @@ class plugin:
         try:
             self.brightness_mode_pos = config.getint('wordclock_display', 'brightness')
         except:
-            print(
-                "WARNING: Brightness value not set in config-file: To do so, add a \"brightness\" between 1..255 to the [wordclock_display]-section.")
+            logging.warning("Brightness value not set in config-file: To do so, add a \"brightness\" between 1..255 to the [wordclock_display]-section.")
             self.brightness_mode_pos = 255
         self.brightness_change = 8
 
@@ -177,13 +176,13 @@ class plugin:
         taw_indices = wcd.taw.get_time(now, self.purist)
         if self.typewriter and now.minute % 5 == 0:
             for i in range(len(taw_indices)):
-                wcd.setColorBy1DCoordinates(wcd.strip, taw_indices[0:i + 1], self.word_color)
+                wcd.setColorBy1DCoordinates(taw_indices[0:i + 1], self.word_color)
                 wcd.show()
                 time.sleep(1.0 / self.typewriter_speed)
             wcd.setMinutes(now, self.minute_color)
             wcd.show()
         else:
-            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
             wcd.show()
 
@@ -202,7 +201,7 @@ class plugin:
             now = datetime.datetime.now()  # Set current time
             taw_indices = wcd.taw.get_time(now, self.purist)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
-            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
             wcd.show()
             self.rb_pos += 1
@@ -217,7 +216,7 @@ class plugin:
             now = datetime.datetime.now()  # Set current time
             taw_indices = wcd.taw.get_time(now, self.purist)
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
-            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
             wcd.setBrightness(self.brightness_mode_pos)
             wcd.show()

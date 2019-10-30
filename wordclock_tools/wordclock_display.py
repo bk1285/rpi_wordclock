@@ -1,5 +1,6 @@
 import ConfigParser
 import fontdemo
+import logging
 import os
 from PIL import Image
 import wiring
@@ -13,6 +14,7 @@ import wordclock_plugins.time_default.time_bavarian as time_bavarian
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
+import wordclock_screen
 
 
 class wordclock_display:
@@ -28,6 +30,10 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
+
+        self.transition_cache_next = wordclock_screen.wordclock_screen(self)
+        self.transition_cache_curr = wordclock_screen.wordclock_screen(self)
+
         self.config = config
         self.base_path = config.get('wordclock', 'base_path')
         max_brightness = 255
@@ -36,9 +42,8 @@ class wordclock_display:
             self.setBrightness(config.getint('wordclock_display', 'brightness'))
         except:
             self.brightness = max_brightness
-            print(
-                'WARNING: Default brightness value not set in config-file: '
-                'To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
+            logging.warning(
+                'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
             from GTKstrip import GTKstrip
@@ -51,7 +56,7 @@ class wordclock_display:
                                                self.wcl.LED_DMA, self.wcl.LED_INVERT, max_brightness , 0,
                                                ws.WS2811_STRIP_GRB)
             except:
-                print('Update deprecated external dependency rpi_ws281x. '
+                logging.error('Update deprecated external dependency rpi_ws281x. '
                       'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
 
             if config.get('wordclock_display', 'default_font') == 'wcfont':
@@ -72,7 +77,7 @@ class wordclock_display:
             # For backward compatibility
             language = ''.join(config.get('plugin_time_default', 'language'))
 
-        print('  Setting language to ' + language + '.')
+        logging.info('Setting language to ' + language + '.')
         if language == 'dutch':
             self.taw = time_dutch.time_dutch()
         elif language == 'english':
@@ -92,15 +97,9 @@ class wordclock_display:
         elif language == 'swiss_german2':
             self.taw = time_swiss_german2.time_swiss_german2()
         else:
-            print('Could not detect language: ' + language + '.')
-            print('Choosing default: german')
+            logging.error('Could not detect language: ' + language + '.')
+            logging.info('Choosing default: german')
             self.taw = time_german.time_german()
-
-    def setPixelColor(self, pixel, color):
-        """
-        Sets the color for a pixel, while considering the brightness, set within the config file
-        """
-        self.strip.setPixelColor(pixel, color)
 
     def getBrightness(self):
         """
@@ -123,17 +122,19 @@ class wordclock_display:
         self.brightness = brightness
         self.show()
 
-    def setColorBy1DCoordinates(self, *args, **kwargs):
+    def setColorBy1DCoordinates(self, ledCoordinates, color):
         """
         Sets a pixel at given 1D coordinates
         """
-        return self.wcl.setColorBy1DCoordinates(*args, **kwargs)
 
-    def setColorBy2DCoordinates(self, *args, **kwargs):
+        for i in ledCoordinates:
+            self.setColorBy2DCoordinates(i % self.get_wca_width(), i / self.get_wca_width(), color)
+
+    def setColorBy2DCoordinates(self, x, y, color):
         """
         Sets a pixel at given 2D coordinates
         """
-        return self.wcl.setColorBy2DCoordinates(*args, **kwargs)
+        self.transition_cache_next.matrix[x][y] = color
 
     def get_wca_height(self):
         """
@@ -165,12 +166,12 @@ class wordclock_display:
         Sets a given color to all leds
         If includeMinutes is set to True, color will also be applied to the minute-leds.
         """
+        for x in range(self.get_wca_width()):
+            for y in range(self.get_wca_height()):
+                self.transition_cache_next.matrix[x][y] = color;
         if includeMinutes:
-            for i in range(self.wcl.LED_COUNT):
-                self.setPixelColor(i, color)
-        else:
-            for i in self.wcl.getWcaIndices():
-                self.setPixelColor(i, color)
+            for m in range(4):
+                self.transition_cache_next.minutes[m] = color
 
     def setColorTemperatureToAll(self, temperature, includeMinutes=True):
         """
@@ -203,7 +204,7 @@ class wordclock_display:
             for y in range(0, height):
                 rgb_img = img.convert('RGB')
                 r, g, b = rgb_img.getpixel((x, y))
-                self.wcl.setColorBy2DCoordinates(self.strip, x, y, wcc.Color(r, g, b))
+                self.setColorBy2DCoordinates(x, y, wcc.Color(r, g, b))
         self.show()
 
     def animate(self, plugin, animationName, fps=10, count=1, invert=False):
@@ -257,8 +258,7 @@ class wordclock_display:
             render_range = self.wcl.WCA_WIDTH if self.wcl.WCA_WIDTH < text_width else text_width
             for y in range(text_height):
                 for x in range(render_range):
-                    self.wcl.setColorBy2DCoordinates(self.strip, x, y,
-                                                     fg_color if text_as_pixel.pixels[y * text_width + x] else bg_color)
+                    self.setColorBy2DCoordinates(x, y, fg_color if text_as_pixel.pixels[y * text_width + x] else bg_color)
 
             # Show first frame for 0.5 seconds
             self.show()
@@ -269,19 +269,29 @@ class wordclock_display:
             for cur_offset in range(text_width - self.wcl.WCA_WIDTH + 1):
                 for y in range(text_height):
                     for x in range(self.wcl.WCA_WIDTH):
-                        self.wcl.setColorBy2DCoordinates(self.strip, x, y, fg_color if text_as_pixel.pixels[
-                            y * text_width + x + cur_offset] else bg_color)
+                        self.setColorBy2DCoordinates(x, y, fg_color if text_as_pixel.pixels[y * text_width + x + cur_offset] else bg_color)
                 self.show()
                 if self.wci.waitForExit(1.0 / fps):
                     return
 
     def setMinutes(self, time, color):
         if time.minute % 5 != 0:
-            for i in range(1, time.minute % 5 + 1):
-                self.setPixelColor(self.wcl.mapMinutes(i), color)
+            for i in range(0, time.minute % 5):
+                self.transition_cache_next.minutes[i] = color
+
+    def render_transition_step(self, transition_cache_step):
+        for x in range(self.get_wca_width()):
+            for y in range(self.get_wca_height()):
+                self.wcl.setColorBy2DCoordinates(self.strip, x, y, transition_cache_step.matrix[x][y])
+        for m in range(4):
+            self.strip.setPixelColor(self.wcl.mapMinutes(m + 1), transition_cache_step.minutes[m])
+        self.strip.show()
 
     def show(self):
         """
         This function provides the current color settings to the LEDs
         """
-        self.strip.show()
+
+        self.transition_cache_curr = self.transition_cache_next
+        self.render_transition_step(self.transition_cache_curr)
+

@@ -2,6 +2,7 @@
 # https://github.com/mrksngl
 
 import datetime
+import logging
 import os
 import wordclock_tools.wordclock_colors as wcc
 import random
@@ -23,11 +24,11 @@ class plugin:
         self.name = os.path.dirname(__file__).split('/')[-1]
         self.pretty_name = "Matrix with time"
         self.description = "There is no spoon?"
-
-	    try:
+	
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
-        except Exception as e:
-            print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
+        except:
+            logging.warning('No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
             self.purist = False
 
         self.bg_color = wcc.BLACK  # default background color
@@ -58,7 +59,7 @@ class plugin:
             # Returns indices, which represent the current time, when beeing illuminated
             taw_indices = wcd.taw.get_time(now, self.purist)
 
-            wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
+            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
 
             for x, y in enumerate(rain):
@@ -73,7 +74,7 @@ class plugin:
                     ci = y0 - (y - 10)
                     for yi, yn in enumerate(range(y0, y1 + 1)):
                         color = self.colors[ci + yi]
-                        wcd.setColorBy2DCoordinates(wcd.strip, x, yn, color)
+                        wcd.setColorBy2DCoordinates(x, yn, color)
                     # advance y coordinate
                     rain[x] = y + 1
 
