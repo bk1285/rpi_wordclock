@@ -20,6 +20,8 @@ class Color:
         self.g = max(self.g - other, 0)
         self.b = max(self.b - other, 0)
 
+        return self
+
     def neopixel(self):
         return NeoPixelColor(self.r, self.g, self.b)
 

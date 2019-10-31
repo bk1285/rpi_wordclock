@@ -22,10 +22,7 @@ class wordclock_screen:
         if not isinstance(other, int):
             raise TypeError
 
-        self.matrix  = [[x - other for x in y] for y in self.matrix]
         self.minutes = [x - other for x in self.minutes]
         self.misc    = [x - other for x in self.misc]
-        
-
-        logging.info("success")
+        self.matrix  = [[x - other for x in y] for y in self.matrix]
         return self

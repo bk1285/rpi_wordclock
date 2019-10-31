@@ -292,12 +292,13 @@ class wordclock_display:
         """
         This function provides the current color settings to the LEDs
         """
+
         if(animate):
             transition_cache = self.transition_cache_curr 
-            for i in range(25):
-                transition_cache -= 10
+            for i in range(100):
+                transition_cache -= 2
                 self.render_transition_step(transition_cache)
-                sleep(0.05)
+                sleep(0.1)
 
             self.transition_cache_curr = self.transition_cache_next
             self.render_transition_step(self.transition_cache_curr)
