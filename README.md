@@ -2,11 +2,11 @@
 
 ### :vertical_traffic_light: Repo status
 
-<p align="center">
- <img alt="Build status documentation" src="https://readthedocs.org/projects/rpi-wordclock/badge/"/>
+<p align="left">
  <img alt="Source code license" src="https://img.shields.io/github/license/bk1285/rpi_wordclock"/>
  <img alt="GitHub Issue Count" src="https://img.shields.io/github/issues/bk1285/rpi_wordclock"/>
  <img alt="GitHub (Pre-)Release Date" src="https://img.shields.io/github/release-date-pre/bk1285/rpi_wordclock">
+ <img alt="Build status documentation" src="https://readthedocs.org/projects/rpi-wordclock/badge/"/>
 </p>
 
 ### ✔️ Features
