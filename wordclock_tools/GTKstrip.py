@@ -7,14 +7,7 @@ from gtk._gtk import FILL
 import pango
 import os
 from wordclock_interfaces import event_handler as weh
-
-
-class Color:
-    def __init__(self, r, g, b):
-        self.r = r
-        self.g = g
-        self.b = b
-
+from wordclock_colors import Color
 
 gobject.threads_init()
 

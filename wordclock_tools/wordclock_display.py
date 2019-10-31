@@ -3,6 +3,7 @@ import fontdemo
 import logging
 import os
 from PIL import Image
+from time import sleep
 import wiring
 import wordclock_plugins.time_default.time_english as time_english
 import wordclock_plugins.time_default.time_german as time_german
@@ -168,7 +169,7 @@ class wordclock_display:
         """
         for x in range(self.get_wca_width()):
             for y in range(self.get_wca_height()):
-                self.transition_cache_next.matrix[x][y] = color;
+                self.transition_cache_next.matrix[x][y] = color
         if includeMinutes:
             for m in range(4):
                 self.transition_cache_next.minutes[m] = color
@@ -284,14 +285,23 @@ class wordclock_display:
             for y in range(self.get_wca_height()):
                 self.wcl.setColorBy2DCoordinates(self.strip, x, y, transition_cache_step.matrix[x][y])
         for m in range(4):
-            self.strip.setPixelColor(self.wcl.mapMinutes(m + 1), transition_cache_step.minutes[m])
+            self.strip.setPixelColor(self.wcl.mapMinutes(m + 1), transition_cache_step.minutes[m].neopixel())
         self.strip.show()
 
-    def show(self):
+    def show(self, animate = False):
         """
         This function provides the current color settings to the LEDs
         """
+        if(animate):
+            transition_cache = self.transition_cache_curr 
+            for i in range(25):
+                transition_cache -= 10
+                self.render_transition_step(transition_cache)
+                sleep(0.05)
 
-        self.transition_cache_curr = self.transition_cache_next
-        self.render_transition_step(self.transition_cache_curr)
+            self.transition_cache_curr = self.transition_cache_next
+            self.render_transition_step(self.transition_cache_curr)
+        else:
+            self.transition_cache_curr = self.transition_cache_next
+            self.render_transition_step(self.transition_cache_curr)
 

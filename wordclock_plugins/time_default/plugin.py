@@ -180,11 +180,11 @@ class plugin:
                 wcd.show()
                 time.sleep(1.0 / self.typewriter_speed)
             wcd.setMinutes(now, self.minute_color)
-            wcd.show()
+            wcd.show(True)
         else:
             wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
-            wcd.show()
+            wcd.show(True)
 
     def color_selection(self, wcd, wci):
         while True:
