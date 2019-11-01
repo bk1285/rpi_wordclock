@@ -174,17 +174,9 @@ class plugin:
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
         # Returns indices, which represent the current time, when being illuminated
         taw_indices = wcd.taw.get_time(now, self.purist)
-        if self.typewriter and now.minute % 5 == 0:
-            for i in range(len(taw_indices)):
-                wcd.setColorBy1DCoordinates(taw_indices[0:i + 1], self.word_color)
-                wcd.show()
-                time.sleep(1.0 / self.typewriter_speed)
-            wcd.setMinutes(now, self.minute_color)
-            wcd.show(True)
-        else:
-            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
-            wcd.setMinutes(now, self.minute_color)
-            wcd.show(True)
+        wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
+        wcd.setMinutes(now, self.minute_color)
+        wcd.show(self.typewriter and now.minute % 5 == 0)
 
     def color_selection(self, wcd, wci):
         while True:

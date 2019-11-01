@@ -1,7 +1,9 @@
 import ConfigParser
 import fontdemo
+import itertools
 import logging
 import os
+from copy import deepcopy
 from PIL import Image
 from time import sleep
 import wiring
@@ -292,14 +294,24 @@ class wordclock_display:
         """
         This function provides the current color settings to the LEDs
         """
+        fps = 25
 
         if(animate):
-            transition_cache = self.transition_cache_curr 
+            transition_cache = wordclock_screen.wordclock_screen(self)
+            for y in range(self.get_wca_height()):
+                for x in range(self.get_wca_width()):
+                    if self.transition_cache_next.matrix[x][y] is not wcc.BLACK:
+                        transition_cache.matrix[x][y] = self.transition_cache_next.matrix[x][y]
+                        self.render_transition_step(transition_cache)
+                        sleep(0.12)
+            self.transition_cache_curr = self.transition_cache_next
+            self.render_transition_step(self.transition_cache_next)
+        elif(False):
+            transition_cache = deepcopy(self.transition_cache_curr)
             for i in range(100):
                 transition_cache -= 2
                 self.render_transition_step(transition_cache)
-                sleep(0.1)
-
+                sleep(1/fps)
             self.transition_cache_curr = self.transition_cache_next
             self.render_transition_step(self.transition_cache_curr)
         else:
