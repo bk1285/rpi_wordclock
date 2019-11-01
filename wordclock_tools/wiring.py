@@ -129,8 +129,7 @@ class base_wiring:
         if min < 1 or min > 4:
             logging.error('Minute index of range. Expected 1,2,3 or 4, but received ' + min)
             return 0
-
-        mapMinutesInternal(min)
+        return self.mapMinutesInternal(min)
 
     def mapMinutesInternal(self, min):
         if min == 1:
@@ -164,7 +163,7 @@ class gtk_wiring(base_wiring):
         return y * self.WCA_WIDTH + x
 
     def mapMinutesInternal(self, min):
-        return mapMinutesInternalLedsAtEnd(min)
+        return self.mapMinutesInternalLedsAtEnd(min)
 
 
 class christians_wiring(base_wiring):
@@ -176,7 +175,7 @@ class christians_wiring(base_wiring):
             return (self.WCA_HEIGHT - y) * self.WCA_WIDTH - x - 1
 
     def mapMinutesInternal(self, min):
-        return mapMinutesInternalLedsAtEnd(min)
+        return self.mapMinutesInternalLedsAtEnd(min)
 
 
 class timos_wiring(base_wiring):
@@ -215,7 +214,7 @@ class mini_wiring(base_wiring):
             return (self.WCA_WIDTH - x - 1) * self.WCA_HEIGHT + y + 4
 
     def mapMinutesInternal(self, min):
-        mapMinutesInternalAtBegin(min)
+        return self.mapMinutesInternalAtBegin(min)
 
 
 class sebastians_wiring(base_wiring):
@@ -309,6 +308,4 @@ class webdisaster_wiring(base_wiring):
         """
         This implementation assumes the minutes to be wired as the last four leds of the led-strip
         """
-        return mapMinutesInternalLedsAtEnd(self, min):
-
-
+        return self.mapMinutesInternalLedsAtEnd(self, min)

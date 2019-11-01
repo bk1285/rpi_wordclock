@@ -22,6 +22,9 @@ class Color:
 
         return self
 
+    def brightness(self):
+        return int((self.r + self.g + self.b)/3)
+
     def neopixel(self):
         return NeoPixelColor(self.r, self.g, self.b)
 

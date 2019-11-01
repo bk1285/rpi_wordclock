@@ -118,9 +118,13 @@ class wordclock_display:
         brightness = max(min(255, brightness), 0)
 
         for i in range(self.wcl.LED_COUNT):
-            color = self.getPixelColor(i)
-            color = (color/brightness_before)^(1/2.2) * brightness
-            self.setPixelColor(i, color)
+            neoPixelColor = self.strip.getPixelColor(i)
+            blue = ((neoPixelColor & 255)/brightness_before) * brightness
+            green = (((neoPixelColor >> 8) & 255)/brightness_before) * brightness
+            red = (((neoPixelColor >> 16) & 255)/brightness_before) * brightness
+           
+            color = wcc.Color(red, green, blue)
+            self.strip.setPixelColor(i, color.neopixel())
 
         self.brightness = brightness
         self.show()
@@ -290,13 +294,16 @@ class wordclock_display:
             self.strip.setPixelColor(self.wcl.mapMinutes(m + 1), transition_cache_step.minutes[m].neopixel())
         self.strip.show()
 
-    def show(self, animate = False):
+    def show(self, animation = None):
         """
         This function provides the current color settings to the LEDs
         """
-        fps = 25
+        fps = 10
 
-        if(animate):
+        if animation is None:
+            self.transition_cache_curr = self.transition_cache_next
+            self.render_transition_step(self.transition_cache_curr)
+        elif animation:
             transition_cache = wordclock_screen.wordclock_screen(self)
             for y in range(self.get_wca_height()):
                 for x in range(self.get_wca_width()):
@@ -306,15 +313,15 @@ class wordclock_display:
                         sleep(0.12)
             self.transition_cache_curr = self.transition_cache_next
             self.render_transition_step(self.transition_cache_next)
-        elif(False):
-            transition_cache = deepcopy(self.transition_cache_curr)
-            for i in range(100):
-                transition_cache -= 2
-                self.render_transition_step(transition_cache)
-                sleep(1/fps)
-            self.transition_cache_curr = self.transition_cache_next
-            self.render_transition_step(self.transition_cache_curr)
         else:
+            transition_cache = deepcopy(self.transition_cache_curr)
+
+            brightness = self.getBrightness()
+            while self.getBrightness() > 0:
+                self.setBrightness(self.getBrightness() - 1)
+                sleep(1/fps)
+
             self.transition_cache_curr = self.transition_cache_next
             self.render_transition_step(self.transition_cache_curr)
+
 
