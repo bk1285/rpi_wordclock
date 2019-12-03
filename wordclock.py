@@ -91,7 +91,8 @@ class wordclock:
                     self.default_plugin = index
                 print('Imported plugin ' + str(index) + ': "' + plugin + '".')
                 index += 1
-            except:
+            except Exception as e:
+                print(e)
                 print('Failed to import plugin ' + plugin + '!')
 
         # Create object to interact with the wordclock using the interface of your choice
@@ -118,7 +119,8 @@ class wordclock:
         try:
 	    print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
 	    self.plugins[self.plugin_index].run(self.wcd, self.wci)
-        except:
+        except Exception as e:
+            print(e)
             print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
 

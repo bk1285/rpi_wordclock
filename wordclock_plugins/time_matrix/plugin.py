@@ -5,7 +5,6 @@ import datetime
 import os
 import wordclock_tools.wordclock_colors as wcc
 import random
-from ConfigParser import NoSectionError
 
 
 class plugin:
@@ -24,10 +23,10 @@ class plugin:
         self.name = os.path.dirname(__file__).split('/')[-1]
         self.pretty_name = "Matrix with time"
         self.description = "There is no spoon?"
-	
-	try:
+
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
-        except:
+        except Exception as e:
             print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
             self.purist = False
 

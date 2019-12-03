@@ -29,10 +29,14 @@ class wordclock_display:
         # Get the wordclocks wiring-layout
         self.wcl = wiring.wiring(config)
         self.wci = wci
+        self.config = config
+        self.base_path = config.get('wordclock', 'base_path')
+        max_brightness = 255
+
         try:
-            default_brightness = config.getint('wordclock_display', 'brightness')
+            self.setBrightness(config.getint('wordclock_display', 'brightness'))
         except:
-            default_brightness = 255
+            self.brightness = max_brightness
             print(
                 'WARNING: Default brightness value not set in config-file: '
                 'To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
@@ -42,11 +46,14 @@ class wordclock_display:
             self.strip = WXstrip(wci)
             self.default_font = os.path.join('/usr/share/fonts/TTF/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
+            # from GTKstrip import GTKstrip
+            # self.strip = GTKstrip(wci)
+            # self.default_font = 'wcfont.ttf'
         else:
             try:
                 from neopixel import Adafruit_NeoPixel, ws
                 self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
-                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, default_brightness , 0,
+                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, max_brightness , 0,
                                                ws.WS2811_STRIP_GRB)
             except:
                 print('Update deprecated external dependency rpi_ws281x. '
@@ -55,12 +62,16 @@ class wordclock_display:
             self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
 
+            if config.get('wordclock_display', 'default_font') == 'wcfont':
+                self.default_font =  self.base_path + '/wcfont.ttf'
+            else:
+                self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/', config.get('wordclock_display', 'default_font') + '.ttf')
+
         # Initialize the NeoPixel object
         self.strip.begin()
 
         self.default_fg_color = wcc.WWHITE
         self.default_bg_color = wcc.BLACK
-        self.base_path = config.get('wordclock', 'base_path')
 
         # Choose language
         try:
@@ -103,13 +114,22 @@ class wordclock_display:
         """
         Sets the color for a pixel, while considering the brightness, set within the config file
         """
-        return self.strip.getBrightness()
+        return self.brightness
 
     def setBrightness(self, brightness):
         """
         Sets the color for a pixel, while considering the brightness, set within the config file
         """
+        brightness_before = self.getBrightness()
+        brightness = max(min(255, brightness), 0)
+
+        # for i in range(self.wcl.LED_COUNT):
+        #     color = self.getPixelColor(i)
+        #     color = (color/brightness_before)^(1/2.2) * brightness
+        #     self.setPixelColor(i, color)
+
         self.strip.setBrightness(brightness)
+        self.brightness = brightness
         self.show()
 
     def setColorBy1DCoordinates(self, *args, **kwargs):
@@ -132,7 +152,7 @@ class wordclock_display:
 
     def get_wca_width(self):
         """
-        Returns the height of the WCA
+        Returns the width of the WCA
         """
         return self.wcl.WCA_WIDTH
 
@@ -232,6 +252,7 @@ class wordclock_display:
         text = '    ' + text + '    '
 
         fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
+
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
         text_as_pixel = fnt.render_text(text)
 

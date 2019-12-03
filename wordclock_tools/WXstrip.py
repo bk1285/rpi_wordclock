@@ -109,7 +109,7 @@ class WXstrip():
         if(self.w != None):
             if(isinstance(threading.current_thread(), threading._MainThread)):
                 for label,color in zip(self.labels, self.colors):            
-                    label.SetForegroundColour((color.r,color.g,color.b)) # set text color
+                    label.SetForegroundColour((color.r,color.g,color.b, self.brightness)) # set text color
             else:
                 wx.CallAfter(Publisher.sendMessage, "update")
                 

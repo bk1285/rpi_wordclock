@@ -30,6 +30,7 @@ class plugin:
         self.pretty_name = "The time"
         self.description = "The minimum, you should expect from a wordclock."
 
+        # typewriter effect
         try:
             self.typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
         except:
@@ -43,12 +44,38 @@ class plugin:
             self.typewriter_speed = 5
             print('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
                 self.typewriter_speed) + '.')
-
-	try:
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
             print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
             self.purist = False
+
+        # sleep mode
+        try:
+            self.sleep_begin = datetime.time(config.getint('plugin_' + self.name, 'sleep_begin_hour'),config.getint('plugin_' + self.name, 'sleep_begin_minute'),0)
+        except:
+            self.sleep_begin = datetime.time(0,0,0)
+            self.sleep_end = datetime.time(0,0,0)
+            print('  No sleeping time set, display will stay bright 24/7.')
+
+        try:
+            self.sleep_end = datetime.time(config.getint('plugin_' + self.name, 'sleep_end_hour'),config.getint('plugin_' + self.name, 'sleep_end_minute'),0)
+        except:
+            self.sleep_begin = datetime.time(0,0,0)
+            self.sleep_end = datetime.time(0,0,0)
+            print('  No sleeping time set, display will stay bright 24/7.')
+
+        try:
+            self.sleep_brightness = config.getint('plugin_' + self.name, 'sleep_brightness')
+        except:
+            self.sleep_brightness = 5
+            print('  No sleep brightness set within the config-file. Defaulting to ' + str(
+                self.sleep_brightness) + '.')
+        
+        # if left/right button is pressed during sleep cycle, the current sleep cycle is skipped for the rest of the night
+        # to allow manual override
+        self.skip_sleep = False
+        self.is_sleep = False
 
         self.bg_color = wcc.BLACK  # default background color
         self.word_color = wcc.WWHITE  # default word color
@@ -92,6 +119,8 @@ class plugin:
             import Adafruit_GPIO.I2C as I2C
             address = 0x39 ## Device address
             self.i2c = I2C.Device(address,1)
+        # save current brightness for switching back from sleep mode
+        self.wake_brightness = self.brightness_mode_pos
 
     def run(self, wcd, wci):
         """
@@ -121,8 +150,8 @@ class plugin:
         while True:
             # Get current time
             now = datetime.datetime.now()
-            if self.use_brightness_sensor:                 
-                newBrightness = self.brightness_mode_pos
+            newBrightness = self.brightness_mode_pos
+            if self.use_brightness_sensor:
                 try:
                     sensorCurrent = float(self.i2c.readU16(0x8C))
                     #print('sensorCurrent is ' + str(sensorCurrent))
@@ -133,17 +162,32 @@ class plugin:
                 time.sleep(0.2)
 
 
+            # Check if this is the predefined sleep time (muted brightness) as defined in wordclock_config.cfg
+            nowtime = datetime.time(now.hour,now.minute,0)
+            if not (self.sleep_begin == self.sleep_end):
+                if (self.sleep_begin <= nowtime) and (nowtime <= self.sleep_end):
+                    newBrightness = self.sleep_brightness
+                    self.is_sleep = True
+                    if self.skip_sleep:
+                        newBrightness = self.wake_brightness
+                        self.skip_sleep = False
+                else:
+                    if not self.use_brightness_sensor:
+                        newBrightness = self.wake_brightness
+                    self.is_sleep = False
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
                 # Set background color
                 self.show_time(wcd, wci)
                 prev_min = -1 if now.minute == 59 else now.minute
-            if self.use_brightness_sensor and newBrightness != self.brightness_mode_pos:                
+            if newBrightness != self.brightness_mode_pos:
                 self.brightness_mode_pos = newBrightness            
                 self.show_time(wcd, wci)
             event = wci.waitForEvent(2)
             # Switch display color, if button_left is pressed
             if event == wci.EVENT_BUTTON_LEFT:
+                if self.is_sleep:    # if button is pressed during sleep cycle, allow override until next sleep cycle
+                    self.skip_sleep = True 
                 self.color_mode_pos += 1
                 if self.color_mode_pos == len(self.color_modes):
                     self.color_mode_pos = 0
@@ -155,8 +199,13 @@ class plugin:
             if (event == wci.EVENT_BUTTON_RETURN) \
                     or (event == wci.EVENT_EXIT_PLUGIN) \
                     or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
+                wcd.setBrightness(self.wake_brightness)
+                wcd.show()
+                self.skip_sleep = False
                 return
             if event == wci.EVENT_BUTTON_RIGHT:
+                if self.is_sleep:    # if button is pressed during sleep cycle, allow override until next sleep cycle
+                    self.skip_sleep = True
                 time.sleep(wci.lock_time)
                 self.color_selection(wcd, wci)
 
@@ -164,7 +213,7 @@ class plugin:
         now = datetime.datetime.now()
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
-        # Returns indices, which represent the current time, when beeing illuminated
+        # Returns indices, which represent the current time, when being illuminated
         taw_indices = wcd.taw.get_time(now, self.purist)
         if self.typewriter and now.minute % 5 == 0:
             for i in range(len(taw_indices)):

@@ -1,4 +1,6 @@
 import os
+import time
+
 try:
     from neopixel import Color
 except:
@@ -29,5 +31,7 @@ class plugin:
             for i in range(wcd.get_led_count()):
                 wcd.setPixelColor(i, Color(255,0,0))
                 wcd.show()
+                time.sleep(0.1)
                 if wci.waitForEvent(0.02) >= 0:
                     return
+            time.sleep(10)
