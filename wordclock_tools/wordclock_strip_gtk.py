@@ -91,9 +91,9 @@ class GTKstrip(threading.Thread):
     def setBrightness(self, brightness, brightness_before):
 
         for i in range(len(self.colors)):
-            self.colors[i].r = int(self.colors[i].r * brightness/brightness_before)
-            self.colors[i].g = int(self.colors[i].g * brightness/brightness_before)
-            self.colors[i].b = int(self.colors[i].b * brightness/brightness_before)
+            self.colors[i].r = int(self.colors[i].r * float(brightness)/(float(brightness_before)+0.1))
+            self.colors[i].g = int(self.colors[i].g * float(brightness)/(float(brightness_before)+0.1))
+            self.colors[i].b = int(self.colors[i].b * float(brightness)/(float(brightness_before)+0.1))
 
         self.brightness = brightness
 

@@ -283,12 +283,12 @@ class wordclock_display:
         """
         This function provides the current color settings to the LEDs
         """
-        fps = 10
+        fps = 30
 
         if animation is None:
             self.transition_cache_curr = self.transition_cache_next
             self.render_transition_step(self.transition_cache_curr)
-        elif animation:
+        elif animation == 'typewriter':
             transition_cache = wordclock_screen.wordclock_screen(self)
             for y in range(self.get_wca_height()):
                 for x in range(self.get_wca_width()):
@@ -297,16 +297,22 @@ class wordclock_display:
                         self.render_transition_step(transition_cache)
                         sleep(0.12)
             self.transition_cache_curr = self.transition_cache_next
-            self.render_transition_step(self.transition_cache_next)
-        else:
-            transition_cache = deepcopy(self.transition_cache_curr)
-
+            self.render_transition_step(self.transition_cache_curr)
+        elif animation == 'fadeOutIn':
             brightness = self.getBrightness()
             while self.getBrightness() > 0:
-                self.setBrightness(self.getBrightness() - 1)
+                self.setBrightness(self.getBrightness() - 5)
+                #logging.info("Brightness darker: " + str(self.getBrightness()))
+                logging.info("darker")
                 sleep(1/fps)
 
             self.transition_cache_curr = self.transition_cache_next
             self.render_transition_step(self.transition_cache_curr)
+
+            while self.getBrightness() < brightness:
+                self.setBrightness(self.getBrightness() + 5)
+                #logging.info("Brightness brighter: " + str(self.getBrightness()))
+                logging.info("brighter")
+                sleep(1/fps)
 
 
