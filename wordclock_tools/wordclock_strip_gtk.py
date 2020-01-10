@@ -88,15 +88,20 @@ class GTKstrip(threading.Thread):
     def getBrightness(self):
         return self.brightness
 
-    def setBrightness(self, brightness):
+    def setBrightness(self, brightness, brightness_before):
+
+        for i in range(len(self.colors)):
+            self.colors[i].r = int(self.colors[i].r * brightness/brightness_before)
+            self.colors[i].g = int(self.colors[i].g * brightness/brightness_before)
+            self.colors[i].b = int(self.colors[i].b * brightness/brightness_before)
+
         self.brightness = brightness
-        print "Set mock brightness value to " + str(self.brightness)
 
     def update(self):
         for label, color in zip(self.labels, self.colors):
             attrs = label.get_attributes()
             attrs.change(pango.AttrForeground(int(color.r / 255.0 * 65535), int(color.g / 255.0 * 65535),
-                                              int(color.b / 255.0 * 65535)));
+                                              int(color.b / 255.0 * 65535)))
             label.set_attributes(attrs)
 
     def show(self):

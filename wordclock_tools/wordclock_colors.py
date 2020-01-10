@@ -1,9 +1,12 @@
 import math
+import logging
 
 try:
     from neopixel import Color as NeoPixelColor
+    dev_mode = False
 except:
     logging.warning("Failed to import neopixel library. This is fine, if you're using dev-mode without a wordclock (=led strip) attached.")
+    dev_mode = True
 
 class Color:
 
@@ -26,7 +29,9 @@ class Color:
         return int((self.r + self.g + self.b)/3)
 
     def neopixel(self):
-        return NeoPixelColor(self.r, self.g, self.b)
+        if not dev_mode:
+            return NeoPixelColor(self.r, self.g, self.b)
+
 
 # Define colors which are available for the wcd. Currently: Alphabetic order
 BLACK = Color(  0,  0,  0)
