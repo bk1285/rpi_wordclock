@@ -18,6 +18,7 @@ import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_screen
+import colorsys
 
 
 class wordclock_display:
@@ -106,11 +107,6 @@ class wordclock_display:
         """
         Sets the provided brightness to the wordclock display
         """
-        brightness_before = self.getBrightness()
-        brightness = max(min(255, brightness), 0)
-
-        self.strip.setBrightness(brightness, brightness_before)
-
         self.brightness = brightness
         self.show()
 
@@ -271,12 +267,18 @@ class wordclock_display:
             for i in range(0, time.minute % 5):
                 self.transition_cache_next.minutes[i] = color
 
+    def apply_brightness(self, color):
+        [h, s, v] = colorsys.rgb_to_hsv(color.r/255.0, color.g/255.0, color.b/255.0)
+        v = v * float(self.brightness/255)
+        [r, g, b] = colorsys.hsv_to_rgb(h, s, v)
+        return wcc.Color(int(r*255.0), int(g*255.0), int(b*255.0))
+
     def render_transition_step(self, transition_cache_step):
         for x in range(self.get_wca_width()):
             for y in range(self.get_wca_height()):
-                self.wcl.setColorBy2DCoordinates(self.strip, x, y, transition_cache_step.matrix[x][y])
+                self.wcl.setColorBy2DCoordinates(self.strip, x, y, self.apply_brightness(transition_cache_step.matrix[x][y]))
         for m in range(4):
-            self.strip.setPixelColor(self.wcl.mapMinutes(m + 1), transition_cache_step.minutes[m].neopixel())
+            self.strip.setPixelColor(self.wcl.mapMinutes(m + 1), self.apply_brightness(transition_cache_step.minutes[m].neopixel()))
         self.strip.show()
 
     def show(self, animation = None):
@@ -289,6 +291,7 @@ class wordclock_display:
             self.transition_cache_curr = self.transition_cache_next
             self.render_transition_step(self.transition_cache_curr)
         elif animation == 'typewriter':
+            logging.info("typewriter")
             transition_cache = wordclock_screen.wordclock_screen(self)
             for y in range(self.get_wca_height()):
                 for x in range(self.get_wca_width()):

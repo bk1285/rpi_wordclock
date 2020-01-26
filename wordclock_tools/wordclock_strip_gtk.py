@@ -21,7 +21,6 @@ class GTKstrip(threading.Thread):
 
         self.labels = []
         self.colors = []
-        self.brightness = 180
 
         self.weh = weh
 
@@ -84,18 +83,6 @@ class GTKstrip(threading.Thread):
 
     def setPixelColor(self, index, color):
         self.colors[index] = color
-
-    def getBrightness(self):
-        return self.brightness
-
-    def setBrightness(self, brightness, brightness_before):
-
-        for i in range(len(self.colors)):
-            self.colors[i].r = int(self.colors[i].r * float(brightness)/(float(brightness_before)+0.1))
-            self.colors[i].g = int(self.colors[i].g * float(brightness)/(float(brightness_before)+0.1))
-            self.colors[i].b = int(self.colors[i].b * float(brightness)/(float(brightness_before)+0.1))
-
-        self.brightness = brightness
 
     def update(self):
         for label, color in zip(self.labels, self.colors):

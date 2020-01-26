@@ -11,15 +11,3 @@ class wordclock_strip_neopixel(Adafruit_NeoPixel):
         except:
             logging.error('Update deprecated external dependency rpi_ws281x. '
                     'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
-        self.wcl = wcl
-
-    def setBrightness(self, brightness, brightness_before):
-
-        for i in range(self.wcl.LED_COUNT):
-            neoPixelColor = self.strip.getPixelColor(i)
-            blue = ((neoPixelColor & 255)/brightness_before) * brightness
-            green = (((neoPixelColor >> 8) & 255)/brightness_before) * brightness
-            red = (((neoPixelColor >> 16) & 255)/brightness_before) * brightness
-           
-            color = wcc.Color(red, green, blue)
-            self.strip.setPixelColor(i, color.neopixel())
