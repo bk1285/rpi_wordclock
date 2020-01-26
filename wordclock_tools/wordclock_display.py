@@ -108,7 +108,6 @@ class wordclock_display:
         Sets the provided brightness to the wordclock display
         """
         self.brightness = brightness
-        self.show()
 
     def setColorBy1DCoordinates(self, ledCoordinates, color):
         """
@@ -135,7 +134,7 @@ class wordclock_display:
         Returns the width of the WCA
         """
         return self.wcl.WCA_WIDTH
-
+ 
     def get_led_count(self):
         """
         Returns the overall number of LEDs
@@ -269,8 +268,7 @@ class wordclock_display:
 
     def apply_brightness(self, color):
         [h, s, v] = colorsys.rgb_to_hsv(color.r/255.0, color.g/255.0, color.b/255.0)
-        v = v * float(self.brightness/255)
-        [r, g, b] = colorsys.hsv_to_rgb(h, s, v)
+        [r, g, b] = colorsys.hsv_to_rgb(h, s, v * self.brightness/255.0)
         return wcc.Color(int(r*255.0), int(g*255.0), int(b*255.0))
 
     def render_transition_step(self, transition_cache_step):
@@ -285,13 +283,9 @@ class wordclock_display:
         """
         This function provides the current color settings to the LEDs
         """
-        fps = 30
+        fps = 25
 
-        if animation is None:
-            self.transition_cache_curr = self.transition_cache_next
-            self.render_transition_step(self.transition_cache_curr)
-        elif animation == 'typewriter':
-            logging.info("typewriter")
+        if animation == 'typewriter':
             transition_cache = wordclock_screen.wordclock_screen(self)
             for y in range(self.get_wca_height()):
                 for x in range(self.get_wca_width()):
@@ -299,23 +293,22 @@ class wordclock_display:
                         transition_cache.matrix[x][y] = self.transition_cache_next.matrix[x][y]
                         self.render_transition_step(transition_cache)
                         sleep(0.12)
-            self.transition_cache_curr = self.transition_cache_next
+            self.transition_cache_curr = deepcopy(self.transition_cache_next)
             self.render_transition_step(self.transition_cache_curr)
         elif animation == 'fadeOutIn':
             brightness = self.getBrightness()
             while self.getBrightness() > 0:
                 self.setBrightness(self.getBrightness() - 5)
-                #logging.info("Brightness darker: " + str(self.getBrightness()))
-                logging.info("darker")
-                sleep(1/fps)
-
-            self.transition_cache_curr = self.transition_cache_next
-            self.render_transition_step(self.transition_cache_curr)
-
+                self.render_transition_step(self.transition_cache_curr)
+                sleep(1.0/fps)
+            self.transition_cache_curr = deepcopy(self.transition_cache_next)
             while self.getBrightness() < brightness:
                 self.setBrightness(self.getBrightness() + 5)
-                #logging.info("Brightness brighter: " + str(self.getBrightness()))
-                logging.info("brighter")
-                sleep(1/fps)
+                self.render_transition_step(self.transition_cache_curr)
+                sleep(1.0/fps)
+        else: # no animation
+            self.transition_cache_curr = deepcopy(self.transition_cache_next)
+            self.render_transition_step(self.transition_cache_curr)
+
 
 

@@ -11,7 +11,6 @@ from wordclock_colors import Color
 
 gobject.threads_init()
 
-
 class GTKstrip(threading.Thread):
     def __init__(self, weh):
         super(GTKstrip, self).__init__()

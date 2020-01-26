@@ -176,7 +176,8 @@ class plugin:
         taw_indices = wcd.taw.get_time(now, self.purist)
         wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
         wcd.setMinutes(now, self.minute_color)
-        wcd.show(self.typewriter and now.minute % 5 == 0)
+        #wcd.show(self.typewriter and now.minute % 5 == 0)
+        wcd.show('fadeOutIn')
 
     def color_selection(self, wcd, wci):
         while True:
