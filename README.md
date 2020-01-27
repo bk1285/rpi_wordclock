@@ -30,7 +30,6 @@
 ### :books: Further reading
  * Exemplary builds are available at [pinterest](https://www.pinterest.de/berndkrolla/wordclock-gallery/)
  * [Roadmap](https://github.com/bk1285/rpi_wordclock/projects)
- * [Excellent starting point](https://simongolms.github.io/QLOCKGENERATOR/#/home) to create your own layout
 
 ### 👏 Support 
  * Star this repo, if you like the project. 
