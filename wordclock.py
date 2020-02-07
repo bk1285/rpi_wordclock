@@ -176,6 +176,9 @@ if __name__ == '__main__':
     # Setup logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
 
+    import subprocess
+    logging.info("Git describe: " + subprocess.check_output(["git", "describe", "--tags"], cwd="/home/pi/rpi_wordclock").strip().decode())
+
     # Run the word clock
     word_clock = wordclock()
     word_clock.startup()
