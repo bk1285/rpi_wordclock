@@ -60,7 +60,6 @@ class wordclock_display:
         else:
             self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/', config.get('wordclock_display', 'default_font') + '.ttf')
 
-        # Initialize the NeoPixel object
         self.strip.begin()
 
         self.default_fg_color = wcc.WWHITE
@@ -276,7 +275,7 @@ class wordclock_display:
             for y in range(self.get_wca_height()):
                 self.wcl.setColorBy2DCoordinates(self.strip, x, y, self.apply_brightness(transition_cache_step.matrix[x][y]))
         for m in range(4):
-            self.strip.setPixelColor(self.wcl.mapMinutes(m + 1), self.apply_brightness(transition_cache_step.minutes[m].neopixel()))
+            self.wcl.setColorToMinute(self.strip, m + 1, self.apply_brightness(transition_cache_step.minutes[m]))
         self.strip.show()
 
     def show(self, animation = None):

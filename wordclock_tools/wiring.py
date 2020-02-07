@@ -76,13 +76,15 @@ class wiring:
 
     def setColorBy2DCoordinates(self, strip, x, y, color):
         """
-        Mapping coordinates to the wordclocks display
-        Needs hardware/wiring dependent implementation
-        Final range:
-             (0,0): top-left
-             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        Assignes a color to the 2D coordinates of the wordclocks display
         """
-        strip.setPixelColor(self.wcl.getStripIndexFrom2D(x, y), color.neopixel())
+        strip.setPixelColor(self.wcl.getStripIndexFrom2D(x, y), color)
+
+    def setColorToMinute(self, strip, min, color):
+        """
+        Assignes a color to a minute LED
+        """
+        strip.setPixelColor(self.mapMinutes(min), color)
 
     def getStripIndexFrom2D(self, x, y):
         return self.wcl.getStripIndexFrom2D(x, y)
