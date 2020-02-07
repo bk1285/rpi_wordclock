@@ -1,6 +1,5 @@
 import os
-from neopixel import *
-
+import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
     """
@@ -26,10 +25,13 @@ class plugin:
         while True:
             """Draw rainbow that fades across all pixels at once."""
             for j in range(256 * 5):
-                for i in range(wcd.get_led_count()):
-                    wcd.setPixelColor(i, self.wheel((i + j) & 255))
+                #for i in range(wcd.get_led_count()):
+                for x in range(wcd.get_wca_width()):
+                    for y in range(wcd.get_wca_height()):
+                        #wcd.setPixelColor(i, self.wheel((i + j) & 255))
+                        wcd.setColorBy2DCoordinates(x,y, self.wheel((x * y + j) & 255))
                 wcd.show()
-                if wci.waitForEvent(0.02) >= 0:
+                if wci.waitForEvent(0.05) >= 0:
                     return
 
     def wheel(self, pos):
@@ -37,10 +39,10 @@ class plugin:
         Generate rainbow colors across 0-255 positions.
         """
         if pos < 85:
-            return Color(pos * 3, 255 - pos * 3, 0)
+            return wcc.Color(pos * 3, 255 - pos * 3, 0)
         elif pos < 170:
             pos -= 85
-            return Color(255 - pos * 3, 0, pos * 3)
+            return wcc.Color(255 - pos * 3, 0, pos * 3)
         else:
             pos -= 170
-            return Color(0, pos * 3, 255 - pos * 3)
+            return wcc.Color(0, pos * 3, 255 - pos * 3)

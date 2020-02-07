@@ -38,6 +38,8 @@ class plugin:
             logging.warning('No typewriter-flag set for default plugin within the config-file. Typewriter animation will be used.')
             self.typewriter = True
 
+        self.animation = "typewriter" if self.typewriter else "fadeOutIn"
+
         try:
             self.typewriter_speed = config.getint('plugin_' + self.name, 'typewriter_speed')
         except:
@@ -143,7 +145,7 @@ class plugin:
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
                 # Set background color
-                self.show_time(wcd, wci)
+                self.show_time(wcd, wci, animation=self.animation)
                 prev_min = -1 if now.minute == 59 else now.minute
             event = wci.waitForEvent(2)
             # Switch display color, if button_left is pressed
@@ -156,7 +158,7 @@ class plugin:
                 self.bg_color = self.color_modes[self.color_mode_pos][0]
                 self.word_color = self.color_modes[self.color_mode_pos][1]
                 self.minute_color = self.color_modes[self.color_mode_pos][2]
-                self.show_time(wcd, wci)
+                self.show_time(wcd, wci, animation=self.animation)
                 time.sleep(0.2)
             if (event == wci.EVENT_BUTTON_RETURN) \
                     or (event == wci.EVENT_EXIT_PLUGIN) \
@@ -168,23 +170,15 @@ class plugin:
                 time.sleep(wci.lock_time)
                 self.color_selection(wcd, wci)
 
-    def show_time(self, wcd, wci):
+    def show_time(self, wcd, wci, animation=None):
         now = datetime.datetime.now()
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
         # Returns indices, which represent the current time, when being illuminated
         taw_indices = wcd.taw.get_time(now, self.purist)
-        if self.typewriter and now.minute % 5 == 0:
-            for i in range(len(taw_indices)):
-                wcd.setColorBy1DCoordinates(taw_indices[0:i + 1], self.word_color)
-                wcd.show()
-                time.sleep(1.0 / self.typewriter_speed)
-            wcd.setMinutes(now, self.minute_color)
-            wcd.show()
-        else:
-            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
-            wcd.setMinutes(now, self.minute_color)
-            wcd.show()
+        wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
+        wcd.setMinutes(now, self.minute_color)
+        wcd.show(animation)
 
     def color_selection(self, wcd, wci):
         while True:

@@ -1,8 +1,11 @@
 import ConfigParser
 import fontdemo
+import itertools
 import logging
 import os
+from copy import deepcopy
 from PIL import Image
+from time import sleep
 import wiring
 import wordclock_plugins.time_default.time_english as time_english
 import wordclock_plugins.time_default.time_german as time_german
@@ -15,6 +18,7 @@ import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_screen
+import colorsys
 
 
 class wordclock_display:
@@ -36,35 +40,26 @@ class wordclock_display:
 
         self.config = config
         self.base_path = config.get('wordclock', 'base_path')
-        max_brightness = 255
 
         try:
             self.setBrightness(config.getint('wordclock_display', 'brightness'))
         except:
-            self.brightness = max_brightness
+            self.brightness = 255
             logging.warning(
                 'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
-            from GTKstrip import GTKstrip
-            self.strip = GTKstrip(wci)
-            self.default_font = 'wcfont.ttf'
+            import wordclock_strip_gtk as wcs_gtk
+            self.strip = wcs_gtk.GTKstrip(wci)
         else:
-            try:
-                from neopixel import Adafruit_NeoPixel, ws
-                self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
-                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, max_brightness , 0,
-                                               ws.WS2811_STRIP_GRB)
-            except:
-                logging.error('Update deprecated external dependency rpi_ws281x. '
-                      'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
+            import wordclock_strip_neopixel as wcs_neo
+            self.strip = wcs_neo.wordclock_strip_neopixel(self.wcl)
 
-            if config.get('wordclock_display', 'default_font') == 'wcfont':
-                self.default_font =  self.base_path + '/wcfont.ttf'
-            else:
-                self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/', config.get('wordclock_display', 'default_font') + '.ttf')
+        if config.get('wordclock_display', 'default_font') == 'wcfont':
+            self.default_font =  self.base_path + '/wcfont.ttf'
+        else:
+            self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/', config.get('wordclock_display', 'default_font') + '.ttf')
 
-        # Initialize the NeoPixel object
         self.strip.begin()
 
         self.default_fg_color = wcc.WWHITE
@@ -103,24 +98,15 @@ class wordclock_display:
 
     def getBrightness(self):
         """
-        Sets the color for a pixel, while considering the brightness, set within the config file
+        Returns the current brightness of the wordclock display
         """
         return self.brightness
 
     def setBrightness(self, brightness):
         """
-        Sets the color for a pixel, while considering the brightness, set within the config file
+        Sets the provided brightness to the wordclock display
         """
-        brightness_before = self.getBrightness()
-        brightness = max(min(255, brightness), 0)
-
-        for i in range(self.wcl.LED_COUNT):
-            color = self.getPixelColor(i)
-            color = (color/brightness_before)^(1/2.2) * brightness
-            self.setPixelColor(i, color)
-
         self.brightness = brightness
-        self.show()
 
     def setColorBy1DCoordinates(self, ledCoordinates, color):
         """
@@ -147,7 +133,7 @@ class wordclock_display:
         Returns the width of the WCA
         """
         return self.wcl.WCA_WIDTH
-
+ 
     def get_led_count(self):
         """
         Returns the overall number of LEDs
@@ -168,7 +154,7 @@ class wordclock_display:
         """
         for x in range(self.get_wca_width()):
             for y in range(self.get_wca_height()):
-                self.transition_cache_next.matrix[x][y] = color;
+                self.transition_cache_next.matrix[x][y] = color
         if includeMinutes:
             for m in range(4):
                 self.transition_cache_next.minutes[m] = color
@@ -279,19 +265,49 @@ class wordclock_display:
             for i in range(0, time.minute % 5):
                 self.transition_cache_next.minutes[i] = color
 
+    def apply_brightness(self, color):
+        [h, s, v] = colorsys.rgb_to_hsv(color.r/255.0, color.g/255.0, color.b/255.0)
+        [r, g, b] = colorsys.hsv_to_rgb(h, s, v * self.brightness/255.0)
+        return wcc.Color(int(r*255.0), int(g*255.0), int(b*255.0))
+
     def render_transition_step(self, transition_cache_step):
         for x in range(self.get_wca_width()):
             for y in range(self.get_wca_height()):
-                self.wcl.setColorBy2DCoordinates(self.strip, x, y, transition_cache_step.matrix[x][y])
+                self.wcl.setColorBy2DCoordinates(self.strip, x, y, self.apply_brightness(transition_cache_step.matrix[x][y]))
         for m in range(4):
-            self.strip.setPixelColor(self.wcl.mapMinutes(m + 1), transition_cache_step.minutes[m])
+            self.wcl.setColorToMinute(self.strip, m + 1, self.apply_brightness(transition_cache_step.minutes[m]))
         self.strip.show()
 
-    def show(self):
+    def show(self, animation = None):
         """
         This function provides the current color settings to the LEDs
         """
+        fps = 25
 
-        self.transition_cache_curr = self.transition_cache_next
-        self.render_transition_step(self.transition_cache_curr)
+        if animation == 'typewriter':
+            transition_cache = wordclock_screen.wordclock_screen(self)
+            for y in range(self.get_wca_height()):
+                for x in range(self.get_wca_width()):
+                    if self.transition_cache_next.matrix[x][y] is not wcc.BLACK:
+                        transition_cache.matrix[x][y] = self.transition_cache_next.matrix[x][y]
+                        self.render_transition_step(transition_cache)
+                        sleep(0.12)
+            self.transition_cache_curr = deepcopy(self.transition_cache_next)
+            self.render_transition_step(self.transition_cache_curr)
+        elif animation == 'fadeOutIn':
+            brightness = self.getBrightness()
+            while self.getBrightness() > 0:
+                self.setBrightness(self.getBrightness() - 5)
+                self.render_transition_step(self.transition_cache_curr)
+                sleep(1.0/fps)
+            self.transition_cache_curr = deepcopy(self.transition_cache_next)
+            while self.getBrightness() < brightness:
+                self.setBrightness(self.getBrightness() + 5)
+                self.render_transition_step(self.transition_cache_curr)
+                sleep(1.0/fps)
+        else: # no animation
+            self.transition_cache_curr = deepcopy(self.transition_cache_next)
+            self.render_transition_step(self.transition_cache_curr)
+
+
 
