@@ -112,7 +112,6 @@ class wordclock_display:
         """
         Sets a pixel at given 1D coordinates
         """
-
         for i in ledCoordinates:
             self.setColorBy2DCoordinates(i % self.get_wca_width(), i / self.get_wca_width(), color)
 
@@ -121,6 +120,10 @@ class wordclock_display:
         Sets a pixel at given 2D coordinates
         """
         self.transition_cache_next.matrix[x][y] = color
+
+    def setColorByMinute(self, min, color):
+        if min > 0 and min < 5:
+            self.transition_cache_next.minutes[min] = color
 
     def get_wca_height(self):
         """
