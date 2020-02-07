@@ -59,20 +59,20 @@ class plugin:
         except:
             self.sleep_begin = datetime.time(0,0,0)
             self.sleep_end = datetime.time(0,0,0)
-            print('  No sleeping time set, display will stay bright 24/7.')
+            logging.warning('  No sleeping time set, display will stay bright 24/7.')
 
         try:
             self.sleep_end = datetime.time(config.getint('plugin_' + self.name, 'sleep_end_hour'),config.getint('plugin_' + self.name, 'sleep_end_minute'),0)
         except:
             self.sleep_begin = datetime.time(0,0,0)
             self.sleep_end = datetime.time(0,0,0)
-            print('  No sleeping time set, display will stay bright 24/7.')
+            logging.warning('  No sleeping time set, display will stay bright 24/7.')
 
         try:
             self.sleep_brightness = config.getint('plugin_' + self.name, 'sleep_brightness')
         except:
             self.sleep_brightness = 5
-            print('  No sleep brightness set within the config-file. Defaulting to ' + str(
+            logging.warning('  No sleep brightness set within the config-file. Defaulting to ' + str(
                 self.sleep_brightness) + '.')
         
         # if left/right button is pressed during sleep cycle, the current sleep cycle is skipped for the rest of the night
