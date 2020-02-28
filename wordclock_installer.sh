@@ -3,18 +3,13 @@
 # Check for root-privileges
 if [ "$(whoami)" != "root" ]; then
     echo -e "\n\e[34mThis script must be executed as root.\e[0m"
-    echo -e "\e[34mTry to add a \"sudo\" in front of the command.\e[0m\n"
+    echo -e "\e[34mAdd \"sudo\" in front of the command.\e[0m\n"
     exit 1
 fi
 
-# # Install latest updates of the os
-# echo -e "\e[34mNot installing latest updates of the current operating system:\e[0m"
-# sudo apt-get update && sudo apt-get upgrade
-# echo -e "\e[34m  Done.\e[0m"
-
 # Install 3rd party dependencies
 echo -e "\e[34mInstalling 3rd party dependencies:\e[0m"
-for pac in python-pip python-scipy scons git swig ttf-freefont
+for pac in python-pip python-scipy scons git swig ttf-freefont flask flask_restplus
 do
    echo -e "\e[34m  Installing dependency $pac...\e[0m"
    sudo apt-get install -y $pac
@@ -76,6 +71,16 @@ echo "  If this is not the case, adjust it: http://perlgeek.de/en/article/set-up
 echo
 echo "################################################################################"
 echo
-echo -e "\e[34mPlease note: Handle wifi-credentials to ensure an internet connection of your clock.\e[0m"
+echo -e "\e[34mraspi-config will be invoked now.\e[0m"
+echo
+echo "  * Set your wifi credentials via (1 Network Options) -> (N2 Wifi)"
+echo "  * Set the correct time zone via (4 Localisation Options) -> (I2 Change Timezone)"
+echo
+read -p ""
+sudo raspi-config
+echo
+echo
+echo "################################################################################"
+echo
 echo -e "\e[34mTo start the wordclock, system reboot required.\e[0m"
 
