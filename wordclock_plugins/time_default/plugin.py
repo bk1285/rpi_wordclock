@@ -1,15 +1,7 @@
 import datetime
 import os
 import time
-import time_english
-import time_german
-import time_german2
-import time_swabian
-import time_swabian2
-import time_dutch
-import time_bavarian
-import time_swiss_german
-import time_swiss_german2
+
 import wordclock_tools.wordclock_colors as wcc
 
 
@@ -45,7 +37,7 @@ class plugin:
             print('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
                 self.typewriter_speed) + '.')
 
-	try:
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
             print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')

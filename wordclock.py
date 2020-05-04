@@ -1,8 +1,10 @@
-import ConfigParser
+import configparser
+import traceback
 from importlib import import_module
 import netifaces
 import inspect
 import os
+import sys
 import time
 from shutil import copyfile
 import wordclock_tools.wordclock_display as wcd
@@ -33,7 +35,7 @@ class wordclock:
             copyfile(pathToConfigFileExample, pathToConfigFile)
             print('Warning: No config-file specified! Was created from example-config!')
         print('Parsing ' + pathToConfigFile)
-        self.config = ConfigParser.ConfigParser()
+        self.config = configparser.ConfigParser()
         self.config.read(pathToConfigFile)
 
         # Add to the loaded configuration the current base path to provide it
@@ -66,13 +68,18 @@ class wordclock:
         index = 0  # A helper variable (only incremented on successful import)
         self.plugins = []
         for plugin in plugins:
+            #only neccessary when using PyCharm
+            if plugin == '__pycache__':
+                continue
+
             # Check the config-file, whether to activate or deactivate the plugin
             try:
                 if not self.config.getboolean('plugin_' + plugin, 'activate'):
                     print('Skipping plugin ' + plugin + ' since it is set to activate=false in the config-file.')
                     continue
             except:
-                print('  INFO: No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.')
+                print(
+                    '  INFO: No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.')
 
             try:
                 # Perform a minimal (!) validity check
@@ -88,6 +95,8 @@ class wordclock:
                 index += 1
             except:
                 print('Failed to import plugin ' + plugin + '!')
+                #detailed error (traceback)
+                traceback.print_exc(limit=1)
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
@@ -111,11 +120,19 @@ class wordclock:
         """
 
         try:
-	    print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-	    self.plugins[self.plugin_index].run(self.wcd, self.wci)
+            print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+            self.plugins[self.plugin_index].run(self.wcd, self.wci)
         except:
             print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+            #detailed error (traceback)
+            traceback.print_exc()
+
+            time.sleep(2)
+
+            #goto menu afterwards to prevent being stuck in an error loop
+            event = self.wci.BUTTONS.get("return")
+            self.wci.getNextAction(event)
 
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()

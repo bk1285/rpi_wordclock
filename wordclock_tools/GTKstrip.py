@@ -1,11 +1,12 @@
 # coding: utf8
 
-import gtk
-import gobject
 import threading
-from gtk._gtk import FILL
-import pango
 import os
+
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk, Gdk, GObject, Pango
+
 from wordclock_interfaces import event_handler as weh
 
 
@@ -16,7 +17,7 @@ class Color:
         self.b = b
 
 
-gobject.threads_init()
+GObject.threads_init()
 
 
 class GTKstrip(threading.Thread):
@@ -32,39 +33,41 @@ class GTKstrip(threading.Thread):
 
         self.weh = weh
 
-        self.win = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.win = Gtk.Window(Gtk.WindowType.TOPLEVEL)
 
         self.win.connect("delete_event", self.delete_event)
         self.win.connect("destroy", self.destroy)
         self.win.connect("key_press_event", self.key_press_event)
 
-        table = gtk.Table(11, 11, True)
+        table = Gtk.Table(11, 11, True)
 
         x = 0
         y = 0
-        for i in unicode(chars):
-            label = gtk.Label(i)
+        for i in chars:
+            label = Gtk.Label(label=i)
             self.labels.append(label)
             self.colors.append(Color(0, 0, 0))
 
-            table.attach(label, x, x + 1, y, y + 1, FILL, FILL)
+            fill = Gtk.AttachOptions(4)
+
+            table.attach(label, x, x + 1, y, y + 1, fill, fill)
 
             x += 1
             if x == 11:
                 x = 0
                 y += 1
 
-            attrs = pango.AttrList()
-            # attrs.insert(pango.AttrLanguage("de"))
-            attrs.insert(pango.AttrForeground(0, 0, 0))
-            attrs.insert(pango.AttrSize(30 * 1000))
-            attrs.insert(pango.AttrBackground(0, 0, 0))
+            attrs = Pango.AttrList.new()
+            # attrs.insert(Pango.AttrLanguage("de"))
+            attrs.insert(Pango.attr_foreground_new(0, 0, 0))
+            attrs.insert(Pango.attr_size_new(30 * 1000))
+            attrs.insert(Pango.attr_background_new(0, 0, 0))
             label.set_attributes(attrs)
 
             label.show()
 
-        color = gtk.gdk.color_parse('#000000')
-        self.win.modify_bg(gtk.STATE_NORMAL, color)
+        color = Gdk.color_parse('#000000')
+        self.win.modify_bg(Gtk.StateType.NORMAL, color)
         self.win.add(table)
         self.win.show_all()
 
@@ -80,10 +83,10 @@ class GTKstrip(threading.Thread):
         return False
 
     def destroy(self, widget, data=None):
-        gtk.main_quit()
+        Gtk.main_quit()
 
     def run(self):
-        gtk.main()
+        Gtk.main()
         os._exit(1)
 
     def begin(self):
@@ -97,14 +100,14 @@ class GTKstrip(threading.Thread):
 
     def setBrightness(self, brightness):
         self.brightness = brightness
-        print "Set mock brightness value to " + str(self.brightness)
+        print("Set mock brightness value to " + str(self.brightness))
 
     def update(self):
         for label, color in zip(self.labels, self.colors):
             attrs = label.get_attributes()
-            attrs.change(pango.AttrForeground(int(color.r / 255.0 * 65535), int(color.g / 255.0 * 65535),
+            attrs.change(Pango.attr_foreground_new(int(color.r / 255.0 * 65535), int(color.g / 255.0 * 65535),
                                               int(color.b / 255.0 * 65535)));
             label.set_attributes(attrs)
 
     def show(self):
-        gobject.idle_add(self.update)
+        GObject.idle_add(self.update)

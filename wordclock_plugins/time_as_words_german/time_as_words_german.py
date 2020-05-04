@@ -39,7 +39,7 @@ class time_as_words_german():
         # Assemble string
         return str(
             (self.prefix if withPrefix else "") +
-            self.minutes[minute] +
+            self.minutes[int(minute)] +
             self.hours[hour] +
             # Append "S" to "EIN" (in case of "EIN UHR")
             ("S" if (hour == 1 and minute != 0) else "") + \

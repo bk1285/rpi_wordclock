@@ -1,8 +1,8 @@
-import ConfigParser
+import configparser
 import fontdemo
 import os
 from PIL import Image
-import wiring
+from . import wiring
 import wordclock_plugins.time_default.time_english as time_english
 import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
@@ -41,7 +41,7 @@ class wordclock_display:
                 'To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
-            from GTKstrip import GTKstrip
+            from .GTKstrip import GTKstrip
             self.strip = GTKstrip(wci)
             self.default_font = 'wcfont.ttf'
         else:
@@ -219,9 +219,9 @@ class wordclock_display:
         num_of_frames = len([file_count for file_count in os.listdir(animation_dir)])
 
         if invert:
-            animation_range = range(num_of_frames - 1, -1, -1)
+            animation_range = list(range(num_of_frames - 1, -1, -1))
         else:
-            animation_range = range(0, num_of_frames)
+            animation_range = list(range(0, num_of_frames))
 
         for _ in range(count):
             for i in animation_range:

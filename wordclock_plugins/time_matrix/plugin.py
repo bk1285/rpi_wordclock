@@ -24,7 +24,7 @@ class plugin:
         self.pretty_name = "Matrix with time"
         self.description = "There is no spoon?"
 
-	    try:
+        try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except Exception as e:
             print('  No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
