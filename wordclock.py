@@ -44,13 +44,12 @@ class wordclock:
         """
         Initializations, executed at every startup of the wordclock
         """
-
-        self.currentGitHash = subprocess.check_output(["git", "describe", "--tags"], cwd="/home/pi/rpi_wordclock").strip().decode()
-        logging.info("Git describe: " + self.currentGitHash)
-
-
         # Get path of the directory where this file is stored
         self.basePath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+        self.currentGitHash = subprocess.check_output(["git", "describe", "--tags"], cwd=self.basePath).strip().decode()
+        logging.info("Software version: " + self.currentGitHash)
+
         self.config = loadConfig(self.basePath)
 
         # Create object to interact with the wordclock using the interface of your choice
