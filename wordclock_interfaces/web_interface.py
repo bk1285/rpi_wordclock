@@ -170,7 +170,7 @@ class Color(Resource):
             default_plugin.minute_color = supplied_color
         elif supplied_type == 'background':
             default_plugin.bg_color = supplied_color
-        default_plugin.show_time(web_interface.app.wclk.wcd, web_interface.app.wclk.wci)
+        default_plugin.show_time(web_interface.app.wclk.wcd, web_interface.app.wclk.wci, animation=None)
         return "Wordclock color set to " + supplied_type
 
 

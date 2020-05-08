@@ -136,6 +136,8 @@ class wordclock:
         self.wcd.resetDisplay()
 
     def runNext(self, plugin_index=None):
+        if(plugin_index == self.plugin_index):
+            return
         self.plugin_index = plugin_index if plugin_index is not None else self.default_plugin
         self.wci.setEvent(self.wci.EVENT_NEXT_PLUGIN_REQUESTED)
 
