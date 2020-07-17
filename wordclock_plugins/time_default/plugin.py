@@ -35,19 +35,20 @@ class plugin:
 
         # typewriter effect
         try:
-            self.typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
+            self.animation = config.get('plugin_' + self.name, 'animation')
         except:
-            logging.warning('No typewriter-flag set for default plugin within the config-file. Typewriter animation will be used.')
-            self.typewriter = True
+            logging.warning('No animation-flag set for default plugin within the config-file. No animation will be used.')
 
-        self.animation = "typewriter" if self.typewriter else "fadeOutIn"
+        if not any([self.animation == animation_type for animation_type in ['typewriter', 'fadeOutIn']]):
+            self.animation = None
+        # self.animation = "typewriter" if self.animation else "fadeOutIn"
 
         try:
-            self.typewriter_speed = config.getint('plugin_' + self.name, 'typewriter_speed')
+            self.animation_speed = config.getint('plugin_' + self.name, 'animation_speed')
         except:
-            self.typewriter_speed = 5
-            logging.warning('No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
-                self.typewriter_speed) + '.')
+            self.animation_speed = 5
+            logging.warning('No animation_spped set for default plugin within the config-file. Defaulting to ' + str(
+                self.animation_speed) + '.')
 
         try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
