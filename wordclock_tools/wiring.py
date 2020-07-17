@@ -18,12 +18,17 @@ class wiring:
         except:
             # For backward compatibility
             language = ''.join(config.get('plugin_time_default', 'language'))
-        
+
+        try:
+            self.LED_PIN = config.getint('wordclock_display', 'led_pin')  # GPIO pin connected to the pixels (must support PWM!).
+        except:
+            # For backward compatibility
+            self.LED_PIN = 10
+
         stencil_content = ast.literal_eval(config.get('language_options', language))
         self.WCA_HEIGHT = len(stencil_content)
         self.WCA_WIDTH = len(stencil_content[0].decode('utf-8'))
         self.LED_COUNT = self.WCA_WIDTH * self.WCA_HEIGHT + 4  # Number of LED pixels.
-        self.LED_PIN = 18  # GPIO pin connected to the pixels (must support PWM!).
         self.LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
         self.LED_DMA = 10  # DMA channel to use for generating signal
         self.LED_INVERT = False  # True to invert the signal (when using NPN transistor level shift)
@@ -57,6 +62,8 @@ class wiring:
             self.wcl = micro_net_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'webdisaster_wiring':
             self.wcl = webdisaster_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'davids_wiring':
+            self.wcl = davids_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
             logging.warning('No valid wiring layout found. Falling back to default!')
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
@@ -311,3 +318,59 @@ class webdisaster_wiring(base_wiring):
         This implementation assumes the minutes to be wired as the last four leds of the led-strip
         """
         return self.mapMinutesInternalLedsAtEnd(self, min)
+
+
+class davids_wiring:
+    """
+    A class, holding all information of the wordclock's layout to map given
+    timestamps, 2d-coordinates to the corresponding LEDs (corresponding to
+    the individual wiring/layout of any wordclock).
+    If a different wordclock wiring/layout is chosen, this class needs to be
+    adopted.
+    """
+
+    def __init__(self, WCA_WIDTH, WCA_HEIGHT):
+        self.WCA_WIDTH = WCA_WIDTH
+        self.WCA_HEIGHT = WCA_HEIGHT
+        self.LED_COUNT = self.WCA_WIDTH * self.WCA_HEIGHT + 4
+
+    def getStripIndexFrom2D(self, x, y):
+        """
+        Mapping coordinates to the wordclocks display
+        Needs hardware/wiring dependent implementation
+        Final range:
+             (0,0): top-left
+             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        """
+        if x == 0:
+            pos = self.WCA_HEIGHT - y
+            return pos
+        elif x == 10:
+            pos = self.LED_COUNT - 2 - y
+            return pos
+        elif x % 2 == 0:
+            pos = 1 + (x * self.WCA_HEIGHT) + (self.WCA_HEIGHT - y)
+            return pos
+        else:
+            pos = 2 + (x * self.WCA_HEIGHT) + y
+            return pos
+
+    def mapMinutes(self, min):
+        """
+        Access minutes clockwise (1,2,4,3)
+        Needs hardware/wiring dependent implementation
+        This implementation assumes the minutes to be wired at the strip-indices:
+        bottom-left: 0, top-left: 11, top-right: LED_COUNT - 12, bottom-right: LED_COUNT - 1
+        """
+        if min == 1:
+            return 11
+        elif min == 2:
+            return self.LED_COUNT - 1
+        elif min == 3:
+            return self.LED_COUNT - 12
+        elif min == 4:
+            return 0
+        else:
+            print('WARNING: Out of range, when mapping minutes...')
+            print(min)
+            return 0
