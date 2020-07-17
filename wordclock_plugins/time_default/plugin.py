@@ -126,22 +126,21 @@ class plugin:
             # Get current time
             now = datetime.datetime.now()
             # Check if this is the predefined sleep time (muted brightness) as defined in wordclock_config.cfg
-            nowtime = datetime.time(now.hour,now.minute,0)
-            if not (self.sleep_begin == self.sleep_end):
-                if ((self.sleep_begin <= nowtime) and ((nowtime <= self.sleep_end) or (nowtime <= datetime.time(23,59,59))) or (datetime.time(0,0,0) <= nowtime <= self.sleep_end)):  # skip if color/brightness change has been done during the current sleep cycle
-                    if not self.skip_sleep: 
-                        self.brightness_mode_pos = self.sleep_brightness
-                        self.sleep_switch = True  # brightness has been changed
-                    self.is_sleep = True 
+            nowtime = datetime.time(now.hour, now.minute, 0)
+            if not self.sleep_begin == self.sleep_end:
+                if self.sleep_begin <= nowtime <= self.sleep_end:
+                    # skip if color/brightness change has been done during the current sleep cycle
+                    if self.skip_sleep:
+                        wcd.setBrightness(self.brightness_mode_pos)
+                    else:
+                        wcd.setBrightness(self.sleep_brightness)
+                    self.is_sleep = True
                 else:
-                    self.brightness_mode_pos = self.wake_brightness
-                    self.sleep_switch = True  # brightness has been changed
-                    self.skip_sleep = False   # reset skip flag, returning to normal sleep/wake cycle
+                    wcd.setBrightness(self.brightness_mode_pos)
+                    self.skip_sleep = False  # reset skip flag, returning to normal sleep/wake cycle
                     self.is_sleep = False
-            # has brightness changed? then implement change in wcd
-            if self.sleep_switch:
+            else:
                 wcd.setBrightness(self.brightness_mode_pos)
-                self.sleep_switch = False  # reset switch
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
                 # Set background color
