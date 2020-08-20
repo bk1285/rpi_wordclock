@@ -12,6 +12,8 @@ import time_bavarian
 import time_swiss_german
 import time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
+import subprocess
+import json
 
 
 class plugin:
@@ -33,19 +35,20 @@ class plugin:
 
         # typewriter effect
         try:
-            self.typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
+            self.animation = config.get('plugin_' + self.name, 'animation')
         except:
-            logging.warning('No typewriter-flag set for default plugin within the config-file. Typewriter animation will be used.')
-            self.typewriter = True
+            logging.warning('No animation-flag set for default plugin within the config-file. No animation will be used.')
 
-        self.animation = "typewriter" if self.typewriter else "fadeOutIn"
+        if not any([self.animation == animation_type for animation_type in ['typewriter', 'fadeOutIn']]):
+            self.animation = None
+        # self.animation = "typewriter" if self.animation else "fadeOutIn"
 
         try:
-            self.typewriter_speed = config.getint('plugin_' + self.name, 'typewriter_speed')
+            self.animation_speed = config.getint('plugin_' + self.name, 'animation_speed')
         except:
-            self.typewriter_speed = 5
-            logging.warning('No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
-                self.typewriter_speed) + '.')
+            self.animation_speed = 5
+            logging.warning('No animation_spped set for default plugin within the config-file. Defaulting to ' + str(
+                self.animation_speed) + '.')
 
         try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
@@ -74,18 +77,37 @@ class plugin:
             self.sleep_brightness = 5
             logging.warning('  No sleep brightness set within the config-file. Defaulting to ' + str(
                 self.sleep_brightness) + '.')
+
+        # for ping check
+        try:
+            self.ping_activated = config.getboolean('ping_checker', 'activate')
+        except:
+            print('Do not ping devices.')
+            self.ping_activated = True
+        try:
+            # list of device IPs that should be pinged
+            self.addresses = json.loads(config.get('ping_checker', 'ip_addresses'))
+        except:
+            print('No ip addresses provided. Do not ping devices.')
+            self.ping_activated = True
+        try:
+            self.shut_off_duration = config.getint('ping_checker', 'shut_off_duration')
+        except:
+            self.shut_off_duration = 10
+            print('  No shut off duration for ping_checker provided. Defaulting to ' + str(
+                self.shut_off_duration) + ' minutes.')
+
+        self.last_success_ping = datetime.datetime.now()
+        self.somebody_home = True
         
         # if left/right button is pressed during sleep cycle, the current sleep cycle is skipped for the rest of the night
         # to allow manual override
         self.skip_sleep = False
         self.is_sleep = False
 
-        # monitor sleep mode changes to apply brightness
-        self.sleep_switch = False
-
         self.bg_color = wcc.BLACK  # default background color
-        self.word_color = wcc.WWHITE  # default word color
-        self.minute_color = wcc.WWHITE  # default minute color
+        self.word_color = wcc.WHITE  # default word color
+        self.minute_color = wcc.WHITE  # default minute color
 
         # Other color modes...
         self.color_modes = \
@@ -126,24 +148,29 @@ class plugin:
             # Get current time
             now = datetime.datetime.now()
             # Check if this is the predefined sleep time (muted brightness) as defined in wordclock_config.cfg
-            nowtime = datetime.time(now.hour,now.minute,0)
-            if not (self.sleep_begin == self.sleep_end):
-                if ((self.sleep_begin <= nowtime) and ((nowtime <= self.sleep_end) or (nowtime <= datetime.time(23,59,59))) or (datetime.time(0,0,0) <= nowtime <= self.sleep_end)):  # skip if color/brightness change has been done during the current sleep cycle
-                    if not self.skip_sleep: 
-                        self.brightness_mode_pos = self.sleep_brightness
-                        self.sleep_switch = True  # brightness has been changed
-                    self.is_sleep = True 
+            nowtime = datetime.time(now.hour, now.minute, 0)
+            if self.somebody_home or not self.ping_activated:
+                if not self.sleep_begin == self.sleep_end:
+                    if self.sleep_begin <= nowtime <= self.sleep_end:
+                        # skip if color/brightness change has been done during the current sleep cycle
+                        if self.skip_sleep:
+                            wcd.setBrightness()
+                        else:
+                            wcd.setBrightness(self.sleep_brightness)
+                        self.is_sleep = True
+                    else:
+                        wcd.setBrightness()
+                        self.skip_sleep = False  # reset skip flag, returning to normal sleep/wake cycle
+                        self.is_sleep = False
                 else:
-                    self.brightness_mode_pos = self.wake_brightness
-                    self.sleep_switch = True  # brightness has been changed
-                    self.skip_sleep = False   # reset skip flag, returning to normal sleep/wake cycle
-                    self.is_sleep = False
-            # has brightness changed? then implement change in wcd
-            if self.sleep_switch:
-                wcd.setBrightness(self.brightness_mode_pos)
-                self.sleep_switch = False  # reset switch
+                    wcd.setBrightness()
+            else:
+                wcd.setBrightness()
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
+                if self.ping_activated:
+                    # check if somebody home by pinging devices
+                    self.somebody_home = self.ping_network(shut_off_minutes=self.shut_off_duration)
                 # Set background color
                 self.show_time(wcd, wci, animation=self.animation)
                 prev_min = -1 if now.minute == 59 else now.minute
@@ -221,3 +248,17 @@ class plugin:
             if event != wci.EVENT_INVALID:
                 time.sleep(wci.lock_time)
                 return
+
+    def ping_network(self, shut_off_minutes=10):
+        print('last successful ping at: ' + self.last_success_ping.strftime("%H:%M:%S"))
+        for address in self.addresses:
+            res = subprocess.call(['ping', '-c', '3', address])
+            if res == 0:  # print "ping to", address, "OK"
+                self.last_success_ping = datetime.datetime.now()
+                return True
+        if float((datetime.datetime.now() - self.last_success_ping).seconds) / 60 < shut_off_minutes:
+            print('still in time')
+            return True
+        else:
+            print('last ping is too old')
+            return False
