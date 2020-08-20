@@ -106,8 +106,8 @@ class plugin:
         self.is_sleep = False
 
         self.bg_color = wcc.BLACK  # default background color
-        self.word_color = wcc.WWHITE  # default word color
-        self.minute_color = wcc.WWHITE  # default minute color
+        self.word_color = wcc.WHITE  # default word color
+        self.minute_color = wcc.WHITE  # default minute color
 
         # Other color modes...
         self.color_modes = \
@@ -154,18 +154,18 @@ class plugin:
                     if self.sleep_begin <= nowtime <= self.sleep_end:
                         # skip if color/brightness change has been done during the current sleep cycle
                         if self.skip_sleep:
-                            wcd.setBrightness(self.brightness_mode_pos)
+                            wcd.setBrightness()
                         else:
                             wcd.setBrightness(self.sleep_brightness)
                         self.is_sleep = True
                     else:
-                        wcd.setBrightness(self.brightness_mode_pos)
+                        wcd.setBrightness()
                         self.skip_sleep = False  # reset skip flag, returning to normal sleep/wake cycle
                         self.is_sleep = False
                 else:
-                    wcd.setBrightness(self.brightness_mode_pos)
+                    wcd.setBrightness()
             else:
-                wcd.setBrightness(0)
+                wcd.setBrightness()
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
                 if self.ping_activated:

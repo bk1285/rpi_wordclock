@@ -21,6 +21,11 @@ import wordclock_screen
 import colorsys
 
 
+import time
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+
+
 class wordclock_display:
     """
     Class to display any content on the wordclock display
@@ -32,6 +37,7 @@ class wordclock_display:
         Initialization
         """
         # Get the wordclocks wiring-layout
+        self.ambient_light = None
         self.wcl = wiring.wiring(config)
         self.wci = wci
 
@@ -41,12 +47,28 @@ class wordclock_display:
         self.config = config
         self.base_path = config.get('wordclock', 'base_path')
 
+        self.current_brightness = 0
+
         try:
             self.setBrightness(config.getint('wordclock_display', 'brightness'))
         except:
-            self.brightness = 255
+            self.setBrightness(255)
             logging.warning(
                 'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
+
+        # brightness sensor
+        try:
+            self.use_brightness_sensor = config.getboolean('wordclock_display', 'use_brightness_sensor')
+        except:
+            logging.warning('No brightness sensor set within the config-file. Defaulting to static brightness.')
+            self.use_brightness_sensor = False
+        try:
+            # GPIO pin connected to photo resistor
+            self.PIN_BRIGHTNESS_SENSOR = config.getint('wordclock_display', 'pin_brightness_sensor')
+        except:
+            logging.warning('No brightness sensor set within the config-file. Defaulting to static brightness.')
+            self.PIN_BRIGHTNESS_SENSOR = None
+            self.use_brightness_sensor = False
 
         if config.getboolean('wordclock', 'developer_mode'):
             import wordclock_strip_gtk as wcs_gtk
@@ -100,13 +122,62 @@ class wordclock_display:
         """
         Returns the current brightness of the wordclock display
         """
-        return self.brightness
+        return self.current_brightness
 
-    def setBrightness(self, brightness):
+    # def setBrightness(self, brightness):
+    #     """
+    #     Sets the provided brightness to the wordclock display
+    #     """
+    #     self.brightness = brightness
+
+    def getAmbientBrightness(self):
         """
-        Sets the provided brightness to the wordclock display
+        Returns the current ambient brightness set to the wordclock
         """
-        self.brightness = brightness
+        return self.ambient_light
+
+    def setBrightness(self, brightness=None):
+        """
+        Sets brightness of wordclock. if brightness is set to None (default) the ambient light is measured.
+         If there is no ambient light sensor the brightness from the config file is used.
+        :param brightness: integer between 0 and 255
+        """
+        if brightness is None:
+            if self.use_brightness_sensor:
+                sensor_brightness = self.measure_ambient_light_exposure(self.PIN_BRIGHTNESS_SENSOR)
+                print('Sensor brightness = ' + str(sensor_brightness))
+                brightness = max(sensor_brightness, 20)
+            else:
+                brightness = self.current_brightness
+        else:
+            brightness = max(min(255, brightness), 0)
+        if self.current_brightness is not brightness:
+            self.current_brightness = brightness
+            print('@ wcd: set brightness to: ' + str(brightness))
+            self.strip.setBrightness(self.current_brightness)
+            self.show()
+
+    def measure_ambient_light_exposure(self, sensor_pin):
+        """quantifies the intensity of the ambient light, by measuring exposing time. The measurement can take up to 1 sec
+    (if it's completely dark). Thus it will delay your code.
+        :param sensor_pin: connected to photo-resistor and 1uF capacitor
+        :return: Integer between 0 and 255 where 255 is the brightest.
+        """
+        # set pin as output
+        GPIO.setup(sensor_pin, GPIO.OUT)
+        # pull pin to ground to discharge capacitor
+        GPIO.output(sensor_pin, GPIO.LOW)
+        # change the pin back to input
+        GPIO.setup(sensor_pin, GPIO.IN)
+        start_time = time.time()  # set beginning of time measurement
+        duration = 0
+        # count until the pin goes high or max duration is exceeded
+        while (GPIO.input(sensor_pin) == GPIO.LOW) & (duration < 1):
+            duration = time.time() - start_time  # calculate passed time
+        # map the time to an integer between 0 and 255
+        raw_brightness = round((1 - duration) * 255)  # brightness between 0.0 - 255.0
+        self.ambient_light = round(raw_brightness / 5) * 5  # brightness between 0.0 - 255.0 in increments of 5.0
+        return int(self.ambient_light)
 
     def setColorBy1DCoordinates(self, ledCoordinates, color):
         """
@@ -270,7 +341,7 @@ class wordclock_display:
 
     def apply_brightness(self, color):
         [h, s, v] = colorsys.rgb_to_hsv(color.r/255.0, color.g/255.0, color.b/255.0)
-        [r, g, b] = colorsys.hsv_to_rgb(h, s, v * self.brightness/255.0)
+        [r, g, b] = colorsys.hsv_to_rgb(h, s, v * self.current_brightness / 255.0)
         return wcc.Color(int(r*255.0), int(g*255.0), int(b*255.0))
 
     def render_transition_step(self, transition_cache_step):

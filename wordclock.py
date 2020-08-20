@@ -13,7 +13,7 @@ import wordclock_interfaces.web_interface as wciweb
 
 
 # Get wordclock configuration from config-file
-def loadConfig (basePath):
+def loadConfig(basePath):
     pathToConfigFile = basePath + '/wordclock_config/wordclock_config.cfg'
     if not os.path.exists(pathToConfigFile):
         pathToConfigFileExample = basePath + '/wordclock_config/wordclock_config.example.cfg'
@@ -32,7 +32,6 @@ def loadConfig (basePath):
     config.set('wordclock', 'base_path', basePath)
 
     return config
-
 
 
 class wordclock:
@@ -84,7 +83,8 @@ class wordclock:
                     logging.info('Skipping plugin ' + plugin + ' since it is set to activate=false in the config-file.')
                     continue
             except:
-                logging.debug('No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.')
+                logging.debug(
+                    'No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.')
 
             try:
                 # Perform a minimal (!) validity check
@@ -123,11 +123,12 @@ class wordclock:
         """
 
         try:
-	        logging.info('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-	        self.plugins[self.plugin_index].run(self.wcd, self.wci)
+            logging.info('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+            self.plugins[self.plugin_index].run(self.wcd, self.wci)
         except:
             logging.error('Error in plugin ' + self.plugins[self.plugin_index].name + '.')
-            logging.error('PLEASE PROVIDE THE CURRENT SOFTWARE VERSION (GIT HASH), WHEN REPORTING THIS ERROR: ' + self.currentGitHash)
+            logging.error(
+                'PLEASE PROVIDE THE CURRENT SOFTWARE VERSION (GIT HASH), WHEN REPORTING THIS ERROR: ' + self.currentGitHash)
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
             raise
 
@@ -135,7 +136,7 @@ class wordclock:
         self.wcd.resetDisplay()
 
     def runNext(self, plugin_index=None):
-        if(plugin_index == self.plugin_index):
+        if (plugin_index == self.plugin_index):
             return
         self.plugin_index = plugin_index if plugin_index is not None else self.default_plugin
         self.wci.setEvent(self.wci.EVENT_NEXT_PLUGIN_REQUESTED)
@@ -177,8 +178,8 @@ class wordclock:
                             self.plugin_index = 0
                         time.sleep(self.wci.lock_time)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     # Setup logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
 
