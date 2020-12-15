@@ -42,7 +42,7 @@ class GTKstrip(threading.Thread):
 
         x = 0
         y = 0
-        for i in unicode(chars):
+        for i in str(chars):
             label = gtk.Label(i)
             self.labels.append(label)
             self.colors.append(Color(0, 0, 0))
@@ -97,7 +97,7 @@ class GTKstrip(threading.Thread):
 
     def setBrightness(self, brightness):
         self.brightness = brightness
-        print "Set mock brightness value to " + str(self.brightness)
+        print("Set mock brightness value to " + str(self.brightness))
 
     def update(self):
         for label, color in zip(self.labels, self.colors):

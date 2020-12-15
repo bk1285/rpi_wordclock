@@ -40,8 +40,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'wordclock_for_rpi'
-copyright = u'2014, Bernd Krolla'
+project = 'wordclock_for_rpi'
+copyright = '2014, Bernd Krolla'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -183,8 +183,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'wordclock_for_rpi.tex', u'wordclock\\_for\\_rpi Documentation',
-   u'Bernd Krolla', 'manual'),
+  ('index', 'wordclock_for_rpi.tex', 'wordclock\\_for\\_rpi Documentation',
+   'Bernd Krolla', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -213,8 +213,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'wordclock_for_rpi', u'wordclock_for_rpi Documentation',
-     [u'Bernd Krolla'], 1)
+    ('index', 'wordclock_for_rpi', 'wordclock_for_rpi Documentation',
+     ['Bernd Krolla'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'wordclock_for_rpi', u'wordclock_for_rpi Documentation',
-   u'Bernd Krolla', 'wordclock_for_rpi', 'One line description of project.',
+  ('index', 'wordclock_for_rpi', 'wordclock_for_rpi Documentation',
+   'Bernd Krolla', 'wordclock_for_rpi', 'One line description of project.',
    'Miscellaneous'),
 ]
 

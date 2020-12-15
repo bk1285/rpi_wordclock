@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-import ConfigParser
+import configparser
 import fontdemo
 import os
 from PIL import Image
-import wiring
+from . import wiring
 import wordclock_plugins.time_default.time_english as time_english
 import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
@@ -42,7 +42,7 @@ class wordclock_display:
                 'To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
-            from WXstrip import WXstrip
+            from .WXstrip import WXstrip
             self.strip = WXstrip(wci)
             self.default_font = os.path.join('/usr/share/fonts/TTF/',
                                              config.get('wordclock_display', 'default_font') + '.ttf')
@@ -80,7 +80,7 @@ class wordclock_display:
             # For backward compatibility
             language = ''.join(config.get('wordclock_display', 'language'))
 
-        print('  Setting language to ' + language + '.')
+        print(('  Setting language to ' + language + '.'))
         if language == 'dutch':
             self.taw = time_dutch.time_dutch()
         elif language == 'english':
@@ -100,7 +100,7 @@ class wordclock_display:
         elif language == 'swiss_german2':
             self.taw = time_swiss_german2.time_swiss_german2()
         else:
-            print('Could not detect language: ' + language + '.')
+            print(('Could not detect language: ' + language + '.'))
             print('Choosing default: german')
             self.taw = time_german.time_german()
 
@@ -228,9 +228,9 @@ class wordclock_display:
         num_of_frames = len([file_count for file_count in os.listdir(animation_dir)])
 
         if invert:
-            animation_range = range(num_of_frames - 1, -1, -1)
+            animation_range = list(range(num_of_frames - 1, -1, -1))
         else:
-            animation_range = range(0, num_of_frames)
+            animation_range = list(range(0, num_of_frames))
 
         for _ in range(count):
             for i in animation_range:

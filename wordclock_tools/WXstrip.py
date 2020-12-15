@@ -3,7 +3,7 @@ import threading
 import os
 from wordclock_interfaces import event_handler as weh 
 import sys
-from WXcolors import Color
+from .WXcolors import Color
 import wx
 # in all modules that use pubsub 
 from wx.lib.pubsub import pub as Publisher
@@ -29,6 +29,7 @@ class Example(wx.Frame):
     
     def onKeyPress(self, event=None):
         keycode = event.GetKeyCode()
+        print(keycode)
         if(keycode == wx.WXK_LEFT):
             self.weh.setEvent(weh.event_handler.EVENT_BUTTON_LEFT)
         elif(keycode == wx.WXK_RIGHT):
@@ -65,7 +66,7 @@ class WXstrip():
                 font.SetPointSize(32)
                 gs = wx.GridSizer(11, 11, 5, 5)
                 vbox.Add(gs, proportion=1, flag=wx.EXPAND)
-                for i in unicode(chars,'utf-8'):                     
+                for i in str(chars):                     
                     self.colors.append(Color(0, 0, 0))
                     tmpText = i
                     

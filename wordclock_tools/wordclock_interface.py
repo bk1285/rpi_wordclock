@@ -15,27 +15,27 @@ class wordclock_interface:
         print('Setting up wordclock interface')
         self.interface = button_settings(config)
         self.button_left   = self.interface.button_left
-        print('  Mapping button "left" to pin ' + str(self.interface.button_left) + '.')
+        print(('  Mapping button "left" to pin ' + str(self.interface.button_left) + '.'))
         self.button_return = self.interface.button_return
-        print('  Mapping button "return" to pin ' + str(self.interface.button_return) + '.')
+        print(('  Mapping button "return" to pin ' + str(self.interface.button_return) + '.'))
         self.button_right  = self.interface.button_right
-        print('  Mapping button "right" to pin ' + str(self.interface.button_right) + '.')
+        print(('  Mapping button "right" to pin ' + str(self.interface.button_right) + '.'))
 
         self.activateRemote = self.interface.activateRemote
 
         if self.activateRemote:            
             self.virtual_button_left   = self.interface.virtual_button_left
-            print('  Mapping button "virtual_left" to pin ' + str(self.interface.virtual_button_left) + '.')
+            print(('  Mapping button "virtual_left" to pin ' + str(self.interface.virtual_button_left) + '.'))
             self.virtual_button_return = self.interface.virtual_button_return
-            print('  Mapping button "virtual_return" to pin ' + str(self.interface.virtual_button_return) + '.')
+            print(('  Mapping button "virtual_return" to pin ' + str(self.interface.virtual_button_return) + '.'))
             self.virtual_button_right  = self.interface.virtual_button_right
-            print('  Mapping button "virtual_right" to pin ' + str(self.interface.virtual_button_right) + '.')
+            print(('  Mapping button "virtual_right" to pin ' + str(self.interface.virtual_button_right) + '.'))
         else:
             print('  Remote Control is deactivated ')                            
 
         self.lock_time = float(config.get('wordclock_interface', 'lock_time'))
-        print('  Lock time of buttons is ' + str(self.lock_time) + ' seconds')
-        print('button_left is after after' + str(GPIO.input(self.button_left)));
+        print(('  Lock time of buttons is ' + str(self.lock_time) + ' seconds'))
+        print(('button_left is after after' + str(GPIO.input(self.button_left))));
 
     def getPinState(self, pin):
         '''
@@ -59,7 +59,7 @@ class wordclock_interface:
                 if(i == self.button_return and self.activateRemote):
                     virtual_pin = self.virtual_button_return                                        
                 if self.interface.pinState(i) or (self.activateRemote and GPIO.input(virtual_pin)):
-                    print('Pin ' + str(i) + ' pressed.')
+                    print(('Pin ' + str(i) + ' pressed.'))
                     return i
             time.sleep(1.0/cps)
 
@@ -78,7 +78,7 @@ class wordclock_interface:
                 if(i == self.button_return and self.activateRemote):
                     virtual_pin = self.virtual_button_return
                 if self.interface.pinState(i) or (self.activateRemote and GPIO.input(virtual_pin)):
-                    print('Pin ' + str(i) + ' pressed.')
+                    print(('Pin ' + str(i) + ' pressed.'))
                     return i
             time.sleep(1.0/cps)
         return -1
@@ -122,10 +122,10 @@ class button_settings:
         elif (interface_type == 'gpio_high'):
             self.alter_interface_state = True        
         else:
-            print('Warning: Unkonwn interface_type ' + interface)
+            print(('Warning: Unkonwn interface_type ' + interface))
             print('  Falling back to default')
             self.alter_interface_state = False
-        print('Interface type set to ' + interface_type + ' (' + str(self.alter_interface_state) + ')')
+        print(('Interface type set to ' + interface_type + ' (' + str(self.alter_interface_state) + ')'))
 
 
         GPIO.setup(self.button_left, GPIO.OUT)

@@ -6,7 +6,7 @@ import time
 import random
 import sys
 import re
-from Snakeobject import Snakeobject
+from .Snakeobject import Snakeobject
 import wordclock_tools.wordclock_colors as wcc
 
 class plugin:

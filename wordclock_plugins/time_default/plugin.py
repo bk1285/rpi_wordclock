@@ -1,15 +1,15 @@
 import datetime
 import os
 import time
-import time_english
-import time_german
-import time_german2
-import time_swabian
-import time_swabian2
-import time_dutch
-import time_bavarian
-import time_swiss_german
-import time_swiss_german2
+from . import time_english
+from . import time_german
+from . import time_german2
+from . import time_swabian
+from . import time_swabian2
+from . import time_dutch
+from . import time_bavarian
+from . import time_swiss_german
+from . import time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
 
 
@@ -42,8 +42,8 @@ class plugin:
             self.typewriter_speed = config.getint('plugin_' + self.name, 'typewriter_speed')
         except:
             self.typewriter_speed = 5
-            print('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
-                self.typewriter_speed) + '.')
+            print(('  No typewriter_speed set for default plugin within the config-file. Defaulting to ' + str(
+                self.typewriter_speed) + '.'))
         try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:
@@ -69,8 +69,8 @@ class plugin:
             self.sleep_brightness = config.getint('plugin_' + self.name, 'sleep_brightness')
         except:
             self.sleep_brightness = 5
-            print('  No sleep brightness set within the config-file. Defaulting to ' + str(
-                self.sleep_brightness) + '.')
+            print(('  No sleep brightness set within the config-file. Defaulting to ' + str(
+                self.sleep_brightness) + '.'))
         
         # if left/right button is pressed during sleep cycle, the current sleep cycle is skipped for the rest of the night
         # to allow manual override
@@ -113,7 +113,7 @@ class plugin:
             print('Not found brigtness sensor value ')
             self.use_brightness_sensor = False
 
-        print('Using brigtness sensor : ' + str(self.use_brightness_sensor))
+        print(('Using brigtness sensor : ' + str(self.use_brightness_sensor)))
         if self.use_brightness_sensor:
             print('Importing sensor Library ')
             import Adafruit_GPIO.I2C as I2C

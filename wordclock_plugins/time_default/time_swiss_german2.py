@@ -7,60 +7,60 @@ class time_swiss_german2:
     """
 
     def __init__(self):
-        self.prefix = [0] + range(2,5) +  range(6,10)  # -> D ZYT ISCH
+        self.prefix = [0] + list(range(2,5)) +  list(range(6,10))  # -> D ZYT ISCH
         self.minutes=[[], \
             # -> FÜF AB
-            range(12,15) + range(36,38), \
+            list(range(12,15)) + list(range(36,38)), \
             # -> ZÄÄ AB
-            range(29,32) + range(36,38), \
+            list(range(29,32)) + list(range(36,38)), \
             # -> VIERTU AB
-            range(15,21) + range(36,38), \
+            list(range(15,21)) + list(range(36,38)), \
             # -> ZWÄNZG AB
-            range(22,28) + range(36,38), \
+            list(range(22,28)) + list(range(36,38)), \
             # -> FÜF VOR HAUBI
-            range(12,15) + range(33,36) + range(39,44), \
+            list(range(12,15)) + list(range(33,36)) + list(range(39,44)), \
             # -> HAUBI
-            range(39,44), \
+            list(range(39,44)), \
             # -> FÜF AB HAUBI
-            range(12,15) + range(36,38) + range(39,44), \
+            list(range(12,15)) + list(range(36,38)) + list(range(39,44)), \
             # -> ZWÄNZG VOR
-            range(22,28) + range(33,36), \
+            list(range(22,28)) + list(range(33,36)), \
             # -> VIERTU VOR
-            range(15,21) + range(33,36), \
+            list(range(15,21)) + list(range(33,36)), \
             # -> ZÄÄ VOR
-            range(29,32) + range(33,36), \
+            list(range(29,32)) + list(range(33,36)), \
             # -> FÜF VOR
-            range(12,15) + range(33,36) ]
-        self.hours= [range(104,110), \
+            list(range(12,15)) + list(range(33,36)) ]
+        self.hours= [list(range(104,110)), \
             # -> EIS
-            range(100,103), \
+            list(range(100,103)), \
             # -> ZWÖI
-            range(44,48), \
+            list(range(44,48)), \
             # -> DRÜ
-            range(84,87), \
+            list(range(84,87)), \
             # -> VIERI
-            range(88,93), \
+            list(range(88,93)), \
             # -> FÜFI
-            range(66,70), \
+            list(range(66,70)), \
             # -> SÄCHSI
-            range(48,54), \
+            list(range(48,54)), \
             # -> SIBNI
-            range(71,76), \
+            list(range(71,76)), \
             # -> ACHTI
-            range(55,60), \
+            list(range(55,60)), \
             # -> NÜNI
-            range(94,98), \
+            list(range(94,98)), \
             # -> ZÄNI
-            range(79,83), \
+            list(range(79,83)), \
             # -> EUFI
-            range(62,66), \
+            list(range(62,66)), \
             # -> ZWÖUFI
-            range(104,110)]
+            list(range(104,110))]
         self.full_hour= []
 
     def get_time(self, time, purist):
-        hour=time.hour%12+(1 if time.minute/5 > 4 else 0)
-        minute=time.minute/5
+        hour=time.hour%12+(1 if time.minute//5 > 4 else 0)
+        minute=time.minute//5
         # Assemble indices
         return  \
             (self.prefix if not purist else []) + \

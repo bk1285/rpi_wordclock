@@ -1,5 +1,5 @@
 import ast
-import ConfigParser
+import configparser
 import getopt
 import os
 import svgwrite
@@ -19,7 +19,7 @@ def searchInMinutes(wcl, index):
     for i in [1, 2, 3, 4]:
         if wcl.mapMinutes(i) == index:
             return i
-    print('Mapping error for minute: Index: ' + str(index))
+    print(('Mapping error for minute: Index: ' + str(index)))
     return None
 
 
@@ -40,7 +40,7 @@ def get_min_coords(width, height, minute_margin, min_num, side):
     elif (side == 'front' and min_num == 4) or (side == 'back' and min_num == 3):
         return width - minute_margin, height - minute_margin
     else:
-        print('ERROR: Invalid ' + str(min_num))
+        print(('ERROR: Invalid ' + str(min_num)))
 
 
 def create_svg(lang, config, side='front', mode='stencil'):
@@ -49,27 +49,27 @@ def create_svg(lang, config, side='front', mode='stencil'):
     else:
         wiring_type = ''
     outpt_file = mode + '_' + side + '_' + wiring_type + '.svg'
-    print('Rendering ' + outpt_file + '...')
-    print('  Side .........: ' + side)
-    print('  Mode .........: ' + mode)
+    print(('Rendering ' + outpt_file + '...'))
+    print(('  Side .........: ' + side))
+    print(('  Mode .........: ' + mode))
     content = ast.literal_eval(config.get('language_options', lang))
-    print('  Language .....: ' + lang)
+    print(('  Language .....: ' + lang))
     font_type = config.get('stencil_parameter', 'font_type')
-    print('  Font-type.....: ' + font_type)
+    print(('  Font-type.....: ' + font_type))
     font_size = config.get('stencil_parameter', 'font_size')
-    print('  Font-size.....: ' + font_size)
+    print(('  Font-size.....: ' + font_size))
     height = float(config.get('stencil_parameter', 'height'))
-    print('  Height .......: ' + str(height) + 'mm')
+    print(('  Height .......: ' + str(height) + 'mm'))
     width = float(config.get('stencil_parameter', 'width'))
-    print('  Width ........: ' + str(width) + 'mm')
+    print(('  Width ........: ' + str(width) + 'mm'))
     wca_height = float(config.get('stencil_parameter', 'wca_height'))
-    print('  Wca height ...: ' + str(wca_height) + 'mm')
+    print(('  Wca height ...: ' + str(wca_height) + 'mm'))
     wca_width = float(config.get('stencil_parameter', 'wca_width'))
-    print('  Wca width ....: ' + str(wca_width) + 'mm')
+    print(('  Wca width ....: ' + str(wca_width) + 'mm'))
     row_num = len(content)
-    print('  Wca rows .....: ' + str(row_num))
+    print(('  Wca rows .....: ' + str(row_num)))
     col_num = len(content[0].decode('utf-8'))
-    print('  Wca columns ..: ' + str(col_num))
+    print(('  Wca columns ..: ' + str(col_num)))
     minute_margin = float(config.get('stencil_parameter', 'minute_margin'))
     minute_diameter = float(config.get('stencil_parameter', 'minute_diameter'))
     rm = minute_diameter / 2
@@ -105,8 +105,8 @@ def create_svg(lang, config, side='front', mode='stencil'):
 
     # Process letters
     wca_top_left = [(width - wca_width) / 2, (height - wca_height) / 2]
-    x_coords = range(0, col_num, 1)
-    y_coords = range(0, row_num, 1)
+    x_coords = list(range(0, col_num, 1))
+    y_coords = list(range(0, row_num, 1))
     x_spacing = wca_width / (col_num - 1)
     y_spacing = wca_height / (row_num - 1)
 
@@ -216,14 +216,14 @@ def create_svg(lang, config, side='front', mode='stencil'):
 
     # Saving svg-file
     layout.save()
-    print('Saved ' + full_path + '.')
+    print(('Saved ' + full_path + '.'))
 
 
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'ahc:', ['all', 'help', 'config='])
     except getopt.GetoptError as err:
-        print(str(err))
+        print((str(err)))
         sys.exit(2)
     configFile = 'wordclock_config/wordclock_config.example.cfg'
     process_all = False
@@ -239,9 +239,9 @@ def main():
         else:
             assert False, 'unhandled option'
 
-    print('Using ' + configFile + ' to parse configuration.')
-    print('Use\n\t' + str(sys.argv[0]) + ' -c "config-file"\nto change')
-    cfg = ConfigParser.ConfigParser()
+    print(('Using ' + configFile + ' to parse configuration.'))
+    print(('Use\n\t' + str(sys.argv[0]) + ' -c "config-file"\nto change'))
+    cfg = configparser.ConfigParser()
     cfg.read(configFile)
 
     if process_all:
@@ -250,7 +250,7 @@ def main():
         all_languages = [cfg.get('wordclock_display', 'language')]
 
     for lang in all_languages:
-        print('Processing layouts for ' + str(lang) + '.')
+        print(('Processing layouts for ' + str(lang) + '.'))
         create_svg(lang, cfg, side='front', mode='stencil')
         create_svg(lang, cfg, side='front', mode='wiring')
         create_svg(lang, cfg, side='back', mode='wiring')

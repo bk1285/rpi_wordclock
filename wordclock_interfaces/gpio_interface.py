@@ -29,11 +29,11 @@ class gpio_interface:
             self.polarity = GPIO.FALLING
         else:
             if interface_type != 'gpio_low':
-                print('Warning: Unknown interface_type ' + interface_type + '. Falling back to default.')
+                print(('Warning: Unknown interface_type ' + interface_type + '. Falling back to default.'))
                 interface_type = 'gpio_low'
             self.polarity = GPIO.RISING
 
-        print('Interface type set to ' + interface_type)
+        print(('Interface type set to ' + interface_type))
 
         GPIO.add_event_detect(self.button_left,
                               self.polarity,

@@ -3,7 +3,7 @@ import math
 try:
     from neopixel import Color
 except:
-    from WXstrip import Color
+    from .WXstrip import Color
 
 # Define colors which are available for the wcd. Currently: Alphabetic order
 BLACK = Color(  0,  0,  0)

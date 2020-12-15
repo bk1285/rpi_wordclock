@@ -26,7 +26,7 @@ class plugin:
             import am2302_ths
             self.pin_temp_sensor = int(config.get('wordclock_interface', 'pin_temp_sensor'))
             self.temp_sensor_registered = True
-            print('  Registered temperature sensor at pin ' + str(self.pin_temp_sensor) + '.')
+            print(('  Registered temperature sensor at pin ' + str(self.pin_temp_sensor) + '.'))
         except:
             print('  Assumes no temperature sensor to be attached.')
             self.temp_sensor_registered = False

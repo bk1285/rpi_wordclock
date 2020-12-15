@@ -243,14 +243,14 @@ if __name__ == '__main__':
 
     # Single characters
     ch = fnt.render_character('e')
-    print(repr(ch))
+    print((repr(ch)))
 
     # Multiple characters
     txt = fnt.render_text('hello')
-    print(repr(txt))
+    print((repr(txt)))
 
     # Kerning
-    print(repr(fnt.render_text('AV Wa')))
+    print((repr(fnt.render_text('AV Wa'))))
 
     # Choosing the baseline correctly
-    print(repr(fnt.render_text('hello, world.')))
+    print((repr(fnt.render_text('hello, world.'))))

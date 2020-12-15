@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import ConfigParser
+import configparser
 from importlib import import_module
 import netifaces
 import inspect
@@ -29,12 +29,12 @@ class wordclock:
             pathToConfigFileExample = self.basePath + '/wordclock_config/wordclock_config.example.cfg'
             if not os.path.exists(pathToConfigFileExample):
                 print('Error: No config-file available!')
-                print('  Expected ' + pathToConfigFile + ' or ' + pathToConfigFileExample)
+                print(('  Expected ' + pathToConfigFile + ' or ' + pathToConfigFileExample))
                 raise Exception('Missing config-file')
             copyfile(pathToConfigFileExample, pathToConfigFile)
             print('Warning: No config-file specified! Was created from example-config!')
-        print('Parsing ' + pathToConfigFile)
-        self.config = ConfigParser.ConfigParser()
+        print(('Parsing ' + pathToConfigFile))
+        self.config = configparser.ConfigParser()
         self.config.read(pathToConfigFile)
 
         # Add to the loaded configuration the current base path to provide it
@@ -74,10 +74,10 @@ class wordclock:
             # Check the config-file, whether to activate or deactivate the plugin
             try:
                 if not self.config.getboolean('plugin_' + plugin, 'activate'):
-                    print('Skipping plugin ' + plugin + ' since it is set to activate=false in the config-file.')
+                    print(('Skipping plugin ' + plugin + ' since it is set to activate=false in the config-file.'))
                     continue
             except:
-                print('  INFO: No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.')
+                print(('  INFO: No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.'))
 
             try:
                 # Perform a minimal (!) validity check
@@ -87,13 +87,13 @@ class wordclock:
                 self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
                 # Search for default plugin to display the time
                 if plugin == 'time_default':
-                    print('  Selected "' + plugin + '" as default plugin')
+                    print(('  Selected "' + plugin + '" as default plugin'))
                     self.default_plugin = index
-                print('Imported plugin ' + str(index) + ': "' + plugin + '".')
+                print(('Imported plugin ' + str(index) + ': "' + plugin + '".'))
                 index += 1
             except Exception as e:
                 print(e)
-                print('Failed to import plugin ' + plugin + '!')
+                print(('Failed to import plugin ' + plugin + '!'))
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
@@ -117,11 +117,11 @@ class wordclock:
         """
 
         try:
-	    print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-	    self.plugins[self.plugin_index].run(self.wcd, self.wci)
+	        print(('Running plugin ' + self.plugins[self.plugin_index].name + '.'))
+	        self.plugins[self.plugin_index].run(self.wcd, self.wci)
         except Exception as e:
             print(e)
-            print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
+            print(('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.'))
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
 
         # Cleanup display after exiting plugin

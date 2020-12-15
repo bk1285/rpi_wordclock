@@ -1,6 +1,6 @@
 import datetime
 import os
-import time_as_words_german
+from . import time_as_words_german
 import wordclock_tools.wordclock_colors as wcc
 
 
