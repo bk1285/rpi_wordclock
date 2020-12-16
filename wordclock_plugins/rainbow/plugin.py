@@ -1,6 +1,6 @@
 import os
 try:
-    from neopixel import Color
+    from rpi_ws281x import Color
 except:
     from WXcolors import Color
 

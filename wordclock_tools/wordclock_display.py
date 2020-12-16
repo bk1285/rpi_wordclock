@@ -51,8 +51,8 @@ class wordclock_display:
             # self.default_font = 'wcfont.ttf'
         else:
             try:
-                from neopixel import Adafruit_NeoPixel, ws
-                self.strip = Adafruit_NeoPixel(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
+                from rpi_ws281x import PixelStrip, ws
+                self.strip = PixelStrip(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
                                                self.wcl.LED_DMA, self.wcl.LED_INVERT, max_brightness , 0,
                                                ws.WS2811_STRIP_GRB)
             except:
