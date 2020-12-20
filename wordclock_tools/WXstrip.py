@@ -101,6 +101,13 @@ class WXstrip():
         #os._exit(1)
     
     def setPixelColor(self, index, color):
+        # color is 24bit RGB
+        b = int(color & 0xFF)
+        g = int((color >> 8) & 0xFF)
+        r = int((color >> 16) & 0xFF)
+
+        color = Color(r, g, b)
+
         self.colors[int(index)] = color
         #if(self.w != None):
             
