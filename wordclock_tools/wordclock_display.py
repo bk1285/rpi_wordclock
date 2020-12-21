@@ -44,8 +44,8 @@ class wordclock_display:
         if config.getboolean('wordclock', 'developer_mode'):
             from .WXstrip import WXstrip
             self.strip = WXstrip(wci)
-            self.default_font = os.path.join('/usr/share/fonts/TTF/',
-                                             config.get('wordclock_display', 'default_font') + '.ttf')
+            # self.default_font = os.path.join('/usr/share/fonts/TTF/',
+            #                                 config.get('wordclock_display', 'default_font') + '.ttf')
             # from GTKstrip import GTKstrip
             # self.strip = GTKstrip(wci)
             # self.default_font = 'wcfont.ttf'
@@ -53,19 +53,20 @@ class wordclock_display:
             try:
                 from rpi_ws281x import PixelStrip, ws
                 self.strip = PixelStrip(self.wcl.LED_COUNT, self.wcl.LED_PIN, self.wcl.LED_FREQ_HZ,
-                                               self.wcl.LED_DMA, self.wcl.LED_INVERT, max_brightness , 0,
-                                               ws.WS2811_STRIP_GRB)
+                                        self.wcl.LED_DMA, self.wcl.LED_INVERT, max_brightness, 0,
+                                        ws.WS2811_STRIP_GRB)
             except:
                 print('Update deprecated external dependency rpi_ws281x. '
                       'For details see also https://github.com/jgarff/rpi_ws281x/blob/master/python/README.md')
-                      
-            self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/',
-                                             config.get('wordclock_display', 'default_font') + '.ttf')
 
-            if config.get('wordclock_display', 'default_font') == 'wcfont':
-                self.default_font =  self.base_path + '/wcfont.ttf'
-            else:
-                self.default_font = os.path.join('/usr/share/fonts/truetype/freefont/', config.get('wordclock_display', 'default_font') + '.ttf')
+        if config.get('wordclock_display', 'default_font') == 'wcfont':
+            self.default_font = self.base_path + '/wcfont.ttf'
+        else:
+            self.default_font = os.path.join(
+                '/usr/share/fonts/truetype/freefont/', config.get('wordclock_display', 'default_font') + '.ttf')
+
+        if not os.path.exists(self.default_font):
+            raise ValueError("Font does not exist: %s" % self.default_font)
 
         # Initialize the NeoPixel object
         self.strip.begin()
