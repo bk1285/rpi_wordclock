@@ -20,6 +20,8 @@ class plugin:
         '''
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
+        self.pretty_name = "Snake"
+        self.description = "Play the snake game on the wordclock"
 
     def updatePoints(self, sn, wcd):
         points = sn.data["points"]
