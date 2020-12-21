@@ -36,10 +36,11 @@ class Bitmap(object):
     of a single pixel in the bitmap. A value of 0 indicates that the pixel is `off`
     and any other value indicates that it is `on`.
     """
+
     def __init__(self, width, height, pixels=None):
-        self.width = width
-        self.height = height
-        self.pixels = pixels or bytearray(width * height)
+        self.width = int(width)
+        self.height = int(height)
+        self.pixels = pixels or bytearray(self.width * self.height)
 
     def __repr__(self):
         """Return a string representation of the bitmap's pixels."""
