@@ -54,7 +54,7 @@ class Bitmap(object):
     def bitblt(self, src, x, y):
         """Copy all pixels from `src` into this bitmap"""
         srcpixel = 0
-        dstpixel = y * self.width + x
+        dstpixel = int(y * self.width + x)
         row_offset = self.width - src.width
 
         for sy in range(src.height):

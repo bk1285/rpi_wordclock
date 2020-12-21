@@ -257,6 +257,8 @@ class wordclock_display:
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
         text_as_pixel = fnt.render_text(text)
 
+        text_width = int(text_width)
+
         # Display text count times
         for i in range(count):
 
