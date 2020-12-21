@@ -189,7 +189,7 @@ class plugin:
         wcd.show()
         if (sn.data["isGameOver"] == True):
             for i in range(3):
-                wcd.clearLetters(wcc.BLACK)
+                wcd.setColorToAll(wcc.BLACK, includeMinutes=False)
                 wcd.show()
                 time.sleep(0.3)
                 self.drawSnakeBoard(sn, wcd)
