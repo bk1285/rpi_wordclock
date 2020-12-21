@@ -1,7 +1,10 @@
-from astral import Astral
+import astral
+from astral.sun import sun
+import astral.moon as moon
 import datetime
 import os
 import wordclock_tools.wordclock_colors as wcc
+
 
 class plugin:
     """
@@ -18,7 +21,8 @@ class plugin:
         self.pretty_name = "Sunrise"
         self.description = "Displays the current times of sunrise and sunset."
 
-        self.astral_at_location = Astral()[config.get('plugin_' + self.name, 'location')]
+        self.location_info = astral.LocationInfo([config.get(
+            'plugin_' + self.name, 'location')])
 
         self.bg_color_index = 0  # default background color: black
         self.word_color_index = 2  # default word color: warm white
@@ -29,12 +33,14 @@ class plugin:
         Displaying current time for sunrise/sunset
         """
         # Get data of sunrise
-        sun_data = self.astral_at_location.sun(date=datetime.datetime.now(), local=True)
+        sun_data = sun(
+            self.location_info.observer, date=datetime.datetime.now())
         # Display data of sunrise
         wcd.animate(self.name, 'sunrise', invert=True)
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
         taw_indices = wcd.taw.get_time(sun_data['sunrise'], purist=True)
-        wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
+        wcd.setColorBy1DCoordinates(
+            wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         if wci.waitForExit(3.0):
             return
@@ -42,12 +48,13 @@ class plugin:
         wcd.animate(self.name, 'sunrise')
         wcd.setColorToAll(wcc.colors[self.bg_color_index], includeMinutes=True)
         taw_indices = wcd.taw.get_time(sun_data['sunset'], purist=True)
-        wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.colors[self.word_color_index])
+        wcd.setColorBy1DCoordinates(
+            wcd.strip, taw_indices, wcc.colors[self.word_color_index])
         wcd.show()
         if wci.waitForExit(3.0):
             return
         # Display current moon phase
-        moon_phase = int(self.astral_at_location.moon_phase(datetime.datetime.now()))
+        moon_phase = int(moon.phase(datetime.datetime.now()))
         for i in range(0, moon_phase):
             wcd.showIcon('sunrise', 'moon_' + str(i).zfill(2))
             if wci.waitForExit(0.1):
