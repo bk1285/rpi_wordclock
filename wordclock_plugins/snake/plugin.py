@@ -20,6 +20,8 @@ class plugin:
         '''
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
+        self.pretty_name = "Snake"
+        self.description = "Play the snake game on the wordclock"
 
     def updatePoints(self, sn, wcd):
         points = sn.data["points"]
@@ -187,7 +189,7 @@ class plugin:
         wcd.show()
         if (sn.data["isGameOver"] == True):
             for i in range(3):
-                wcd.clearLetters(wcc.BLACK)
+                wcd.setColorToAll(wcc.BLACK, includeMinutes=False)
                 wcd.show()
                 time.sleep(0.3)
                 self.drawSnakeBoard(sn, wcd)

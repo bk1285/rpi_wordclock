@@ -51,7 +51,7 @@ class plugin:
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
         #show seconds based on numbers defined in time_seconds
-        for i in range(110, -1, -110/11):
+        for i in range(110, -1, -110//11):
             #previous seconds, dimming down
             taw_indices = self.taw.get_time(currentSecond-1 if currentSecond != 0 else 59)
             wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.Color(i, i, i))
