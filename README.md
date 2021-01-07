@@ -43,7 +43,7 @@ Tested on latest Raspian Buster (02.12.2020)
 
 #### System Packages
 ```
-sudo apt-get install python3-pip python3-scipy scons git swig fonts-freefont-ttf
+sudo apt-get install python3-pip python3-scipy scons git swig fonts-freefont-ttf python3-rpi.gpio
 ```
 
 #### Python Packages
