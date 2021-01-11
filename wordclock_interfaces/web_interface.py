@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import thread
+import logging
 from flask_restplus import Api, Resource, fields
 import wordclock_tools.wordclock_colors as wcc
 
@@ -192,7 +193,8 @@ class Brightness(Resource):
     @web_interface.api.expect(web_interface.brightness_model)
     def post(self):
         brightness = web_interface.api.payload.get('brightness')
-        web_interface.app.wclk.wcd.setBrightness(brightness)
+        web_interface.app.wclk.wcd.setBrightnessAndShow(brightness)
+        logging.info("brightness set to: " + str(brightness))
         return "Wordclock brightness set to " + str(brightness)
 
 

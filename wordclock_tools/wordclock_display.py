@@ -108,6 +108,14 @@ class wordclock_display:
         """
         self.brightness = brightness
 
+    def setBrightnessAndShow(self, brightness):
+        """
+        Sets the provided brightness to the wordclock display
+        """
+        self.setBrightness(brightness)
+        self.show()
+
+
     def setColorBy1DCoordinates(self, ledCoordinates, color):
         """
         Sets a pixel at given 1D coordinates
