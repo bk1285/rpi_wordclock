@@ -6,6 +6,7 @@ import os
 from copy import deepcopy
 from PIL import Image
 from time import sleep
+from threading import Lock
 import wiring
 import wordclock_plugins.time_default.time_english as time_english
 import wordclock_plugins.time_default.time_german as time_german
@@ -40,6 +41,7 @@ class wordclock_display:
 
         self.config = config
         self.base_path = config.get('wordclock', 'base_path')
+        self.mutex = Lock()
 
         try:
             self.setBrightness(config.getint('wordclock_display', 'brightness'))
@@ -106,15 +108,15 @@ class wordclock_display:
         """
         Sets the provided brightness to the wordclock display
         """
-        self.brightness = brightness
+        self.brightness = max(min(brightness, 255), 0)
 
     def setBrightnessAndShow(self, brightness):
         """
         Sets the provided brightness to the wordclock display
         """
-        self.setBrightness(brightness)
+        with self.mutex:
+            self.setBrightness(brightness)
         self.show()
-
 
     def setColorBy1DCoordinates(self, ledCoordinates, color):
         """
@@ -306,19 +308,18 @@ class wordclock_display:
             self.transition_cache_curr = deepcopy(self.transition_cache_next)
             self.render_transition_step(self.transition_cache_curr)
         elif animation == 'fadeOutIn':
-            brightness = self.getBrightness()
-            while self.getBrightness() > 0:
-                self.setBrightness(self.getBrightness() - 5)
-                self.render_transition_step(self.transition_cache_curr)
-                sleep(1.0/fps)
-            self.transition_cache_curr = deepcopy(self.transition_cache_next)
-            while self.getBrightness() < brightness:
-                self.setBrightness(self.getBrightness() + 5)
-                self.render_transition_step(self.transition_cache_curr)
-                sleep(1.0/fps)
+            with self.mutex:
+                brightness = self.getBrightness()
+                while self.getBrightness() > 0:
+                    self.setBrightness(self.getBrightness() - 5)
+                    self.render_transition_step(self.transition_cache_curr)
+                    sleep(1.0/fps)
+                self.transition_cache_curr = deepcopy(self.transition_cache_next)
+                while self.getBrightness() < brightness:
+                    self.setBrightness(self.getBrightness() + 5)
+                    self.render_transition_step(self.transition_cache_curr)
+                    sleep(1.0/fps)
         else: # no animation
             self.transition_cache_curr = deepcopy(self.transition_cache_next)
             self.render_transition_step(self.transition_cache_curr)
-
-
 
