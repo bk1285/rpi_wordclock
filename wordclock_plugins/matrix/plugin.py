@@ -52,7 +52,7 @@ class plugin:
                     ci = y0 - (y - 10);
                     for yi, yn in enumerate(range(y0, y1 + 1)):
                         color = self.colors[ci + yi]
-                        wcd.setColorBy2DCoordinates(wcd.strip, x, yn, color)
+                        wcd.setColorBy2DCoordinates(x, yn, color)
                     # advance y coordinate
                     rain[x] = y + 1
             wcd.show()

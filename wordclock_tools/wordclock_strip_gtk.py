@@ -7,17 +7,9 @@ from gtk._gtk import FILL
 import pango
 import os
 from wordclock_interfaces import event_handler as weh
-
-
-class Color:
-    def __init__(self, r, g, b):
-        self.r = r
-        self.g = g
-        self.b = b
-
+from wordclock_colors import Color
 
 gobject.threads_init()
-
 
 class GTKstrip(threading.Thread):
     def __init__(self, weh):
@@ -28,7 +20,6 @@ class GTKstrip(threading.Thread):
 
         self.labels = []
         self.colors = []
-        self.brightness = 180
 
         self.weh = weh
 
@@ -92,18 +83,11 @@ class GTKstrip(threading.Thread):
     def setPixelColor(self, index, color):
         self.colors[index] = color
 
-    def getBrightness(self):
-        return self.brightness
-
-    def setBrightness(self, brightness):
-        self.brightness = brightness
-        print "Set mock brightness value to " + str(self.brightness)
-
     def update(self):
         for label, color in zip(self.labels, self.colors):
             attrs = label.get_attributes()
             attrs.change(pango.AttrForeground(int(color.r / 255.0 * 65535), int(color.g / 255.0 * 65535),
-                                              int(color.b / 255.0 * 65535)));
+                                              int(color.b / 255.0 * 65535)))
             label.set_attributes(attrs)
 
     def show(self):

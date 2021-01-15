@@ -1,9 +1,25 @@
 import math
+import logging
 
-try:
-    from neopixel import Color
-except:
-    from GTKstrip import Color
+class Color:
+
+    def __init__(self, r, g, b):
+        self.r = r
+        self.g = g
+        self.b = b
+
+    def __sub__(self, other):
+        if not isinstance(other, int):
+            raise TypeError
+
+        self.r = max(self.r - other, 0)
+        self.g = max(self.g - other, 0)
+        self.b = max(self.b - other, 0)
+
+        return self
+
+    def brightness(self):
+        return int((self.r + self.g + self.b)/3)
 
 # Define colors which are available for the wcd. Currently: Alphabetic order
 BLACK = Color(  0,  0,  0)
