@@ -2,7 +2,6 @@ import ConfigParser
 from importlib import import_module
 import netifaces
 import inspect
-import logging
 import os
 import subprocess
 import time
@@ -184,7 +183,14 @@ class wordclock:
 if __name__ == '__main__':
 
     # Setup logging
+    import logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
+
+    try:
+        import coloredlogs
+        coloredlogs.install()
+    except:
+        pass
 
     # Run the word clock
     word_clock = wordclock()
