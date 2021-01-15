@@ -112,8 +112,12 @@ class wordclock:
         if self.config.getboolean('wordclock', 'show_startup_message'):
             startup_message = self.config.get('wordclock', 'startup_message')
             if startup_message == "ShowIP":
-                interface = self.config.get('plugin_ip_address', 'interface')
-                self.wcd.showText("IP: " + netifaces.ifaddresses(interface)[2][0]['addr'])
+                try:
+                    interface = self.config.get('plugin_ip_address', 'interface')
+                    self.wcd.showText("IP: " + netifaces.ifaddresses(interface)[2][0]['addr'])
+                except:
+                    logging.warning("Failed to retrieve IP address")
+                    self.wcd.showText("No IP")
             else:
                 self.wcd.showText(startup_message)
 
