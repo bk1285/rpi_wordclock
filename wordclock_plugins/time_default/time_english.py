@@ -1,13 +1,11 @@
-''' Provided by Alexandre'''
+""" Provided by Alexandre"""
 
 
-import datetime as dt
-
-class time_english():
-    '''
+class time_english:
+    """
     This class returns a given time as a range of LED-indices.
     Illuminating these LEDs represents the current time on an english WCA
-    '''
+    """
 
     def __init__(self):
         self.prefix = range(0,2) +  range(3,5) # -> IT IS
@@ -63,12 +61,12 @@ class time_english():
         # -> OCLOCK
         self.full_hour= range(104,110)
 
-    def get_time(self, time, withPrefix=True):
-        hour=time.hour%12+(1 if time.minute/5 >= 7 else 0)
+    def get_time(self, time, purist):
+        hour=time.hour % 12+(1 if time.minute/5 >= 7 else 0)
         minute=time.minute/5
         # Assemble indices
         return  \
-            (self.prefix if withPrefix else []) + \
+            (self.prefix if not purist else []) + \
             self.minutes[minute] + \
             self.hours[hour] + \
             (self.full_hour if (minute == 0) else [])

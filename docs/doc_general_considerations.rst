@@ -18,6 +18,7 @@ If you want to build a wordclock
           * german (including swabian and bavarian: Thanks to Timo and Euchkatzl)
           * english (Thanks to Alexandre)
           * dutch (Thanks to svenjacobi, resolution is 10x9. Therefore, not all plugins are supported!)
+          * swiss
 
       * Stancil layout only (requiring some python-implementations: See wordclock_plugins/time_default):
 
@@ -27,10 +28,6 @@ If you want to build a wordclock
           * turkish
 
       * Further languages/stencil layouts can be created using the ''config-file'' and the script ''create_layout.py''
-
-  * A collection of the main hardware components -- except sceleton and stencil -- are available for
-      * Germany: http://astore.amazon.de/araspbepibase-21
-      * UK: http://astore.amazon.co.uk/araspbepiba0c-21
 
   * A final note: Throughout this project, you will assemble electronic components, which can possibly harm you or others (or destroy your hardware).
     It's therefore important, that you know, what you are doing: By assembling this clock, you act on your own risk!
@@ -83,6 +80,9 @@ If you want to build a wordclock
 * You should be ready to...
 
   * Setup the hardware (glueing, soldering, etc.)
+  
+    * Consider double connectors, if you want to minimize soldering efforts: https://github.com/bk1285/rpi_wordclock/issues/118
+    
   * Setup a Raspberry Pi (raspbian)
 
     * Connect to the RPi via ssh

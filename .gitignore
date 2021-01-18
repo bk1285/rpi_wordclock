@@ -5,8 +5,6 @@
 doc/_build*
 doc/_apidoc/*
 
-fontdemo.py
-
 # ignore highlighted files: no checkin
 *NOCI*
 
@@ -15,3 +13,7 @@ wordclock_config/wordclock_config.cfg
 
 # ignore swap-files
 *.swp
+
+# ignore vscode-files
+.vscode/launch.json
+.vscode/settings.json

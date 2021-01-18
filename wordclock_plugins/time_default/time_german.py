@@ -1,10 +1,9 @@
-import datetime as dt
 
-class time_german():
-    '''
+class time_german:
+    """
     This class returns a given time as a range of LED-indices.
     Illuminating these LEDs represents the current time on a german WCA
-    '''
+    """
 
     def __init__(self):
         self.prefix = range(0,2) +  range(3,6)
@@ -35,12 +34,12 @@ class time_german():
             range(49,54)]
         self.full_hour= range(107,110)
 
-    def get_time(self, time, withPrefix=True):
+    def get_time(self, time, purist):
         hour=time.hour%12+(1 if time.minute/5 > 4 else 0)
         minute=time.minute/5
         # Assemble indices
         return  \
-            (self.prefix if withPrefix else []) + \
+            (self.prefix if not purist else []) + \
             self.minutes[minute] + \
             self.hours[hour] + \
             ([60] if (hour == 1 and minute != 0) else []) + \

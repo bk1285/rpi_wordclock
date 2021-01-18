@@ -1,12 +1,11 @@
 # coding: utf8
 
-import datetime as dt
 
-class time_swiss_german():
-    '''
+class time_swiss_german:
+    """
     This class returns a given time as a range of LED-indices.
     Illuminating these LEDs represents the current time on a swiss_german WCA
-    '''
+    """
 
     def __init__(self):
         self.prefix = range(0,2) +  range(3,7)  # -> ES ISCH
@@ -61,11 +60,11 @@ class time_swiss_german():
             range(99,105)]
         self.full_hour= range(107,110)
 
-    def get_time(self, time, withPrefix=True):
+    def get_time(self, time, purist):
         hour=time.hour%12+(1 if time.minute/5 > 4 else 0)
         minute=time.minute/5
         # Assemble indices
         return  \
-            (self.prefix if withPrefix else []) + \
+            (self.prefix if not purist else []) + \
             self.minutes[minute] + \
             self.hours[hour]
