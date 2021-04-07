@@ -84,9 +84,70 @@ class plugin:
         # monitor sleep mode changes to apply brightness
         self.sleep_switch = False
 
-        self.bg_color = wcc.BLACK  # default background color
-        self.word_color = wcc.WWHITE  # default word color
-        self.minute_color = wcc.WWHITE  # default minute color
+        # Choose default fgcolor
+        try:
+            fgcolor = ''.join(config.get('wordclock', 'default-fg-color'))
+        except:
+            # For backward compatibility
+            fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
+
+        if fgcolor == 'BLACK':
+            self.word_color = wcc.BLACK
+            self.minute_color = wcc.BLACK
+        elif fgcolor == 'WHITE':
+            self.word_color = wcc.WHITE
+            self.minute_color = wcc.WHITE
+        elif fgcolor == 'WWHITE':
+            self.word_color = wcc.WWHITE
+            self.minute_color = wcc.WWHITE
+        elif fgcolor == 'RED':
+            self.word_color = wcc.RED
+            self.minute_color = wcc.RED
+        elif fgcolor == 'YELLOW':
+            self.word_color = wcc.YELLOW
+            self.minute_color = wcc.YELLOW
+        elif fgcolor == 'LIME':
+            self.word_color = wcc.LIME
+            self.minute_color = wcc.LIME
+        elif fgcolor == 'GREEN':
+            self.word_color = wcc.GREEN
+            self.minute_color = wcc.GREEN
+        elif fgcolor == 'BLUE':
+            self.word_color = wcc.BLUE
+            self.minute_color = wcc.BLUE
+        else:
+            print('Could not detect default-fg-color: ' + fgcolor + '.')
+            print('Choosing default: warm white')
+            self.word_color = wcc.WWHITE
+            self.minute_color = wcc.WWHITE
+
+        # Choose default bgcolor
+        try:
+            bgcolor = ''.join(config.get('wordclock', 'default-bg-color'))
+        except:
+            # For backward compatibility
+            bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
+
+        if bgcolor == 'BLACK':
+            self.bg_color = wcc.BLACK
+        elif bgcolor == 'WHITE':
+            self.bg_color = wcc.WHITE
+        elif bgcolor == 'WWHITE':
+            self.bg_color = wcc.WWHITE
+        elif bgcolor == 'RED':
+            self.bg_color = wcc.RED
+        elif bgcolor == 'YELLOW':
+            self.bg_color = wcc.YELLOW
+        elif bgcolor == 'LIME':
+            self.bg_color = wcc.LIME
+        elif bgcolor == 'GREEN':
+            self.bg_color = wcc.GREEN
+        elif bgcolor == 'BLUE':
+            self.bg_color = wcc.BLUE
+        else:
+            print('Could not detect default-bg-color: ' + bgcolor + '.')
+            print('Choosing default: black')
+            self.bg_color = wcc.BLACK
 
         # Other color modes...
         self.color_modes = \
