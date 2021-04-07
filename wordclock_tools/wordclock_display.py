@@ -77,7 +77,7 @@ class wordclock_display:
         elif fgcolor == 'WHITE':
             self.default_fg_color = wcc.WHITE
         elif fgcolor == 'WWHITE':
-        self.default_fg_color = wcc.WWHITE
+            self.default_fg_color = wcc.WWHITE
         elif fgcolor == 'RED':
             self.default_fg_color = wcc.RED
         elif fgcolor == 'YELLOW':
