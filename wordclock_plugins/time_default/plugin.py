@@ -3,6 +3,7 @@ import logging
 import os
 import time
 import time_english
+import time_french
 import time_german
 import time_german2
 import time_swabian
