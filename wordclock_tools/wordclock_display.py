@@ -101,7 +101,7 @@ class wordclock_display:
             bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
 
         if bgcolor == 'BLACK':
-        self.default_bg_color = wcc.BLACK
+            self.default_bg_color = wcc.BLACK
         elif bgcolor == 'WHITE':
             self.default_bg_color = wcc.WHITE
         elif bgcolor == 'WWHITE':
