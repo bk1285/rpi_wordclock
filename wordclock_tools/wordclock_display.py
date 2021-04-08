@@ -66,11 +66,7 @@ class wordclock_display:
         self.strip.begin()
 
         # Choose default fgcolor
-        try:
-            fgcolor = ''.join(config.get('wordclock', 'default-fg-color'))
-        except:
-            # For backward compatibility
-            fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
+        fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
 
         if fgcolor == 'BLACK':
             self.default_fg_color = wcc.BLACK
@@ -94,11 +90,7 @@ class wordclock_display:
             self.default_fg_color = wcc.WWHITE
 
         # Choose default bgcolor
-        try:
-            bgcolor = ''.join(config.get('wordclock', 'default-bg-color'))
-        except:
-            # For backward compatibility
-            bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
+        bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
 
         if bgcolor == 'BLACK':
             self.default_bg_color = wcc.BLACK
