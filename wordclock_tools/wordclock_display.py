@@ -65,6 +65,11 @@ class wordclock_display:
 
         self.strip.begin()
 
+        # Choose default minutes_map
+        minutes_map_str = ''.join(config.get('plugin_time_default', 'minutes-map'))
+        minutes_map_str_list = minutes_map_str.split(',')
+        self.minutes_map = list(map(int, minutes_map_str_list))
+
         # Choose default fgcolor
         fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
 
@@ -324,7 +329,7 @@ class wordclock_display:
     def setMinutes(self, time, color):
         if time.minute % 5 != 0:
             for i in range(0, time.minute % 5):
-                self.transition_cache_next.minutes[i] = color
+                self.transition_cache_next.minutes[self.minutes_map[i]] = color
 
     def apply_brightness(self, color):
         [h, s, v] = colorsys.rgb_to_hsv(color.r/255.0, color.g/255.0, color.b/255.0)
