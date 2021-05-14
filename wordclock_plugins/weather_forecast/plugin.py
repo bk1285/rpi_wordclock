@@ -22,6 +22,7 @@ class plugin:
         self.pretty_name = "Weather forecast"
         self.description = "Displays the current temperature"
 
+        self.zipcode = config.get('plugin_' + self.name, 'zipcode')
         self.location_id = config.get('plugin_' + self.name, 'location_id')
         self.weather_service = config.get('plugin_weather_forecast', 'weather_service')
 
@@ -46,7 +47,7 @@ class plugin:
             current_weather_forecast = pywapi.get_weather_from_weather_com(self.location_id)
             outdoor_temp = current_weather_forecast['current_conditions']['temperature']
         elif self.weather_service == 'meteoswiss':
-            outdoor_temp = (json.loads(requests.get('https://www.meteoschweiz.admin.ch/product/output/weather-widget/forecast/version__20210514_1034/de/840000.json', headers={'referer': 'https://www.meteoschweiz.admin.ch/home/service-und-publikationen/produkte.html'}).text))['data']['current']['temperature']
+            outdoor_temp = (json.loads(requests.get('https://www.meteoschweiz.admin.ch/product/output/weather-widget/forecast/version__20210514_1034/de/' + zipcode + '00.json', headers={'referer': 'https://www.meteoschweiz.admin.ch/home/service-und-publikationen/produkte.html'}).text))['data']['current']['temperature']
         else:
             logging.warning('No valid weather_forecast found!')
             return
