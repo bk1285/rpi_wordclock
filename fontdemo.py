@@ -53,7 +53,7 @@ class Bitmap(object):
     def bitblt(self, src, x, y):
         """Copy all pixels from `src` into this bitmap"""
         srcpixel = 0
-        dstpixel = y * self.width + x
+        dstpixel = y * self.width + int(x)
         row_offset = self.width - src.width
 
         for sy in range(src.height):
@@ -203,7 +203,7 @@ class Font(object):
             previous_char = char
 
         height = max_ascent + max_descent
-        return (width, height, max_descent)
+        return (int(width), height, max_descent)
 
     def render_text(self, text, width=None, height=None, baseline=None):
         """
