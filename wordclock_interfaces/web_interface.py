@@ -136,8 +136,8 @@ class Color(Resource):
             400: 'Bad request'})
     def get(self):
         default_plugin = web_interface.app.wclk.plugins[web_interface.app.wclk.default_plugin]
-            channel_wise = lambda x: {'red': x.r, 'green': x.g, 'blue': x.b}
-            channel_wise = lambda x: {'blue': x & 255, 'green': (x >> 8) & 255, 'red': (x >> 16) & 255}
+        channel_wise = lambda x: {'red': x.r, 'green': x.g, 'blue': x.b}
+        channel_wise = lambda x: {'blue': x & 255, 'green': (x >> 8) & 255, 'red': (x >> 16) & 255}
 
         return {
             'background': channel_wise(default_plugin.bg_color),

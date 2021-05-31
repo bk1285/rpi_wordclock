@@ -42,10 +42,14 @@ Required python dependencies:
   * pil
   * svgwrite (to plot stencil/wiring layouts)
   * coloredlogs (to retrieve colored logs)
+  * freetype-py
+  * monotonic
+  * flask_restplus
+  * ConfigParser
 
 To install use::
 
-    sudo pip install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic flask-restplus coloredlogs
+    sudo pip3 install scipy
 
 
 .. _temperature_sensor:

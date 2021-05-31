@@ -18,7 +18,7 @@ import wordclock_plugins.time_default.time_bavarian as time_bavarian
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
-import wordclock_screen
+import wordclock_tools.wordclock_screen as wordclock_screen
 import colorsys
 
 
@@ -51,7 +51,7 @@ class wordclock_display:
                 'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
-            import wordclock_strip_gtk as wcs_gtk
+            import wordclock_tools.wordclock_strip_gtk as wcs_gtk
             self.strip = wcs_gtk.GTKstrip(wci)
         else:
             import wordclock_strip_neopixel as wcs_neo

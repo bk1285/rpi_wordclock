@@ -25,7 +25,7 @@ def loadConfig (basePath):
         copyfile(pathToConfigFileExample, pathToConfigFile)
         logging.warning('No config-file specified! Was created from example-config!')
     logging.info('Parsing ' + pathToConfigFile)
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read(pathToConfigFile)
 
     # Add to the loaded configuration the current base path to provide it

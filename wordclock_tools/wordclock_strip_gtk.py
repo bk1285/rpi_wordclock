@@ -8,7 +8,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GObject, Pango
 
 from wordclock_interfaces import event_handler as weh
-from wordclock_colors import Color
+from wordclock_tools.wordclock_colors import Color
 
 GObject.threads_init()
 
