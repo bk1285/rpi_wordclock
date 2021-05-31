@@ -54,7 +54,7 @@ class wordclock_display:
             import wordclock_tools.wordclock_strip_gtk as wcs_gtk
             self.strip = wcs_gtk.GTKstrip(wci)
         else:
-            import wordclock_strip_neopixel as wcs_neo
+            import wordclock_tools.wordclock_strip_neopixel as wcs_neo
             self.strip = wcs_neo.wordclock_strip_neopixel(self.wcl)
 
         if config.get('wordclock_display', 'default_font') == 'wcfont':
@@ -123,7 +123,7 @@ class wordclock_display:
         Sets a pixel at given 1D coordinates
         """
         for i in ledCoordinates:
-            self.setColorBy2DCoordinates(i % self.get_wca_width(), i / self.get_wca_width(), color)
+            self.setColorBy2DCoordinates(i % self.get_wca_width(), i // self.get_wca_width(), color)
 
     def setColorBy2DCoordinates(self, x, y, color):
         """
@@ -146,7 +146,7 @@ class wordclock_display:
         Returns the width of the WCA
         """
         return self.wcl.WCA_WIDTH
- 
+
     def get_led_count(self):
         """
         Returns the overall number of LEDs
