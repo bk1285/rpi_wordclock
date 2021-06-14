@@ -1,13 +1,13 @@
-import ConfigParser
+import configparser
 import fontdemo
 import itertools
 import logging
 import os
 from copy import deepcopy
 from PIL import Image
+from . import wiring
 from time import sleep
 from threading import Lock
-import wiring
 import wordclock_plugins.time_default.time_english as time_english
 import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
@@ -18,7 +18,7 @@ import wordclock_plugins.time_default.time_bavarian as time_bavarian
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
-import wordclock_screen
+import wordclock_tools.wordclock_screen as wordclock_screen
 import colorsys
 
 
@@ -51,10 +51,10 @@ class wordclock_display:
                 'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
-            import wordclock_strip_gtk as wcs_gtk
+            import wordclock_tools.wordclock_strip_gtk as wcs_gtk
             self.strip = wcs_gtk.GTKstrip(wci)
         else:
-            import wordclock_strip_neopixel as wcs_neo
+            import wordclock_tools.wordclock_strip_neopixel as wcs_neo
             self.strip = wcs_neo.wordclock_strip_neopixel(self.wcl)
 
         if config.get('wordclock_display', 'default_font') == 'wcfont':
@@ -123,7 +123,7 @@ class wordclock_display:
         Sets a pixel at given 1D coordinates
         """
         for i in ledCoordinates:
-            self.setColorBy2DCoordinates(i % self.get_wca_width(), i / self.get_wca_width(), color)
+            self.setColorBy2DCoordinates(i % self.get_wca_width(), i // self.get_wca_width(), color)
 
     def setColorBy2DCoordinates(self, x, y, color):
         """
@@ -146,7 +146,7 @@ class wordclock_display:
         Returns the width of the WCA
         """
         return self.wcl.WCA_WIDTH
- 
+
     def get_led_count(self):
         """
         Returns the overall number of LEDs
@@ -219,9 +219,9 @@ class wordclock_display:
         num_of_frames = len([file_count for file_count in os.listdir(animation_dir)])
 
         if invert:
-            animation_range = range(num_of_frames - 1, -1, -1)
+            animation_range = list(range(num_of_frames - 1, -1, -1))
         else:
-            animation_range = range(0, num_of_frames)
+            animation_range = list(range(0, num_of_frames))
 
         for _ in range(count):
             for i in animation_range:

@@ -24,7 +24,7 @@ class plugin:
         self.name = os.path.dirname(__file__).split('/')[-1]
         self.pretty_name = "Matrix with time"
         self.description = "There is no spoon?"
-	
+
         try:
             self.purist = config.getboolean('plugin_time_default', 'purist')
         except:

@@ -21,7 +21,7 @@ class wiring:
         
         stencil_content = ast.literal_eval(config.get('language_options', language))
         self.WCA_HEIGHT = len(stencil_content)
-        self.WCA_WIDTH = len(stencil_content[0].decode('utf-8'))
+        self.WCA_WIDTH = len(stencil_content[0])
         self.LED_COUNT = self.WCA_WIDTH * self.WCA_HEIGHT + 4  # Number of LED pixels.
         self.LED_PIN = 18  # GPIO pin connected to the pixels (must support PWM!).
         self.LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -72,7 +72,7 @@ class wiring:
         Linear mapping from top-left to bottom right
         """
         for i in ledCoordinates:
-            self.setColorBy1DCoordinate(strip, i % self.WCA_WIDTH, i / self.WCA_WIDTH, color)
+            self.setColorBy1DCoordinate(strip, i % self.WCA_WIDTH, int(i / self.WCA_WIDTH), color)
 
     def setColorBy2DCoordinates(self, strip, x, y, color):
         """

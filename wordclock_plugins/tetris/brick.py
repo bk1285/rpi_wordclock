@@ -3,6 +3,7 @@
 
 
 import copy
+from functools import reduce
 
 
 class brick:
@@ -42,11 +43,11 @@ def padTop(layout):
 
 
 def rot_left(layout):
-    return map(list, zip(*layout[::-1]))
+    return list(map(list, list(zip(*layout[::-1]))))
 
 
 def rot_right(layout):
-    return map(list, zip(*layout)[::-1])
+    return list(map(list, list(zip(*layout))[::-1]))
 
 
 def rot_twice(layout):

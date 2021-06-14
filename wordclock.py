@@ -1,10 +1,11 @@
-import ConfigParser
+import configparser
+import traceback
 from importlib import import_module
 import netifaces
 import inspect
-import logging
 import os
 import subprocess
+import sys
 import time
 from shutil import copyfile
 import wordclock_tools.wordclock_display as wcd
@@ -24,7 +25,7 @@ def loadConfig (basePath):
         copyfile(pathToConfigFileExample, pathToConfigFile)
         logging.warning('No config-file specified! Was created from example-config!')
     logging.info('Parsing ' + pathToConfigFile)
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read(pathToConfigFile)
 
     # Add to the loaded configuration the current base path to provide it
@@ -78,6 +79,10 @@ class wordclock:
         index = 0  # A helper variable (only incremented on successful import)
         self.plugins = []
         for plugin in plugins:
+            #only neccessary when using PyCharm
+            if plugin == '__pycache__':
+                continue
+
             # Check the config-file, whether to activate or deactivate the plugin
             try:
                 if not self.config.getboolean('plugin_' + plugin, 'activate'):
@@ -100,6 +105,8 @@ class wordclock:
                 index += 1
             except:
                 logging.warning('Failed to import plugin ' + plugin + '!')
+                #detailed error (traceback)
+                traceback.print_exc(limit=1)
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
@@ -112,8 +119,12 @@ class wordclock:
         if self.config.getboolean('wordclock', 'show_startup_message'):
             startup_message = self.config.get('wordclock', 'startup_message')
             if startup_message == "ShowIP":
-                interface = self.config.get('plugin_ip_address', 'interface')
-                self.wcd.showText("IP: " + netifaces.ifaddresses(interface)[2][0]['addr'])
+                try:
+                    interface = self.config.get('plugin_ip_address', 'interface')
+                    self.wcd.showText("IP: " + netifaces.ifaddresses(interface)[2][0]['addr'])
+                except:
+                    logging.warning("Failed to retrieve IP address")
+                    self.wcd.showText("No IP")
             else:
                 self.wcd.showText(startup_message)
 
@@ -129,7 +140,13 @@ class wordclock:
             logging.error('Error in plugin ' + self.plugins[self.plugin_index].name + '.')
             logging.error('PLEASE PROVIDE THE CURRENT SOFTWARE VERSION (GIT HASH), WHEN REPORTING THIS ERROR: ' + self.currentGitHash)
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+            traceback.print_exc()
             raise
+            time.sleep(2)
+
+            #goto menu afterwards to prevent being stuck in an error loop
+            event = self.wci.BUTTONS.get("return")
+            self.wci.getNextAction(event)
 
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()
@@ -180,7 +197,14 @@ class wordclock:
 if __name__ == '__main__':
 
     # Setup logging
+    import logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
+
+    try:
+        import coloredlogs
+        coloredlogs.install()
+    except:
+        pass
 
     # Run the word clock
     word_clock = wordclock()
