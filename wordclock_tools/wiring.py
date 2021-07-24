@@ -57,6 +57,8 @@ class wiring:
             self.wcl = micro_net_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'webdisaster_wiring':
             self.wcl = webdisaster_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'momonunu_wiring':
+            self.wcl = momonunu_wiring(self.self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
             logging.warning('No valid wiring layout found. Falling back to default!')
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
@@ -311,3 +313,25 @@ class webdisaster_wiring(base_wiring):
         This implementation assumes the minutes to be wired as the last four leds of the led-strip
         """
         return self.mapMinutesInternalLedsAtEnd(self, min)
+
+class momonunu_wiring(base_wiring):
+    """
+    Costum Wiring because I messed up Bernds
+    """
+
+    def getStripIndexFrom2D(self, x, y):
+        if y % 2 == 0:
+            return (x * WCA_HEIGHT + 2) + (WCA_HEIGHT - y - 1)
+        else:
+            return (x * WCA_HEIGHT + 2) + y
+
+    def def mapMinutesInternal(self, min):
+        if min == 1:
+            return self.LED_COUNT - 1
+        elif min == 2:
+            return self.LED_COUNT - 2
+        elif min == 3:
+            return 1
+        elif min == 4:
+            return 0
+
