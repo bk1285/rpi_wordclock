@@ -64,8 +64,8 @@ class time_dutch:
         self.full_hour= list(range(118,121))
 
     def get_time(self, time, withPrefix=True):
-        hour=time.hour%12+(1 if time.minute/5 > 4 else 0)
-        minute=time.minute/5
+        hour=time.hour%12+(1 if time.minute//5 > 4 else 0)
+        minute=time.minute//5
         # Assemble indices
         return  \
             (self.prefix if withPrefix else []) + \

@@ -35,8 +35,8 @@ class time_bavarian:
         self.full_hour= list(range(107,110))
 
     def get_time(self, time, purist):
-        hour=time.hour%12+(1 if time.minute/5 > 2 else 0)
-        minute=time.minute/5
+        hour=time.hour%12+(1 if time.minute//5 > 2 else 0)
+        minute=time.minute//5
         # Assemble indices
         return  \
             (self.prefix if not purist else []) + \
