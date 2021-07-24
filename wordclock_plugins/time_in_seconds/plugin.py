@@ -54,7 +54,7 @@ class plugin:
         for i in range(110, -1, int(-110 / 11)):
             # previous seconds, dimming down
             taw_indices = self.taw.get_time(currentSecond - 1 if currentSecond != 0 else 59)
-		wcd.setColorBy1DCoordinates(taw_indices, wcc.Color(i, i, i))
+            wcd.setColorBy1DCoordinates(taw_indices, wcc.Color(i, i, i))
             # current seconds
             taw_indices = self.taw.get_time(currentSecond)
             wcd.setColorBy1DCoordinates(taw_indices, self.word_color)

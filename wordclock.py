@@ -1,13 +1,16 @@
+import coloredlogs
 import configparser
-import traceback
 from importlib import import_module
+import logging
 import netifaces
 import inspect
 import os
 import subprocess
 import sys
 import time
+import traceback
 from shutil import copyfile
+
 import wordclock_tools.wordclock_display as wcd
 import wordclock_interfaces.event_handler as wci
 import wordclock_interfaces.web_interface as wciweb
@@ -196,15 +199,14 @@ class wordclock:
 
 if __name__ == '__main__':
 
-    # Setup logging
-    import logging
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
+    if sys.version_info.major != 3:
+        print('wordclock.py needs to be run with python3. Try to run \"sudo python3 wordclock.py\"')
+        raise Exception('python version unsupported')
 
-    try:
-        import coloredlogs
-        coloredlogs.install()
-    except:
-        pass
+    # Setup logging
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
+    coloredlogs.install()
+    print = logging.info
 
     # Run the word clock
     word_clock = wordclock()
