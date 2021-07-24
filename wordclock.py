@@ -1,3 +1,9 @@
+import sys
+
+if sys.version_info.major != 3:
+    print('Run \"sudo python3 wordclock.py\"')
+    raise Exception('python version unsupported')
+
 import coloredlogs
 import configparser
 from importlib import import_module
@@ -6,7 +12,6 @@ import netifaces
 import inspect
 import os
 import subprocess
-import sys
 import time
 import traceback
 from shutil import copyfile
@@ -199,14 +204,9 @@ class wordclock:
 
 if __name__ == '__main__':
 
-    if sys.version_info.major != 3:
-        print('wordclock.py needs to be run with python3. Try to run \"sudo python3 wordclock.py\"')
-        raise Exception('python version unsupported')
-
     # Setup logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
     coloredlogs.install()
-    print = logging.info
 
     # Run the word clock
     word_clock = wordclock()
