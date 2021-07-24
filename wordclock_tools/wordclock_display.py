@@ -8,14 +8,15 @@ from PIL import Image
 from . import wiring
 from time import sleep
 from threading import Lock
+import wordclock_plugins.time_default.time_bavarian as time_bavarian
+import wordclock_plugins.time_default.time_dutch as time_dutch
 import wordclock_plugins.time_default.time_english as time_english
 import wordclock_plugins.time_default.time_french as time_french
 import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
-import wordclock_plugins.time_default.time_dutch as time_dutch
+import wordclock_plugins.time_default.time_italian as time_italian
 import wordclock_plugins.time_default.time_swabian as time_swabian
 import wordclock_plugins.time_default.time_swabian2 as time_swabian2
-import wordclock_plugins.time_default.time_bavarian as time_bavarian
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
@@ -65,13 +66,8 @@ class wordclock_display:
 
         self.strip.begin()
 
-        # Choose default minutes_map
-        minutes_map_str = ''.join(config.get('plugin_time_default', 'minutes-map'))
-        minutes_map_str_list = minutes_map_str.split(',')
-        self.minutes_map = list(map(int, minutes_map_str_list))
-
         # Choose default fgcolor
-        fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
+        fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color', fallback='WWHITE'))
 
         if fgcolor == 'BLACK':
             self.default_fg_color = wcc.BLACK
@@ -95,7 +91,7 @@ class wordclock_display:
             self.default_fg_color = wcc.WWHITE
 
         # Choose default bgcolor
-        bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
+        bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color', fallback='BLACK'))
 
         if bgcolor == 'BLACK':
             self.default_bg_color = wcc.BLACK
@@ -126,7 +122,9 @@ class wordclock_display:
             language = ''.join(config.get('plugin_time_default', 'language'))
 
         logging.info('Setting language to ' + language + '.')
-        if language == 'dutch':
+        if language == 'bavarian':
+            self.taw = time_bavarian.time_bavarian()
+        elif language == 'dutch':
             self.taw = time_dutch.time_dutch()
         elif language == 'english':
             self.taw = time_english.time_english()
@@ -136,12 +134,12 @@ class wordclock_display:
             self.taw = time_german.time_german()
         elif language == 'german2':
             self.taw = time_german2.time_german2()
+        elif language == 'italian':
+            self.taw = time_italian.time_italian()
         elif language == 'swabian':
             self.taw = time_swabian.time_swabian()
         elif language == 'swabian2':
             self.taw = time_swabian2.time_swabian2()
-        elif language == 'bavarian':
-            self.taw = time_bavarian.time_bavarian()
         elif language == 'swiss_german':
             self.taw = time_swiss_german.time_swiss_german()
         elif language == 'swiss_german2':
@@ -329,7 +327,7 @@ class wordclock_display:
     def setMinutes(self, time, color):
         if time.minute % 5 != 0:
             for i in range(0, time.minute % 5):
-                self.transition_cache_next.minutes[self.minutes_map[i]] = color
+                self.transition_cache_next.minutes[i] = color
 
     def apply_brightness(self, color):
         [h, s, v] = colorsys.rgb_to_hsv(color.r/255.0, color.g/255.0, color.b/255.0)

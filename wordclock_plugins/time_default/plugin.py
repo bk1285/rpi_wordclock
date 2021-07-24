@@ -2,17 +2,7 @@ import datetime
 import logging
 import os
 import time
-import time_english
-import time_french
-import time_german
-import time_german2
-import time_italian
-import time_swabian
-import time_swabian2
-import time_dutch
-import time_bavarian
-import time_swiss_german
-import time_swiss_german2
+
 import wordclock_tools.wordclock_colors as wcc
 
 
