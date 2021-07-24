@@ -9,6 +9,7 @@ from . import wiring
 from time import sleep
 from threading import Lock
 import wordclock_plugins.time_default.time_english as time_english
+import wordclock_plugins.time_default.time_french as time_french
 import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
 import wordclock_plugins.time_default.time_dutch as time_dutch
@@ -64,8 +65,58 @@ class wordclock_display:
 
         self.strip.begin()
 
-        self.default_fg_color = wcc.WWHITE
-        self.default_bg_color = wcc.BLACK
+        # Choose default minutes_map
+        minutes_map_str = ''.join(config.get('plugin_time_default', 'minutes-map'))
+        minutes_map_str_list = minutes_map_str.split(',')
+        self.minutes_map = list(map(int, minutes_map_str_list))
+
+        # Choose default fgcolor
+        fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
+
+        if fgcolor == 'BLACK':
+            self.default_fg_color = wcc.BLACK
+        elif fgcolor == 'WHITE':
+            self.default_fg_color = wcc.WHITE
+        elif fgcolor == 'WWHITE':
+            self.default_fg_color = wcc.WWHITE
+        elif fgcolor == 'RED':
+            self.default_fg_color = wcc.RED
+        elif fgcolor == 'YELLOW':
+            self.default_fg_color = wcc.YELLOW
+        elif fgcolor == 'LIME':
+            self.default_fg_color = wcc.LIME
+        elif fgcolor == 'GREEN':
+            self.default_fg_color = wcc.GREEN
+        elif fgcolor == 'BLUE':
+            self.default_fg_color = wcc.BLUE
+        else:
+            print('Could not detect default-fg-color: ' + fgcolor + '.')
+            print('Choosing default: warm white')
+            self.default_fg_color = wcc.WWHITE
+
+        # Choose default bgcolor
+        bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
+
+        if bgcolor == 'BLACK':
+            self.default_bg_color = wcc.BLACK
+        elif bgcolor == 'WHITE':
+            self.default_bg_color = wcc.WHITE
+        elif bgcolor == 'WWHITE':
+            self.default_bg_color = wcc.WWHITE
+        elif bgcolor == 'RED':
+            self.default_bg_color = wcc.RED
+        elif bgcolor == 'YELLOW':
+            self.default_bg_color = wcc.YELLOW
+        elif bgcolor == 'LIME':
+            self.default_bg_color = wcc.LIME
+        elif bgcolor == 'GREEN':
+            self.default_bg_color = wcc.GREEN
+        elif bgcolor == 'BLUE':
+            self.default_bg_color = wcc.BLUE
+        else:
+            print('Could not detect default-bg-color: ' + bgcolor + '.')
+            print('Choosing default: black')
+            self.default_bg_color = wcc.BLACK
 
         # Choose language
         try:
@@ -79,6 +130,8 @@ class wordclock_display:
             self.taw = time_dutch.time_dutch()
         elif language == 'english':
             self.taw = time_english.time_english()
+        elif language == 'french':
+            self.taw = time_french.time_french()
         elif language == 'german':
             self.taw = time_german.time_german()
         elif language == 'german2':
@@ -276,7 +329,7 @@ class wordclock_display:
     def setMinutes(self, time, color):
         if time.minute % 5 != 0:
             for i in range(0, time.minute % 5):
-                self.transition_cache_next.minutes[i] = color
+                self.transition_cache_next.minutes[self.minutes_map[i]] = color
 
     def apply_brightness(self, color):
         [h, s, v] = colorsys.rgb_to_hsv(color.r/255.0, color.g/255.0, color.b/255.0)
