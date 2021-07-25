@@ -1,4 +1,5 @@
 # install pygobject as outlined in pyobject.readthedocs.io/en/latest/getting_started.html
+astral==2.2
 flask-restplus==0.13.0
 freetype-py==2.2.0
 netifaces==0.11.0
