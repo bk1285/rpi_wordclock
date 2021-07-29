@@ -32,14 +32,26 @@ class plugin:
         self.pretty_name = "The time"
         self.description = "The minimum, you should expect from a wordclock."
 
-        # typewriter effect
+        # For backward compatibility
         try:
-            self.typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
+            typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
         except:
-            logging.warning('No typewriter-flag set for default plugin within the config-file. Typewriter animation will be used.')
-            self.typewriter = True
+            typewriter = False
 
-        self.animation = "typewriter" if self.typewriter else "fadeOutIn"
+        # animation
+        if typewriter:
+            self.animation = "typewriter"
+        else:
+            try:
+                self.animation = ''.join(config.get('plugin_' + self.name, 'animation'))
+            except:
+                self.animation = "fadeOutIn"
+
+        animations = ["fadeOutIn", "typewriter", "none"]
+
+        if self.animation not in animations:
+            logging.warning('No animation set for default plugin within the config-file. ' + animations[0] + ' animation will be used.')
+            self.animation = animations[0]
 
         try:
             self.typewriter_speed = config.getint('plugin_' + self.name, 'typewriter_speed')
