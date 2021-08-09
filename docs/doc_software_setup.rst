@@ -18,30 +18,6 @@ E.g.::
 If not, check this website, to adjust it: http://perlgeek.de/en/article/set-up-a-clean-utf8-environment
 
 
-.. _3rd_party_deps_packages:
-
-3rd party dependencies (packages)
-+++++++++++++++++++++++++++++++++
-
-To install 3rd party dependencies (packages) enter in a terminal/commandline::
-
-    sudo apt-get install git python3-pip ttf-freefont
-
-
-.. _temperature_sensor:
-
-(Optional) dependencies to readout temperature sensor
-+++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-To read out an temperature sensor (AM2302), which can additionally be connected to the raspberry via GPIOs, install the according dependencies:
-
-These dependencies are http://www.airspayce.com/mikem/bcm2835/index.html
-
-and::
-
-    sudo pip install am2302_rpi
-
-
 .. _wordclock_software:
 
 The wordclock software
@@ -58,10 +34,34 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
     git clone https://github.com/bk1285/rpi_wordclock.git
 
 
+.. _3rd_party_deps_packages:
+
+3rd party dependencies (packages)
+---------------------------------
+
+To install 3rd party dependencies (packages) enter in a terminal/commandline::
+
+    sudo apt-get install git python3-pip ttf-freefont
+
+
+.. _temperature_sensor:
+
+(Optional) dependencies to readout temperature sensor
+-----------------------------------------------------
+
+To read out an temperature sensor (AM2302), which can additionally be connected to the raspberry via GPIOs, install the according dependencies:
+
+These dependencies are http://www.airspayce.com/mikem/bcm2835/index.html
+
+and::
+
+    sudo pip install am2302_rpi
+
+
 .. _3rd_party_deps_python:
 
 3rd party dependencies (python packages)
-+++++++++++++++++++++++++++++++++++++++++
+----------------------------------------
 
 To install 3rd party python dependencies (packages) run::
 
