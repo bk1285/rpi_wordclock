@@ -325,7 +325,7 @@ class momonunu_wiring(base_wiring):
         else:
             return (x * WCA_HEIGHT + 2) + y
 
-    def def mapMinutesInternal(self, min):
+    def mapMinutesInternal(self, min):
         if min == 1:
             return self.LED_COUNT - 1
         elif min == 2:
