@@ -8,3 +8,4 @@ freetype-py==2.2.0
 netifaces==0.11.0
 monotonic==1.6
 pillow==8.2.0
+rpi-ws281x==4.3.0
