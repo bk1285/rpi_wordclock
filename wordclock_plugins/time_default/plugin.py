@@ -159,9 +159,11 @@ class plugin:
         print(('Using brigtness sensor : ' + str(self.use_brightness_sensor)))
         if self.use_brightness_sensor:
             print('Importing sensor Library ')
-            import Adafruit_GPIO.I2C as I2C
-            address = 0x39 ## Device address
-            self.i2c = I2C.Device(address,1)
+            import board
+            import busio
+            import adafruit_tsl2561
+            i2c = busio.I2C(board.SCL, board.SDA)
+            self.sensor = adafruit_tsl2561.TSL2561(i2c)
         # save current brightness for switching back from sleep mode
         self.wake_brightness = self.brightness_mode_pos
 
@@ -171,10 +173,7 @@ class plugin:
         """
         # Some initializations of the "previous" minute
         prev_min = -1
-        if self.use_brightness_sensor:
-            control_on = 0x03 ## "On" value
-            control_off = 0x00 ## "Off" value
-            
+        if self.use_brightness_sensor:            
             sensorMin = 0.0
             sensorMax = 100.0
 
@@ -183,11 +182,6 @@ class plugin:
             brightnessMin = 50.0
             brightnessMax = 255.0
 
-            try:
-                self.i2c.write8(0x00, control_on)
-            except IOError as e:
-                print(e)
-            time.sleep(0.2)
             self.brightness_mode_pos = min(((((brightnessMax - brightnessMin) / sensorMax) * sensorCurrent) + brightnessMin),255)
 
         while True:
@@ -196,8 +190,9 @@ class plugin:
             newBrightness = self.brightness_mode_pos
             if self.use_brightness_sensor:
                 try:
-                    sensorCurrent = float(self.i2c.readU16(0x8C))
-                    #print('sensorCurrent is ' + str(sensorCurrent))
+                    # sensorCurrent = float(self.i2c.readU16(0x8C))
+                    sensorCurrent = self.sensor.lux
+                    # print('sensorCurrent is ' + str(sensorCurrent))
                     newBrightness = min(((((brightnessMax - brightnessMin) / sensorMax) * sensorCurrent) + brightnessMin),255)
                     newBrightness = int(newBrightness)
                 except IOError as e:
@@ -220,7 +215,7 @@ class plugin:
             if newBrightness != self.brightness_mode_pos:
                 self.brightness_mode_pos = newBrightness
                 wcd.setBrightness(newBrightness)
-                self.show_time(wcd, wci, animation=self.animation)
+                self.show_time(wcd, wci, animation='None')
 
             event = wci.waitForEvent(2)
             # Switch display color, if button_left is pressed
