@@ -1,0 +1,22 @@
+
+
+sudo apt-get install python3-pip python3-scipy scons git swig fonts-freefont-ttf
+
+--> difference :
+python3-pip
+python3-scipy
+fonts-freefont-ttf
+python3-rpi.gpio
+
+
+sudo pip3 install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic flask-restx
+
+sudo pip3 install rpi-ws281x
+
+
+git clone https://github.com/phenze/rpi_wordclock.git
+cd rpi_wordclock/
+
+git checkout --track origin/master-python3
+
+@reboot sudo python3 /home/pi/rpi_wordclock/wordclock.py###

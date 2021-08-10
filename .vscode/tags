@@ -1,0 +1,511 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Adafruit_GPIO	../wordclock_plugins/time_default/plugin.py	/^            import Adafruit_GPIO.I2C as I2C$/;"	kind:namespace	line:101
+Astral	../wordclock_plugins/sunrise/plugin.py	/^from astral import Astral$/;"	kind:namespace	line:1
+BLACK	../wordclock_tools/wordclock_colors.py	/^BLACK = Color(  0,  0,  0)$/;"	kind:variable	line:8
+BLUE	../wordclock_tools/wordclock_colors.py	/^BLUE  = Color(  0,  0,255)$/;"	kind:variable	line:9
+Bitmap	../5488053/fontdemo.py	/^class Bitmap(object):$/;"	kind:class	line:33
+Bitmap	../fontdemo.py	/^class Bitmap(object):$/;"	kind:class	line:33
+Color	../WXcolors.py	/^class Color:$/;"	kind:class	line:1
+Color	../WXstrip.py	/^from WXcolors import Color$/;"	kind:namespace	line:6
+Color	../wordclock_tools/wordclock_colors.py	/^	from WXcolors import Color$/;"	kind:namespace	line:4
+ConfigParser	../create_layout.py	/^import ConfigParser$/;"	kind:namespace	line:2
+ConfigParser	../wordclock.py	/^import ConfigParser$/;"	kind:namespace	line:1
+EVENT_BUTTON_LEFT	../wordclock_interfaces/event_handler.py	/^    EVENT_BUTTON_LEFT = 0$/;"	kind:variable	line:8
+EVENT_BUTTON_RETURN	../wordclock_interfaces/event_handler.py	/^    EVENT_BUTTON_RETURN = 2$/;"	kind:variable	line:10
+EVENT_BUTTON_RIGHT	../wordclock_interfaces/event_handler.py	/^    EVENT_BUTTON_RIGHT = 1$/;"	kind:variable	line:9
+EVENT_EXIT_PLUGIN	../wordclock_interfaces/event_handler.py	/^    EVENT_EXIT_PLUGIN = 3$/;"	kind:variable	line:11
+EVENT_INVALID	../wordclock_interfaces/event_handler.py	/^    EVENT_INVALID = -1$/;"	kind:variable	line:6
+Example	../WXstrip.py	/^class Example(wx.Frame):$/;"	kind:class	line:10
+Font	../5488053/fontdemo.py	/^class Font(object):$/;"	kind:class	line:152
+Font	../fontdemo.py	/^class Font(object):$/;"	kind:class	line:152
+GET	../wordclock_webinterface/web_interface.py	/^    def GET(self):$/;"	kind:member	line:92
+GET	../wordclock_webinterface/web_interface.py	/^    def GET(self, media, file):$/;"	kind:member	line:36
+GPIO	../wordclock_interfaces/gpio_interface.py	/^import RPi.GPIO as GPIO$/;"	kind:namespace	line:2
+GPIO	../wordclock_tools/wordclock_interface.py	/^import RPi.GPIO as GPIO$/;"	kind:namespace	line:1
+GREEN	../wordclock_tools/wordclock_colors.py	/^GREEN = Color(  0,255,  0)$/;"	kind:variable	line:10
+Glyph	../5488053/fontdemo.py	/^class Glyph(object):$/;"	kind:class	line:72
+Glyph	../fontdemo.py	/^class Glyph(object):$/;"	kind:class	line:72
+I2C	../wordclock_plugins/time_default/plugin.py	/^            import Adafruit_GPIO.I2C as I2C$/;"	kind:namespace	line:101
+Image	../wordclock_tools/wordclock_display.py	/^from PIL import Image$/;"	kind:namespace	line:3
+NoSectionError	../wordclock_plugins/time_matrix/plugin.py	/^from ConfigParser import NoSectionError$/;"	kind:namespace	line:10
+ORANGE	../wordclock_tools/wordclock_colors.py	/^ORANGE= Color(212,165,  25)$/;"	kind:variable	line:16
+PINK	../wordclock_tools/wordclock_colors.py	/^PINK  = Color(255,  0,170)$/;"	kind:variable	line:11
+POST	../wordclock_webinterface/web_interface.py	/^    def POST(self):$/;"	kind:member	line:79
+RED	../wordclock_tools/wordclock_colors.py	/^RED   = Color(255,  0,  0)$/;"	kind:variable	line:12
+RPi	../wordclock_interfaces/gpio_interface.py	/^import RPi.GPIO as GPIO$/;"	kind:namespace	line:2
+RPi	../wordclock_tools/wordclock_interface.py	/^import RPi.GPIO as GPIO$/;"	kind:namespace	line:1
+SocketServer	../wordclock_tools/wordclock_socket.py	/^import SocketServer$/;"	kind:namespace	line:4
+ThreadedTCPRequestHandler	../wordclock_tools/wordclock_socket.py	/^class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):$/;"	kind:class	line:7
+ThreadedTCPRequestHandlerWithConfig	../wordclock_tools/wordclock_socket.py	/^        class ThreadedTCPRequestHandlerWithConfig(ThreadedTCPRequestHandler):$/;"	kind:class	line:92
+ThreadedTCPServer	../wordclock_tools/wordclock_socket.py	/^class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):$/;"	kind:class	line:75
+WHITE	../wordclock_tools/wordclock_colors.py	/^WHITE = Color(255,255,255)$/;"	kind:variable	line:13
+WWHITE	../wordclock_tools/wordclock_colors.py	/^WWHITE= Color(255,255, 50) # Warm white$/;"	kind:variable	line:14
+WXcolors.py	../WXcolors.py	1;"	kind:file	line:1
+WXstrip	../WXstrip.py	/^class WXstrip():$/;"	kind:class	line:35
+WXstrip	../wordclock_tools/wordclock_display.py	/^            from WXstrip import WXstrip$/;"	kind:namespace	line:44
+WXstrip.py	../WXstrip.py	1;"	kind:file	line:1
+YELLOW	../wordclock_tools/wordclock_colors.py	/^YELLOW= Color(255,255,  0)$/;"	kind:variable	line:15
+__init__	../5488053/fontdemo.py	/^    def __init__(self, filename, size):        $/;"	kind:member	line:153
+__init__	../5488053/fontdemo.py	/^    def __init__(self, pixels, width, height, top, advance_width):$/;"	kind:member	line:73
+__init__	../5488053/fontdemo.py	/^    def __init__(self, width, height, pixels=None):$/;"	kind:member	line:39
+__init__	../WXcolors.py	/^    def __init__(self, r, g, b):$/;"	kind:member	line:2
+__init__	../WXstrip.py	/^    def __init__(self, parent, title,weh):$/;"	kind:member	line:12
+__init__	../WXstrip.py	/^    def __init__(self, weh):        $/;"	kind:member	line:36
+__init__	../fontdemo.py	/^    def __init__(self, filename, size):        $/;"	kind:member	line:153
+__init__	../fontdemo.py	/^    def __init__(self, pixels, width, height, top, advance_width):$/;"	kind:member	line:73
+__init__	../fontdemo.py	/^    def __init__(self, width, height, pixels=None):$/;"	kind:member	line:39
+__init__	../wordclock.py	/^    def __init__(self):$/;"	kind:member	line:18
+__init__	../wordclock_interfaces/event_handler.py	/^    def __init__(self):$/;"	kind:member	line:13
+__init__	../wordclock_interfaces/gpio_interface.py	/^    def __init__(self, config, evtHandler):$/;"	kind:member	line:5
+__init__	../wordclock_plugins/feed_parser/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:9
+__init__	../wordclock_plugins/ip_address/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:9
+__init__	../wordclock_plugins/leds_off/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:9
+__init__	../wordclock_plugins/matrix/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:12
+__init__	../wordclock_plugins/rainbow/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:10
+__init__	../wordclock_plugins/restart/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:9
+__init__	../wordclock_plugins/shutdown/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:11
+__init__	../wordclock_plugins/sunrise/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:16
+__init__	../wordclock_plugins/tetris/brick.py	/^    def __init__(self, layout, color):$/;"	kind:member	line:6
+__init__	../wordclock_plugins/tetris/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:15
+__init__	../wordclock_plugins/time_as_words_dutch/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:11
+__init__	../wordclock_plugins/time_as_words_dutch/time_as_words_dutch.py	/^    def __init__(self):$/;"	kind:member	line:8
+__init__	../wordclock_plugins/time_as_words_german/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:11
+__init__	../wordclock_plugins/time_as_words_german/time_as_words_german.py	/^    def __init__(self):$/;"	kind:member	line:8
+__init__	../wordclock_plugins/time_default/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:21
+__init__	../wordclock_plugins/time_default/time_bavarian.py	/^    def __init__(self):$/;"	kind:member	line:9
+__init__	../wordclock_plugins/time_default/time_dutch.py	/^    def __init__(self):$/;"	kind:member	line:39
+__init__	../wordclock_plugins/time_default/time_dutch_10-9.py	/^    def __init__(self):$/;"	kind:member	line:38
+__init__	../wordclock_plugins/time_default/time_english.py	/^    def __init__(self):$/;"	kind:member	line:12
+__init__	../wordclock_plugins/time_default/time_german.py	/^    def __init__(self):$/;"	kind:member	line:9
+__init__	../wordclock_plugins/time_default/time_swabian.py	/^ def __init__(self):$/;"	kind:member	line:9
+__init__	../wordclock_plugins/time_default/time_swiss_german.py	/^    def __init__(self):$/;"	kind:member	line:11
+__init__	../wordclock_plugins/time_default/time_swiss_german2.py	/^    def __init__(self):$/;"	kind:member	line:11
+__init__	../wordclock_plugins/time_matrix/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:20
+__init__	../wordclock_plugins/weather_forecast/plugin.py	/^    def __init__(self, config):$/;"	kind:member	line:12
+__init__	../wordclock_tools/wiring.py	/^    def __init__(self, WCA_WIDTH, WCA_HEIGHT):$/;"	kind:member	line:129
+__init__	../wordclock_tools/wiring.py	/^    def __init__(self, WCA_WIDTH, WCA_HEIGHT):$/;"	kind:member	line:167
+__init__	../wordclock_tools/wiring.py	/^    def __init__(self, WCA_WIDTH, WCA_HEIGHT):$/;"	kind:member	line:215
+__init__	../wordclock_tools/wiring.py	/^    def __init__(self, WCA_WIDTH, WCA_HEIGHT):$/;"	kind:member	line:263
+__init__	../wordclock_tools/wiring.py	/^    def __init__(self, WCA_WIDTH, WCA_HEIGHT):$/;"	kind:member	line:82
+__init__	../wordclock_tools/wiring.py	/^    def __init__(self, config,simulation):$/;"	kind:member	line:12
+__init__	../wordclock_tools/wordclock_display.py	/^    def __init__(self, config,weh):$/;"	kind:member	line:14
+__init__	../wordclock_tools/wordclock_interface.py	/^    def __init__(self, config):$/;"	kind:member	line:10
+__init__	../wordclock_tools/wordclock_interface.py	/^    def __init__(self, config):$/;"	kind:member	line:91
+__init__	../wordclock_tools/wordclock_socket.py	/^    def __init__(self, wordclock):$/;"	kind:member	line:83
+__init__	../wordclock_webinterface/web_interface.py	/^    def __init__(self):        $/;"	kind:member	line:48
+__init__	../wordclock_webinterface/web_interface.py	/^    def __init__(self, wordclock):$/;"	kind:member	line:24
+__init__.py	../wordclock_interfaces/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/feed_parser/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/ip_address/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/leds_off/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/matrix/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/rainbow/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/restart/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/shutdown/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/sunrise/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/tetris/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/time_as_words_dutch/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/time_as_words_german/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/time_default/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/time_matrix/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_plugins/weather_forecast/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_tools/__init__.py	1;"	kind:file	line:1
+__init__.py	../wordclock_webinterface/__init__.py	1;"	kind:file	line:1
+__recvall	../wordclock_tools/wordclock_socket.py	/^    def __recvall(self, n):$/;"	kind:member	line:65
+__recvall	../wordclock_webinterface/web_interface.py	/^    def __recvall(self, n):$/;"	kind:member	line:69
+__repr__	../5488053/fontdemo.py	/^    def __repr__(self):$/;"	kind:member	line:44
+__repr__	../fontdemo.py	/^    def __repr__(self):$/;"	kind:member	line:44
+__sendToAll	../wordclock_tools/wordclock_socket.py	/^    def __sendToAll(self, jsonobj):$/;"	kind:member	line:108
+__wait_for	../wordclock_interfaces/event_handler.py	/^    def __wait_for(self, predicate, timeout=None):$/;"	kind:member	line:39
+_left	../wordclock_interfaces/gpio_interface.py	/^    def _left(self):$/;"	kind:member	line:45
+_return	../wordclock_interfaces/gpio_interface.py	/^    def _return(self):$/;"	kind:member	line:48
+_right	../wordclock_interfaces/gpio_interface.py	/^    def _right(self):$/;"	kind:member	line:51
+_time	../wordclock_interfaces/event_handler.py	/^from monotonic import monotonic as _time$/;"	kind:namespace	line:3
+am2302_ths	../wordclock_plugins/weather_forecast/plugin.py	/^            import am2302_ths$/;"	kind:namespace	line:25
+animate	../wordclock_tools/wordclock_display.py	/^    def animate(self, plugin, animationName, fps=10, count=1, invert=False):$/;"	kind:member	line:145
+ast	../create_layout.py	/^import ast$/;"	kind:namespace	line:1
+ast	../wordclock_tools/wiring.py	/^import ast$/;"	kind:namespace	line:1
+begin	../WXstrip.py	/^    def begin(self):$/;"	kind:member	line:84
+bernds_wiring	../wordclock_tools/wiring.py	/^class bernds_wiring:$/;"	kind:class	line:73
+bitblt	../5488053/fontdemo.py	/^    def bitblt(self, src, x, y):$/;"	kind:member	line:53
+bitblt	../fontdemo.py	/^    def bitblt(self, src, x, y):$/;"	kind:member	line:53
+brick	../wordclock_plugins/tetris/brick.py	/^class brick:$/;"	kind:class	line:5
+brick	../wordclock_plugins/tetris/plugin.py	/^from brick import brick$/;"	kind:namespace	line:7
+brick.py	../wordclock_plugins/tetris/brick.py	1;"	kind:file	line:1
+button_settings	../wordclock_tools/wordclock_interface.py	/^class button_settings:$/;"	kind:class	line:86
+carve	../wordclock_plugins/tetris/plugin.py	/^    def carve(self, brick, x, y):$/;"	kind:member	line:183
+ch	../5488053/fontdemo.py	/^    ch = fnt.render_character('e')$/;"	kind:variable	line:246
+ch	../fontdemo.py	/^    ch = fnt.render_character('e')$/;"	kind:variable	line:246
+christians_wiring	../wordclock_tools/wiring.py	/^class christians_wiring:$/;"	kind:class	line:158
+clear_lines	../wordclock_plugins/tetris/plugin.py	/^    def clear_lines(self, wcd):$/;"	kind:member	line:145
+clone	../wordclock_plugins/tetris/brick.py	/^    def clone(self):$/;"	kind:member	line:21
+collision	../wordclock_plugins/tetris/plugin.py	/^    def collision(self, brick, x, y):$/;"	kind:member	line:191
+color_selection	../wordclock_plugins/time_default/plugin.py	/^    def color_selection(self, wcd, wci):$/;"	kind:member	line:193
+colors	../wordclock_tools/wordclock_colors.py	/^colors= [BLACK, WHITE, WWHITE, RED, YELLOW, GREEN, BLUE]$/;"	kind:variable	line:19
+conf.py	../docs/conf.py	1;"	kind:file	line:1
+copy	../wordclock_plugins/tetris/brick.py	/^import copy$/;"	kind:namespace	line:3
+copyright	../docs/conf.py	/^copyright = u'2014, Bernd Krolla'$/;"	kind:variable	line:44
+create_layout.py	../create_layout.py	1;"	kind:file	line:1
+create_svg	../create_layout.py	/^def create_svg(lang, config, side='front', mode='stencil'):$/;"	kind:function	line:41
+datetime	../wordclock_plugins/rainbow/plugin.py	/^import datetime$/;"	kind:namespace	line:1
+datetime	../wordclock_plugins/sunrise/plugin.py	/^import datetime$/;"	kind:namespace	line:2
+datetime	../wordclock_plugins/time_as_words_dutch/plugin.py	/^import datetime$/;"	kind:namespace	line:1
+datetime	../wordclock_plugins/time_as_words_german/plugin.py	/^import datetime$/;"	kind:namespace	line:1
+datetime	../wordclock_plugins/time_default/plugin.py	/^import datetime$/;"	kind:namespace	line:1
+datetime	../wordclock_plugins/time_matrix/plugin.py	/^import datetime$/;"	kind:namespace	line:3
+delete_event	../WXstrip.py	/^    def delete_event(self, widget, event, data=None):$/;"	kind:member	line:78
+dispRes	../wordclock_tools/wordclock_display.py	/^    def dispRes(self):$/;"	kind:member	line:100
+draw	../wordclock_plugins/tetris/plugin.py	/^    def draw(self, wcd):$/;"	kind:member	line:176
+dt	../wordclock_plugins/time_as_words_dutch/time_as_words_dutch.py	/^import datetime as dt$/;"	kind:namespace	line:1
+dt	../wordclock_plugins/time_as_words_german/time_as_words_german.py	/^import datetime as dt$/;"	kind:namespace	line:1
+dt	../wordclock_plugins/time_default/time_bavarian.py	/^import datetime as dt$/;"	kind:namespace	line:1
+dt	../wordclock_plugins/time_default/time_dutch.py	/^import datetime as dt$/;"	kind:namespace	line:1
+dt	../wordclock_plugins/time_default/time_dutch_10-9.py	/^import datetime as dt$/;"	kind:namespace	line:1
+dt	../wordclock_plugins/time_default/time_english.py	/^import datetime as dt$/;"	kind:namespace	line:4
+dt	../wordclock_plugins/time_default/time_german.py	/^import datetime as dt$/;"	kind:namespace	line:1
+dt	../wordclock_plugins/time_default/time_swabian.py	/^import datetime as dt$/;"	kind:namespace	line:1
+dt	../wordclock_plugins/time_default/time_swiss_german.py	/^import datetime as dt$/;"	kind:namespace	line:3
+dt	../wordclock_plugins/time_default/time_swiss_german2.py	/^import datetime as dt$/;"	kind:namespace	line:3
+eh	../wordclock_tools/wordclock_socket.py	/^from wordclock_interfaces.event_handler import event_handler as eh$/;"	kind:namespace	line:5
+event_handler	../wordclock_interfaces/event_handler.py	/^class event_handler:$/;"	kind:class	line:5
+event_handler.py	../wordclock_interfaces/event_handler.py	1;"	kind:file	line:1
+exclude_patterns	../docs/conf.py	/^exclude_patterns = ['_build']$/;"	kind:variable	line:67
+extensions	../docs/conf.py	/^extensions = ['sphinx.ext.autodoc', 'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.pngmath', 'sphinx.ext.viewcode']$/;"	kind:variable	line:28
+feedparser	../wordclock_plugins/feed_parser/plugin.py	/^import feedparser$/;"	kind:namespace	line:2
+fnt	../5488053/fontdemo.py	/^    fnt = Font('helvetica.ttf', 24)$/;"	kind:variable	line:243
+fnt	../fontdemo.py	/^    fnt = Font('helvetica.ttf', 24)$/;"	kind:variable	line:243
+fontdemo	../wordclock_tools/wordclock_display.py	/^import fontdemo$/;"	kind:namespace	line:1
+fontdemo.py	../5488053/fontdemo.py	1;"	kind:file	line:1
+fontdemo.py	../fontdemo.py	1;"	kind:file	line:1
+freetype	../5488053/fontdemo.py	/^import freetype$/;"	kind:namespace	line:30
+freetype	../fontdemo.py	/^import freetype$/;"	kind:namespace	line:30
+from_glyphslot	../5488053/fontdemo.py	/^    def from_glyphslot(slot):$/;"	kind:member	line:98
+from_glyphslot	../fontdemo.py	/^    def from_glyphslot(slot):$/;"	kind:member	line:98
+gameover	../wordclock_plugins/tetris/plugin.py	/^    def gameover(self, wcd):$/;"	kind:member	line:165
+getPinState	../wordclock_tools/wordclock_interface.py	/^    def getPinState(self, pin):$/;"	kind:member	line:40
+getStripIndexFrom2D	../wordclock_tools/wiring.py	/^    def getStripIndexFrom2D(self, x, y):$/;"	kind:member	line:134
+getStripIndexFrom2D	../wordclock_tools/wiring.py	/^    def getStripIndexFrom2D(self, x, y):$/;"	kind:member	line:172
+getStripIndexFrom2D	../wordclock_tools/wiring.py	/^    def getStripIndexFrom2D(self, x, y):$/;"	kind:member	line:220
+getStripIndexFrom2D	../wordclock_tools/wiring.py	/^    def getStripIndexFrom2D(self, x, y):$/;"	kind:member	line:268
+getStripIndexFrom2D	../wordclock_tools/wiring.py	/^    def getStripIndexFrom2D(self, x, y):$/;"	kind:member	line:87
+getStripIndexFrom2D	../wordclock_tools/wiring.py	/^    def getStripIndexFrom2D(self, x,y):$/;"	kind:member	line:64
+get_letter_coords	../create_layout.py	/^def get_letter_coords(wca_top_left,x,x_spacing,y,y_spacing, side, col_num):$/;"	kind:function	line:23
+get_min_coords	../create_layout.py	/^def get_min_coords(width, height, minute_margin, min_num, side):$/;"	kind:function	line:29
+get_time	../wordclock_plugins/time_as_words_dutch/time_as_words_dutch.py	/^    def get_time(self, time, withPrefix=True):$/;"	kind:member	line:37
+get_time	../wordclock_plugins/time_as_words_german/time_as_words_german.py	/^    def get_time(self, time, withPrefix=True):$/;"	kind:member	line:37
+get_time	../wordclock_plugins/time_default/time_bavarian.py	/^    def get_time(self, time, withPrefix=True):$/;"	kind:member	line:38
+get_time	../wordclock_plugins/time_default/time_dutch.py	/^    def get_time(self, time, withPrefix=True):$/;"	kind:member	line:68
+get_time	../wordclock_plugins/time_default/time_dutch_10-9.py	/^    def get_time(self, time, withPrefix=True):$/;"	kind:member	line:67
+get_time	../wordclock_plugins/time_default/time_english.py	/^    def get_time(self, time, withPrefix=True):$/;"	kind:member	line:66
+get_time	../wordclock_plugins/time_default/time_german.py	/^    def get_time(self, time, withPrefix=True):$/;"	kind:member	line:38
+get_time	../wordclock_plugins/time_default/time_swabian.py	/^ def get_time(self, time, withPrefix=True):$/;"	kind:member	line:38
+get_time	../wordclock_plugins/time_default/time_swiss_german.py	/^    def get_time(self, time, withPrefix=True):$/;"	kind:member	line:64
+get_time	../wordclock_plugins/time_default/time_swiss_german2.py	/^    def get_time(self, time, withPrefix=True):$/;"	kind:member	line:64
+get_wca_height	../wordclock_tools/wordclock_display.py	/^    def get_wca_height(self):$/;"	kind:member	line:88
+get_wca_width	../wordclock_tools/wordclock_display.py	/^    def get_wca_width(self):$/;"	kind:member	line:94
+getopt	../create_layout.py	/^import getopt$/;"	kind:namespace	line:3
+glyph_for_character	../5488053/fontdemo.py	/^    def glyph_for_character(self, char):$/;"	kind:member	line:157
+glyph_for_character	../fontdemo.py	/^    def glyph_for_character(self, char):$/;"	kind:member	line:157
+gpio_interface	../wordclock_interfaces/gpio_interface.py	/^class gpio_interface:$/;"	kind:class	line:4
+gpio_interface.py	../wordclock_interfaces/gpio_interface.py	1;"	kind:file	line:1
+gpio_support	../wordclock.py	/^    gpio_support = True$/;"	kind:variable	line:165
+handle	../wordclock_tools/wordclock_socket.py	/^    def handle(self):$/;"	kind:member	line:8
+height	../5488053/fontdemo.py	/^    def height(self):$/;"	kind:member	line:94
+height	../fontdemo.py	/^    def height(self):$/;"	kind:member	line:94
+html_static_path	../docs/conf.py	/^html_static_path = ['_static']$/;"	kind:variable	line:123
+html_theme	../docs/conf.py	/^html_theme = 'default'$/;"	kind:variable	line:94
+htmlhelp_basename	../docs/conf.py	/^htmlhelp_basename = 'wordclock_for_rpidoc'$/;"	kind:variable	line:167
+inspect	../wordclock.py	/^import inspect$/;"	kind:namespace	line:3
+json	../wordclock_tools/wordclock_socket.py	/^import json$/;"	kind:namespace	line:1
+json	../wordclock_webinterface/web_interface.py	/^import json$/;"	kind:namespace	line:1
+kerning_offset	../5488053/fontdemo.py	/^    def kerning_offset(self, previous_char, char):$/;"	kind:member	line:167
+kerning_offset	../fontdemo.py	/^    def kerning_offset(self, previous_char, char):$/;"	kind:member	line:167
+latex_documents	../docs/conf.py	/^latex_documents = [$/;"	kind:variable	line:185
+latex_elements	../docs/conf.py	/^latex_elements = {$/;"	kind:variable	line:172
+main	../create_layout.py	/^def main():$/;"	kind:function	line:206
+mainloop	../wordclock_tools/wordclock_socket.py	/^    def mainloop(self):$/;"	kind:member	line:15
+man_pages	../docs/conf.py	/^man_pages = [$/;"	kind:variable	line:215
+mapMinutes	../wordclock_tools/wiring.py	/^    def mapMinutes(self, min):$/;"	kind:member	line:101
+mapMinutes	../wordclock_tools/wiring.py	/^    def mapMinutes(self, min):$/;"	kind:member	line:144
+mapMinutes	../wordclock_tools/wiring.py	/^    def mapMinutes(self, min):$/;"	kind:member	line:186
+mapMinutes	../wordclock_tools/wiring.py	/^    def mapMinutes(self, min):$/;"	kind:member	line:234
+mapMinutes	../wordclock_tools/wiring.py	/^    def mapMinutes(self, min):$/;"	kind:member	line:282
+mapMinutes	../wordclock_tools/wiring.py	/^    def mapMinutes(self, min):$/;"	kind:member	line:67
+master_doc	../docs/conf.py	/^master_doc = 'index'$/;"	kind:variable	line:40
+mini_wiring	../wordclock_tools/wiring.py	/^class mini_wiring:$/;"	kind:class	line:253
+netifaces	../wordclock_plugins/ip_address/plugin.py	/^import netifaces$/;"	kind:namespace	line:2
+num_of_colors	../wordclock_tools/wordclock_colors.py	/^num_of_colors = len(colors)$/;"	kind:variable	line:20
+onKeyPress	../WXstrip.py	/^    def onKeyPress(self, event=None):$/;"	kind:member	line:26
+os	../WXstrip.py	/^import os$/;"	kind:namespace	line:3
+os	../create_layout.py	/^import os$/;"	kind:namespace	line:4
+os	../docs/conf.py	/^import sys, os$/;"	kind:namespace	line:14
+os	../wordclock.py	/^import os$/;"	kind:namespace	line:4
+os	../wordclock_plugins/feed_parser/plugin.py	/^import os$/;"	kind:namespace	line:1
+os	../wordclock_plugins/ip_address/plugin.py	/^import os$/;"	kind:namespace	line:1
+os	../wordclock_plugins/leds_off/plugin.py	/^import os$/;"	kind:namespace	line:1
+os	../wordclock_plugins/matrix/plugin.py	/^import os$/;"	kind:namespace	line:3
+os	../wordclock_plugins/rainbow/plugin.py	/^import os$/;"	kind:namespace	line:2
+os	../wordclock_plugins/restart/plugin.py	/^import os$/;"	kind:namespace	line:1
+os	../wordclock_plugins/shutdown/plugin.py	/^import os$/;"	kind:namespace	line:1
+os	../wordclock_plugins/sunrise/plugin.py	/^import os$/;"	kind:namespace	line:3
+os	../wordclock_plugins/tetris/plugin.py	/^import os$/;"	kind:namespace	line:3
+os	../wordclock_plugins/time_as_words_dutch/plugin.py	/^import os$/;"	kind:namespace	line:2
+os	../wordclock_plugins/time_as_words_german/plugin.py	/^import os$/;"	kind:namespace	line:2
+os	../wordclock_plugins/time_default/plugin.py	/^import os$/;"	kind:namespace	line:2
+os	../wordclock_plugins/time_matrix/plugin.py	/^import os$/;"	kind:namespace	line:4
+os	../wordclock_plugins/weather_forecast/plugin.py	/^import os$/;"	kind:namespace	line:1
+os	../wordclock_tools/wordclock_display.py	/^import os$/;"	kind:namespace	line:2
+os	../wordclock_webinterface/web_interface.py	/^import os$/;"	kind:namespace	line:8
+padTop	../wordclock_plugins/tetris/brick.py	/^def padTop(layout):$/;"	kind:function	line:30
+pinState	../wordclock_tools/wordclock_interface.py	/^    def pinState(self, i):        $/;"	kind:member	line:145
+plugin	../wordclock.py	/^                print('Failed to import plugin ' + plugin + '!')$/;"	kind:namespace	line:85
+plugin	../wordclock_plugins/feed_parser/plugin.py	/^class plugin:$/;"	kind:class	line:4
+plugin	../wordclock_plugins/ip_address/plugin.py	/^class plugin:$/;"	kind:class	line:4
+plugin	../wordclock_plugins/leds_off/plugin.py	/^class plugin:$/;"	kind:class	line:5
+plugin	../wordclock_plugins/matrix/plugin.py	/^class plugin:$/;"	kind:class	line:7
+plugin	../wordclock_plugins/rainbow/plugin.py	/^class plugin:$/;"	kind:class	line:6
+plugin	../wordclock_plugins/restart/plugin.py	/^class plugin:$/;"	kind:class	line:4
+plugin	../wordclock_plugins/shutdown/plugin.py	/^class plugin:$/;"	kind:class	line:4
+plugin	../wordclock_plugins/sunrise/plugin.py	/^class plugin:$/;"	kind:class	line:10
+plugin	../wordclock_plugins/tetris/plugin.py	/^class plugin:$/;"	kind:class	line:10
+plugin	../wordclock_plugins/time_as_words_dutch/plugin.py	/^class plugin:$/;"	kind:class	line:6
+plugin	../wordclock_plugins/time_as_words_german/plugin.py	/^class plugin:$/;"	kind:class	line:6
+plugin	../wordclock_plugins/time_default/plugin.py	/^class plugin:$/;"	kind:class	line:13
+plugin	../wordclock_plugins/time_matrix/plugin.py	/^class plugin:$/;"	kind:class	line:12
+plugin	../wordclock_plugins/weather_forecast/plugin.py	/^class plugin:$/;"	kind:class	line:6
+plugin.py	../wordclock_plugins/feed_parser/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/ip_address/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/leds_off/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/matrix/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/rainbow/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/restart/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/shutdown/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/sunrise/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/tetris/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/time_as_words_dutch/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/time_as_words_german/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/time_default/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/time_matrix/plugin.py	1;"	kind:file	line:1
+plugin.py	../wordclock_plugins/weather_forecast/plugin.py	1;"	kind:file	line:1
+project	../docs/conf.py	/^project = u'wordclock_for_rpi'$/;"	kind:variable	line:43
+pygments_style	../docs/conf.py	/^pygments_style = 'sphinx'$/;"	kind:variable	line:84
+pywapi	../wordclock_plugins/weather_forecast/plugin.py	/^import pywapi$/;"	kind:namespace	line:2
+random	../wordclock_plugins/matrix/plugin.py	/^import random$/;"	kind:namespace	line:5
+random	../wordclock_plugins/tetris/plugin.py	/^import random$/;"	kind:namespace	line:5
+random	../wordclock_plugins/time_matrix/plugin.py	/^import random$/;"	kind:namespace	line:9
+recv_msg	../wordclock_tools/wordclock_socket.py	/^    def recv_msg(self):$/;"	kind:member	line:56
+recv_msg	../wordclock_webinterface/web_interface.py	/^    def recv_msg(self):$/;"	kind:member	line:60
+release	../docs/conf.py	/^release = '0.0.1'$/;"	kind:variable	line:53
+render	../wordclock_webinterface/web_interface.py	/^render = web.template.render(os.path.dirname(__file__))$/;"	kind:variable	line:16
+render_character	../5488053/fontdemo.py	/^    def render_character(self, char):$/;"	kind:member	line:163
+render_character	../fontdemo.py	/^    def render_character(self, char):$/;"	kind:member	line:163
+render_text	../5488053/fontdemo.py	/^    def render_text(self, text, width=None, height=None, baseline=None):$/;"	kind:member	line:209
+render_text	../fontdemo.py	/^    def render_text(self, text, width=None, height=None, baseline=None):$/;"	kind:member	line:209
+resetDisplay	../wordclock_tools/wordclock_display.py	/^    def resetDisplay(self):$/;"	kind:member	line:119
+rot_left	../wordclock_plugins/tetris/brick.py	/^def rot_left(layout):$/;"	kind:function	line:39
+rot_right	../wordclock_plugins/tetris/brick.py	/^def rot_right(layout):$/;"	kind:function	line:42
+rot_twice	../wordclock_plugins/tetris/brick.py	/^def rot_twice(layout):$/;"	kind:function	line:45
+rotate_ccw	../wordclock_plugins/tetris/brick.py	/^    def rotate_ccw(self):$/;"	kind:member	line:27
+rotate_cw	../wordclock_plugins/tetris/brick.py	/^    def rotate_cw(self):$/;"	kind:member	line:24
+run	../wordclock.py	/^    def run(self):$/;"	kind:member	line:121
+run	../wordclock_plugins/feed_parser/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:19
+run	../wordclock_plugins/ip_address/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:19
+run	../wordclock_plugins/leds_off/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:18
+run	../wordclock_plugins/matrix/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:32
+run	../wordclock_plugins/rainbow/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:19
+run	../wordclock_plugins/restart/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:18
+run	../wordclock_plugins/shutdown/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:21
+run	../wordclock_plugins/sunrise/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:44
+run	../wordclock_plugins/tetris/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:55
+run	../wordclock_plugins/time_as_words_dutch/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:23
+run	../wordclock_plugins/time_as_words_german/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:24
+run	../wordclock_plugins/time_default/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:107
+run	../wordclock_plugins/time_matrix/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:59
+run	../wordclock_plugins/weather_forecast/plugin.py	/^    def run(self, wcd, wci):$/;"	kind:member	line:33
+runNext	../wordclock.py	/^    def runNext(self, plugin_index = None):$/;"	kind:member	line:118
+runPlugin	../wordclock.py	/^    def runPlugin(self):$/;"	kind:member	line:100
+run_forever	../wordclock.py	/^    def run_forever(self):$/;"	kind:member	line:159
+searchInMinutes	../create_layout.py	/^def searchInMinutes(wcl, index):$/;"	kind:function	line:16
+searchInWCA	../create_layout.py	/^def searchInWCA(wcl, index):$/;"	kind:function	line:9
+sendCurrentPlugin	../wordclock_tools/wordclock_socket.py	/^    def sendCurrentPlugin(self, index):$/;"	kind:member	line:105
+send_json	../wordclock_tools/wordclock_socket.py	/^    def send_json(self, jsonobj):$/;"	kind:member	line:49
+send_json	../wordclock_webinterface/web_interface.py	/^    def send_json(self, jsonobj):$/;"	kind:member	line:53
+setBrightness	../WXstrip.py	/^    def setBrightness(self, brightness):$/;"	kind:member	line:81
+setBrightness	../wordclock_tools/wordclock_display.py	/^    def setBrightness(self, brightness):$/;"	kind:member	line:69
+setColorBy1DCoordinates	../wordclock_tools/wiring.py	/^    def setColorBy1DCoordinates(self, strip, ledCoordinates, color):$/;"	kind:member	line:48
+setColorBy1DCoordinates	../wordclock_tools/wordclock_display.py	/^    def setColorBy1DCoordinates(self, *args, **kwargs):$/;"	kind:member	line:76
+setColorBy2DCoordinates	../wordclock_tools/wiring.py	/^    def setColorBy2DCoordinates(self, strip, x, y, color):$/;"	kind:member	line:55
+setColorBy2DCoordinates	../wordclock_tools/wordclock_display.py	/^    def setColorBy2DCoordinates(self, *args, **kwargs):$/;"	kind:member	line:82
+setColorToAll	../wordclock_tools/wordclock_display.py	/^    def setColorToAll(self, color, includeMinutes=True):$/;"	kind:member	line:107
+setEvent	../wordclock_interfaces/event_handler.py	/^    def setEvent(self, evt):$/;"	kind:member	line:26
+setImage	../wordclock_tools/wordclock_display.py	/^    def setImage(self, absPathToImage):$/;"	kind:member	line:132
+setMinutes	../wordclock_tools/wordclock_display.py	/^    def setMinutes(self, time, color):$/;"	kind:member	line:205
+setPixelColor	../WXstrip.py	/^    def setPixelColor(self, index, color):                $/;"	kind:member	line:89
+setPixelColor	../wordclock_tools/wordclock_display.py	/^    def setPixelColor(self, pixel, color):$/;"	kind:member	line:63
+show	../WXstrip.py	/^    def show(self):        $/;"	kind:member	line:104
+show	../wordclock_tools/wordclock_display.py	/^    def show(self):$/;"	kind:member	line:210
+showIcon	../wordclock_tools/wordclock_display.py	/^    def showIcon(self, plugin, iconName):$/;"	kind:member	line:125
+showText	../wordclock_tools/wordclock_display.py	/^    def showText(self, text, font=None, fg_color=None, bg_color=None, fps=10, count=1):$/;"	kind:member	line:167
+show_time	../wordclock_plugins/time_default/plugin.py	/^    def show_time(self, wcd, wci):$/;"	kind:member	line:173
+simulation_wiring	../wordclock_tools/wiring.py	/^class simulation_wiring:$/;"	kind:class	line:120
+sleep	../wordclock_plugins/tetris/plugin.py	/^from time import sleep$/;"	kind:namespace	line:8
+socket	../wordclock_webinterface/web_interface.py	/^import socket$/;"	kind:namespace	line:5
+source_suffix	../docs/conf.py	/^source_suffix = '.rst'$/;"	kind:variable	line:34
+startup	../wordclock.py	/^    def startup(self):$/;"	kind:member	line:92
+static	../wordclock_webinterface/web_interface.py	/^class static:$/;"	kind:class	line:32
+struct	../wordclock_tools/wordclock_socket.py	/^import struct$/;"	kind:namespace	line:2
+struct	../wordclock_webinterface/web_interface.py	/^import struct$/;"	kind:namespace	line:2
+struct	../wordclock_webinterface/web_interface.py	/^import struct$/;"	kind:namespace	line:6
+svgwrite	../create_layout.py	/^import svgwrite$/;"	kind:namespace	line:5
+sys	../WXstrip.py	/^import sys$/;"	kind:namespace	line:5
+sys	../create_layout.py	/^import sys$/;"	kind:namespace	line:6
+sys	../docs/conf.py	/^import sys, os$/;"	kind:namespace	line:14
+templates_path	../docs/conf.py	/^templates_path = ['_templates']$/;"	kind:variable	line:31
+texinfo_documents	../docs/conf.py	/^texinfo_documents = [$/;"	kind:variable	line:229
+text_dimensions	../5488053/fontdemo.py	/^    def text_dimensions(self, text):$/;"	kind:member	line:184
+text_dimensions	../fontdemo.py	/^    def text_dimensions(self, text):$/;"	kind:member	line:184
+threading	../WXstrip.py	/^import threading$/;"	kind:namespace	line:2
+threading	../wordclock.py	/^import threading$/;"	kind:namespace	line:7
+threading	../wordclock_interfaces/event_handler.py	/^import threading$/;"	kind:namespace	line:2
+threading	../wordclock_tools/wordclock_socket.py	/^import threading$/;"	kind:namespace	line:3
+threading	../wordclock_webinterface/web_interface.py	/^import threading$/;"	kind:namespace	line:3
+threading	../wordclock_webinterface/web_interface.py	/^import threading$/;"	kind:namespace	line:7
+time	../wordclock.py	/^import time$/;"	kind:namespace	line:5
+time	../wordclock_plugins/leds_off/plugin.py	/^import time$/;"	kind:namespace	line:2
+time	../wordclock_plugins/rainbow/plugin.py	/^import time$/;"	kind:namespace	line:3
+time	../wordclock_plugins/restart/plugin.py	/^import time$/;"	kind:namespace	line:2
+time	../wordclock_plugins/shutdown/plugin.py	/^import time$/;"	kind:namespace	line:2
+time	../wordclock_plugins/sunrise/plugin.py	/^import time$/;"	kind:namespace	line:4
+time	../wordclock_plugins/tetris/plugin.py	/^import time$/;"	kind:namespace	line:6
+time	../wordclock_plugins/time_default/plugin.py	/^import time$/;"	kind:namespace	line:3
+time	../wordclock_plugins/weather_forecast/plugin.py	/^import time$/;"	kind:namespace	line:3
+time	../wordclock_tools/wordclock_display.py	/^import time$/;"	kind:namespace	line:4
+time	../wordclock_tools/wordclock_interface.py	/^import time$/;"	kind:namespace	line:2
+time_as_words_dutch	../wordclock_plugins/time_as_words_dutch/plugin.py	/^import time_as_words_dutch$/;"	kind:namespace	line:3
+time_as_words_dutch	../wordclock_plugins/time_as_words_dutch/time_as_words_dutch.py	/^class time_as_words_dutch():$/;"	kind:class	line:3
+time_as_words_dutch.py	../wordclock_plugins/time_as_words_dutch/time_as_words_dutch.py	1;"	kind:file	line:1
+time_as_words_german	../wordclock_plugins/time_as_words_german/plugin.py	/^import time_as_words_german$/;"	kind:namespace	line:3
+time_as_words_german	../wordclock_plugins/time_as_words_german/time_as_words_german.py	/^class time_as_words_german():$/;"	kind:class	line:3
+time_as_words_german.py	../wordclock_plugins/time_as_words_german/time_as_words_german.py	1;"	kind:file	line:1
+time_bavarian	../wordclock_plugins/time_default/plugin.py	/^import time_bavarian$/;"	kind:namespace	line:8
+time_bavarian	../wordclock_plugins/time_default/time_bavarian.py	/^class time_bavarian():$/;"	kind:class	line:3
+time_bavarian.py	../wordclock_plugins/time_default/time_bavarian.py	1;"	kind:file	line:1
+time_default	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_plugins.time_default.time_dutch as wcp_time_dutch$/;"	kind:namespace	line:7
+time_default	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_plugins.time_default.time_german as wcp_time_german$/;"	kind:namespace	line:6
+time_default	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_plugins.time_default.time_swiss_german as wcp_swiss_german$/;"	kind:namespace	line:8
+time_default	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_plugins.time_default.time_dutch as time_dutch$/;"	kind:namespace	line:6
+time_default	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_plugins.time_default.time_german as time_german$/;"	kind:namespace	line:5
+time_default	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_plugins.time_default.time_swiss_german as time_swiss_german$/;"	kind:namespace	line:7
+time_dutch	../wordclock_plugins/time_default/plugin.py	/^import time_dutch$/;"	kind:namespace	line:7
+time_dutch	../wordclock_plugins/time_default/time_dutch.py	/^class time_dutch():$/;"	kind:class	line:3
+time_dutch	../wordclock_plugins/time_default/time_dutch_10-9.py	/^class time_dutch():$/;"	kind:class	line:3
+time_dutch	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_plugins.time_default.time_dutch as time_dutch$/;"	kind:namespace	line:6
+time_dutch.py	../wordclock_plugins/time_default/time_dutch.py	1;"	kind:file	line:1
+time_dutch_10-9.py	../wordclock_plugins/time_default/time_dutch_10-9.py	1;"	kind:file	line:1
+time_english	../wordclock_plugins/time_default/plugin.py	/^import time_english$/;"	kind:namespace	line:4
+time_english	../wordclock_plugins/time_default/time_english.py	/^class time_english():$/;"	kind:class	line:6
+time_english.py	../wordclock_plugins/time_default/time_english.py	1;"	kind:file	line:1
+time_german	../wordclock_plugins/time_default/plugin.py	/^import time_german$/;"	kind:namespace	line:5
+time_german	../wordclock_plugins/time_default/time_german.py	/^class time_german():$/;"	kind:class	line:3
+time_german	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_plugins.time_default.time_german as time_german$/;"	kind:namespace	line:5
+time_german.py	../wordclock_plugins/time_default/time_german.py	1;"	kind:file	line:1
+time_swabian	../wordclock_plugins/time_default/plugin.py	/^import time_swabian$/;"	kind:namespace	line:6
+time_swabian	../wordclock_plugins/time_default/time_swabian.py	/^class time_swabian():$/;"	kind:class	line:3
+time_swabian.py	../wordclock_plugins/time_default/time_swabian.py	1;"	kind:file	line:1
+time_swiss_german	../wordclock_plugins/time_default/plugin.py	/^import time_swiss_german$/;"	kind:namespace	line:9
+time_swiss_german	../wordclock_plugins/time_default/time_swiss_german.py	/^class time_swiss_german():$/;"	kind:class	line:5
+time_swiss_german	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_plugins.time_default.time_swiss_german as time_swiss_german$/;"	kind:namespace	line:7
+time_swiss_german.py	../wordclock_plugins/time_default/time_swiss_german.py	1;"	kind:file	line:1
+time_swiss_german2	../wordclock_plugins/time_default/plugin.py	/^import time_swiss_german2$/;"	kind:namespace	line:10
+time_swiss_german2	../wordclock_plugins/time_default/time_swiss_german2.py	/^class time_swiss_german2():$/;"	kind:class	line:5
+time_swiss_german2.py	../wordclock_plugins/time_default/time_swiss_german2.py	1;"	kind:file	line:1
+timos_wiring	../wordclock_tools/wiring.py	/^class timos_wiring:$/;"	kind:class	line:206
+traceback	../wordclock.py	/^import traceback$/;"	kind:namespace	line:6
+txt	../5488053/fontdemo.py	/^    txt = fnt.render_text('hello')$/;"	kind:variable	line:250
+txt	../fontdemo.py	/^    txt = fnt.render_text('hello')$/;"	kind:variable	line:250
+uncarve	../wordclock_plugins/tetris/plugin.py	/^    def uncarve(self, brick, x, y):$/;"	kind:member	line:201
+unpack_mono_bitmap	../5488053/fontdemo.py	/^    def unpack_mono_bitmap(bitmap):$/;"	kind:member	line:111
+unpack_mono_bitmap	../fontdemo.py	/^    def unpack_mono_bitmap(bitmap):$/;"	kind:member	line:111
+update	../WXstrip.py	/^    def update(self):          $/;"	kind:member	line:94
+urls	../wordclock_webinterface/web_interface.py	/^urls = ($/;"	kind:variable	line:10
+version	../docs/conf.py	/^version = '0.0.1'$/;"	kind:variable	line:51
+waitForEvent	../wordclock_interfaces/event_handler.py	/^    def waitForEvent(self, seconds = None):$/;"	kind:member	line:18
+waitForEvent	../wordclock_tools/wordclock_interface.py	/^    def waitForEvent(self, pinrange_to_listen, cps=10):$/;"	kind:member	line:47
+waitForExit	../wordclock_interfaces/event_handler.py	/^    def waitForExit(self, seconds = None):$/;"	kind:member	line:33
+waitSecondsForEvent	../wordclock_tools/wordclock_interface.py	/^    def waitSecondsForEvent(self, pinrange_to_listen, seconds, cps=10):$/;"	kind:member	line:66
+wcc	../wordclock.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:8
+wcc	../wordclock_plugins/leds_off/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:3
+wcc	../wordclock_plugins/matrix/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wcc	../wordclock_plugins/rainbow/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wcc	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:5
+wcc	../wordclock_plugins/tetris/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wcc	../wordclock_plugins/time_as_words_dutch/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wcc	../wordclock_plugins/time_as_words_german/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wcc	../wordclock_plugins/time_default/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:11
+wcc	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:8
+wcc	../wordclock_plugins/weather_forecast/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wcc	../wordclock_tools/wordclock_display.py	/^import wordclock_colors as wcc$/;"	kind:namespace	line:5
+wcd	../wordclock.py	/^import wordclock_tools.wordclock_display as wcd$/;"	kind:namespace	line:9
+wci	../wordclock.py	/^import wordclock_interfaces.event_handler as wci$/;"	kind:namespace	line:11
+wcigpio	../wordclock.py	/^            import wordclock_interfaces.gpio_interface as wcigpio$/;"	kind:namespace	line:41
+wcigpio	../wordclock.py	/^        import wordclock_interfaces.gpio_interface as wcigpio        $/;"	kind:namespace	line:167
+wclk	../wordclock_tools/wordclock_socket.py	/^            wclk = wordclock$/;"	kind:variable	line:93
+wcp_swiss_german	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_plugins.time_default.time_swiss_german as wcp_swiss_german$/;"	kind:namespace	line:8
+wcp_time_dutch	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_plugins.time_default.time_dutch as wcp_time_dutch$/;"	kind:namespace	line:7
+wcp_time_german	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_plugins.time_default.time_german as wcp_time_german$/;"	kind:namespace	line:6
+wcs	../wordclock.py	/^import wordclock_tools.wordclock_socket as wcs$/;"	kind:namespace	line:10
+web	../wordclock_webinterface/web_interface.py	/^import web$/;"	kind:namespace	line:4
+web_interface	../wordclock_webinterface/web_interface.py	/^class web_interface:$/;"	kind:class	line:44
+web_interface.py	../wordclock_webinterface/web_interface.py	1;"	kind:file	line:1
+webapp	../wordclock_webinterface/web_interface.py	/^webapp = web.application(urls, globals())$/;"	kind:variable	line:18
+weh	../WXstrip.py	/^from wordclock_interfaces import event_handler as weh $/;"	kind:namespace	line:4
+wheel	../wordclock_plugins/rainbow/plugin.py	/^    def wheel(self, pos):$/;"	kind:member	line:34
+width	../5488053/fontdemo.py	/^    def width(self):$/;"	kind:member	line:90
+width	../fontdemo.py	/^    def width(self):$/;"	kind:member	line:90
+wiring	../create_layout.py	/^import wordclock_tools.wiring as wiring$/;"	kind:namespace	line:7
+wiring	../wordclock_tools/wiring.py	/^class wiring:$/;"	kind:class	line:3
+wiring	../wordclock_tools/wordclock_display.py	/^import wiring$/;"	kind:namespace	line:6
+wiring.py	../wordclock_tools/wiring.py	1;"	kind:file	line:1
+word_clock	../wordclock.py	/^    word_clock = wordclock()    $/;"	kind:variable	line:177
+wordclock	../wordclock.py	/^class wordclock:$/;"	kind:class	line:14
+wordclock.py	../wordclock.py	1;"	kind:file	line:1
+wordclock_colors.py	../wordclock_tools/wordclock_colors.py	1;"	kind:file	line:1
+wordclock_display	../wordclock_tools/wordclock_display.py	/^class wordclock_display:$/;"	kind:class	line:8
+wordclock_display.py	../wordclock_tools/wordclock_display.py	1;"	kind:file	line:1
+wordclock_interface	../wordclock_tools/wordclock_interface.py	/^class wordclock_interface:$/;"	kind:class	line:4
+wordclock_interface.py	../wordclock_tools/wordclock_interface.py	1;"	kind:file	line:1
+wordclock_interfaces	../wordclock.py	/^            import wordclock_interfaces.gpio_interface as wcigpio$/;"	kind:namespace	line:41
+wordclock_interfaces	../wordclock.py	/^        import wordclock_interfaces.gpio_interface as wcigpio        $/;"	kind:namespace	line:167
+wordclock_interfaces	../wordclock.py	/^import wordclock_interfaces.event_handler as wci$/;"	kind:namespace	line:11
+wordclock_plugins	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_plugins.time_default.time_dutch as wcp_time_dutch$/;"	kind:namespace	line:7
+wordclock_plugins	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_plugins.time_default.time_german as wcp_time_german$/;"	kind:namespace	line:6
+wordclock_plugins	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_plugins.time_default.time_swiss_german as wcp_swiss_german$/;"	kind:namespace	line:8
+wordclock_plugins	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_plugins.time_default.time_dutch as time_dutch$/;"	kind:namespace	line:6
+wordclock_plugins	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_plugins.time_default.time_german as time_german$/;"	kind:namespace	line:5
+wordclock_plugins	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_plugins.time_default.time_swiss_german as time_swiss_german$/;"	kind:namespace	line:7
+wordclock_socket	../wordclock_tools/wordclock_socket.py	/^class wordclock_socket:$/;"	kind:class	line:78
+wordclock_socket.py	../wordclock_tools/wordclock_socket.py	1;"	kind:file	line:1
+wordclock_tools	../create_layout.py	/^import wordclock_tools.wiring as wiring$/;"	kind:namespace	line:7
+wordclock_tools	../wordclock.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:8
+wordclock_tools	../wordclock.py	/^import wordclock_tools.wordclock_display as wcd$/;"	kind:namespace	line:9
+wordclock_tools	../wordclock.py	/^import wordclock_tools.wordclock_socket as wcs$/;"	kind:namespace	line:10
+wordclock_tools	../wordclock_plugins/leds_off/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:3
+wordclock_tools	../wordclock_plugins/matrix/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wordclock_tools	../wordclock_plugins/rainbow/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wordclock_tools	../wordclock_plugins/sunrise/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:5
+wordclock_tools	../wordclock_plugins/tetris/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wordclock_tools	../wordclock_plugins/time_as_words_dutch/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wordclock_tools	../wordclock_plugins/time_as_words_german/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wordclock_tools	../wordclock_plugins/time_default/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:11
+wordclock_tools	../wordclock_plugins/time_matrix/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:8
+wordclock_tools	../wordclock_plugins/weather_forecast/plugin.py	/^import wordclock_tools.wordclock_colors as wcc$/;"	kind:namespace	line:4
+wordclock_webinterface	../wordclock.py	/^import wordclock_webinterface.web_interface as wwi$/;"	kind:namespace	line:12
+wordclock_webinterface	../wordclock_webinterface/web_interface.py	/^class wordclock_webinterface:$/;"	kind:class	line:20
+wwi	../wordclock.py	/^import wordclock_webinterface.web_interface as wwi$/;"	kind:namespace	line:12
+wx	../wordclock.py	/^        import wx$/;"	kind:namespace	line:174

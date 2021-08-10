@@ -2,15 +2,7 @@ import datetime
 import logging
 import os
 import time
-import time_english
-import time_german
-import time_german2
-import time_swabian
-import time_swabian2
-import time_dutch
-import time_bavarian
-import time_swiss_german
-import time_swiss_german2
+
 import wordclock_tools.wordclock_colors as wcc
 
 
@@ -55,17 +47,11 @@ class plugin:
 
         # sleep mode
         try:
-            self.sleep_begin = datetime.time(config.getint('plugin_' + self.name, 'sleep_begin_hour'),config.getint('plugin_' + self.name, 'sleep_begin_minute'),0)
+            self.sleep_begin = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_begin'), '%H:%M').time()
+            self.sleep_end = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_end'), '%H:%M').time()
         except:
-            self.sleep_begin = datetime.time(0,0,0)
-            self.sleep_end = datetime.time(0,0,0)
-            logging.warning('  No sleeping time set, display will stay bright 24/7.')
-
-        try:
-            self.sleep_end = datetime.time(config.getint('plugin_' + self.name, 'sleep_end_hour'),config.getint('plugin_' + self.name, 'sleep_end_minute'),0)
-        except:
-            self.sleep_begin = datetime.time(0,0,0)
-            self.sleep_end = datetime.time(0,0,0)
+            self.sleep_begin = datetime.time(0,0)
+            self.sleep_end = datetime.time(0,0)
             logging.warning('  No sleeping time set, display will stay bright 24/7.')
 
         try:
@@ -74,18 +60,71 @@ class plugin:
             self.sleep_brightness = 5
             logging.warning('  No sleep brightness set within the config-file. Defaulting to ' + str(
                 self.sleep_brightness) + '.')
-        
-        # if left/right button is pressed during sleep cycle, the current sleep cycle is skipped for the rest of the night
-        # to allow manual override
-        self.skip_sleep = False
-        self.is_sleep = False
 
-        # monitor sleep mode changes to apply brightness
-        self.sleep_switch = False
+        # Choose default fgcolor
+        try:
+            fgcolor = ''.join(config.get('wordclock', 'default-fg-color'))
+        except:
+            # For backward compatibility
+            fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
 
-        self.bg_color = wcc.BLACK  # default background color
-        self.word_color = wcc.WWHITE  # default word color
-        self.minute_color = wcc.WWHITE  # default minute color
+        if fgcolor == 'BLACK':
+            self.word_color = wcc.BLACK
+            self.minute_color = wcc.BLACK
+        elif fgcolor == 'WHITE':
+            self.word_color = wcc.WHITE
+            self.minute_color = wcc.WHITE
+        elif fgcolor == 'WWHITE':
+            self.word_color = wcc.WWHITE
+            self.minute_color = wcc.WWHITE
+        elif fgcolor == 'RED':
+            self.word_color = wcc.RED
+            self.minute_color = wcc.RED
+        elif fgcolor == 'YELLOW':
+            self.word_color = wcc.YELLOW
+            self.minute_color = wcc.YELLOW
+        elif fgcolor == 'LIME':
+            self.word_color = wcc.LIME
+            self.minute_color = wcc.LIME
+        elif fgcolor == 'GREEN':
+            self.word_color = wcc.GREEN
+            self.minute_color = wcc.GREEN
+        elif fgcolor == 'BLUE':
+            self.word_color = wcc.BLUE
+            self.minute_color = wcc.BLUE
+        else:
+            print('Could not detect default-fg-color: ' + fgcolor + '.')
+            print('Choosing default: warm white')
+            self.word_color = wcc.WWHITE
+            self.minute_color = wcc.WWHITE
+
+        # Choose default bgcolor
+        try:
+            bgcolor = ''.join(config.get('wordclock', 'default-bg-color'))
+        except:
+            # For backward compatibility
+            bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
+
+        if bgcolor == 'BLACK':
+            self.bg_color = wcc.BLACK
+        elif bgcolor == 'WHITE':
+            self.bg_color = wcc.WHITE
+        elif bgcolor == 'WWHITE':
+            self.bg_color = wcc.WWHITE
+        elif bgcolor == 'RED':
+            self.bg_color = wcc.RED
+        elif bgcolor == 'YELLOW':
+            self.bg_color = wcc.YELLOW
+        elif bgcolor == 'LIME':
+            self.bg_color = wcc.LIME
+        elif bgcolor == 'GREEN':
+            self.bg_color = wcc.GREEN
+        elif bgcolor == 'BLUE':
+            self.bg_color = wcc.BLUE
+        else:
+            print('Could not detect default-bg-color: ' + bgcolor + '.')
+            print('Choosing default: black')
+            self.bg_color = wcc.BLACK
 
         # Other color modes...
         self.color_modes = \
@@ -112,9 +151,6 @@ class plugin:
             self.brightness_mode_pos = 255
         self.brightness_change = 8
 
-        # save current brightness for switching back from sleep mode
-        self.wake_brightness = self.brightness_mode_pos
-
     def run(self, wcd, wci):
         """
         Displays time until aborted by user interaction on pin button_return
@@ -125,33 +161,23 @@ class plugin:
         while True:
             # Get current time
             now = datetime.datetime.now()
-            # Check if this is the predefined sleep time (muted brightness) as defined in wordclock_config.cfg
-            nowtime = datetime.time(now.hour,now.minute,0)
-            if not (self.sleep_begin == self.sleep_end):
-                if ((self.sleep_begin <= nowtime) and ((nowtime <= self.sleep_end) or (nowtime <= datetime.time(23,59,59))) or (datetime.time(0,0,0) <= nowtime <= self.sleep_end)):  # skip if color/brightness change has been done during the current sleep cycle
-                    if not self.skip_sleep: 
-                        self.brightness_mode_pos = self.sleep_brightness
-                        self.sleep_switch = True  # brightness has been changed
-                    self.is_sleep = True 
-                else:
-                    self.brightness_mode_pos = self.wake_brightness
-                    self.sleep_switch = True  # brightness has been changed
-                    self.skip_sleep = False   # reset skip flag, returning to normal sleep/wake cycle
-                    self.is_sleep = False
-            # has brightness changed? then implement change in wcd
-            if self.sleep_switch:
-                wcd.setBrightness(self.brightness_mode_pos)
-                self.sleep_switch = False  # reset switch
+
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
+                sleepActive = \
+                    self.sleep_begin <= now.time() < self.sleep_end or \
+                    self.sleep_end < self.sleep_begin <= now.time() <= datetime.time(23, 59, 59) or \
+                    now.time() < self.sleep_end < self.sleep_begin
+
+                wcd.setBrightness(self.sleep_brightness if sleepActive else self.brightness_mode_pos)
+ 
                 # Set background color
                 self.show_time(wcd, wci, animation=self.animation)
                 prev_min = -1 if now.minute == 59 else now.minute
+                
             event = wci.waitForEvent(2)
             # Switch display color, if button_left is pressed
             if event == wci.EVENT_BUTTON_LEFT:
-                if self.is_sleep:    # if button is pressed during sleep cycle, allow override until next sleep cycle
-                    self.skip_sleep = True 
                 self.color_mode_pos += 1
                 if self.color_mode_pos == len(self.color_modes):
                     self.color_mode_pos = 0
@@ -165,8 +191,6 @@ class plugin:
                     or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
                 return
             if event == wci.EVENT_BUTTON_RIGHT:
-                if self.is_sleep:    # if button is pressed during sleep cycle, allow override until next sleep cycle
-                    self.skip_sleep = True
                 time.sleep(wci.lock_time)
                 self.color_selection(wcd, wci)
 

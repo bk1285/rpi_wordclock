@@ -1,24 +1,26 @@
-import ConfigParser
+import configparser
 import fontdemo
 import itertools
 import logging
 import os
 from copy import deepcopy
 from PIL import Image
+from . import wiring
 from time import sleep
 from threading import Lock
-import wiring
+import wordclock_plugins.time_default.time_bavarian as time_bavarian
+import wordclock_plugins.time_default.time_dutch as time_dutch
 import wordclock_plugins.time_default.time_english as time_english
+import wordclock_plugins.time_default.time_french as time_french
 import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
-import wordclock_plugins.time_default.time_dutch as time_dutch
+import wordclock_plugins.time_default.time_italian as time_italian
 import wordclock_plugins.time_default.time_swabian as time_swabian
 import wordclock_plugins.time_default.time_swabian2 as time_swabian2
-import wordclock_plugins.time_default.time_bavarian as time_bavarian
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
-import wordclock_screen
+import wordclock_tools.wordclock_screen as wordclock_screen
 import colorsys
 
 
@@ -51,10 +53,10 @@ class wordclock_display:
                 'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
-            import wordclock_strip_gtk as wcs_gtk
+            import wordclock_tools.wordclock_strip_gtk as wcs_gtk
             self.strip = wcs_gtk.GTKstrip(wci)
         else:
-            import wordclock_strip_neopixel as wcs_neo
+            import wordclock_tools.wordclock_strip_neopixel as wcs_neo
             self.strip = wcs_neo.wordclock_strip_neopixel(self.wcl)
 
         if config.get('wordclock_display', 'default_font') == 'wcfont':
@@ -64,8 +66,53 @@ class wordclock_display:
 
         self.strip.begin()
 
-        self.default_fg_color = wcc.WWHITE
-        self.default_bg_color = wcc.BLACK
+        # Choose default fgcolor
+        fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color', fallback='WWHITE'))
+
+        if fgcolor == 'BLACK':
+            self.default_fg_color = wcc.BLACK
+        elif fgcolor == 'WHITE':
+            self.default_fg_color = wcc.WHITE
+        elif fgcolor == 'WWHITE':
+            self.default_fg_color = wcc.WWHITE
+        elif fgcolor == 'RED':
+            self.default_fg_color = wcc.RED
+        elif fgcolor == 'YELLOW':
+            self.default_fg_color = wcc.YELLOW
+        elif fgcolor == 'LIME':
+            self.default_fg_color = wcc.LIME
+        elif fgcolor == 'GREEN':
+            self.default_fg_color = wcc.GREEN
+        elif fgcolor == 'BLUE':
+            self.default_fg_color = wcc.BLUE
+        else:
+            print('Could not detect default-fg-color: ' + fgcolor + '.')
+            print('Choosing default: warm white')
+            self.default_fg_color = wcc.WWHITE
+
+        # Choose default bgcolor
+        bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color', fallback='BLACK'))
+
+        if bgcolor == 'BLACK':
+            self.default_bg_color = wcc.BLACK
+        elif bgcolor == 'WHITE':
+            self.default_bg_color = wcc.WHITE
+        elif bgcolor == 'WWHITE':
+            self.default_bg_color = wcc.WWHITE
+        elif bgcolor == 'RED':
+            self.default_bg_color = wcc.RED
+        elif bgcolor == 'YELLOW':
+            self.default_bg_color = wcc.YELLOW
+        elif bgcolor == 'LIME':
+            self.default_bg_color = wcc.LIME
+        elif bgcolor == 'GREEN':
+            self.default_bg_color = wcc.GREEN
+        elif bgcolor == 'BLUE':
+            self.default_bg_color = wcc.BLUE
+        else:
+            print('Could not detect default-bg-color: ' + bgcolor + '.')
+            print('Choosing default: black')
+            self.default_bg_color = wcc.BLACK
 
         # Choose language
         try:
@@ -75,20 +122,24 @@ class wordclock_display:
             language = ''.join(config.get('plugin_time_default', 'language'))
 
         logging.info('Setting language to ' + language + '.')
-        if language == 'dutch':
+        if language == 'bavarian':
+            self.taw = time_bavarian.time_bavarian()
+        elif language == 'dutch':
             self.taw = time_dutch.time_dutch()
         elif language == 'english':
             self.taw = time_english.time_english()
+        elif language == 'french':
+            self.taw = time_french.time_french()
         elif language == 'german':
             self.taw = time_german.time_german()
         elif language == 'german2':
             self.taw = time_german2.time_german2()
+        elif language == 'italian':
+            self.taw = time_italian.time_italian()
         elif language == 'swabian':
             self.taw = time_swabian.time_swabian()
         elif language == 'swabian2':
             self.taw = time_swabian2.time_swabian2()
-        elif language == 'bavarian':
-            self.taw = time_bavarian.time_bavarian()
         elif language == 'swiss_german':
             self.taw = time_swiss_german.time_swiss_german()
         elif language == 'swiss_german2':
@@ -123,7 +174,7 @@ class wordclock_display:
         Sets a pixel at given 1D coordinates
         """
         for i in ledCoordinates:
-            self.setColorBy2DCoordinates(i % self.get_wca_width(), i / self.get_wca_width(), color)
+            self.setColorBy2DCoordinates(i % self.get_wca_width(), i // self.get_wca_width(), color)
 
     def setColorBy2DCoordinates(self, x, y, color):
         """
@@ -146,7 +197,7 @@ class wordclock_display:
         Returns the width of the WCA
         """
         return self.wcl.WCA_WIDTH
- 
+
     def get_led_count(self):
         """
         Returns the overall number of LEDs
@@ -219,9 +270,9 @@ class wordclock_display:
         num_of_frames = len([file_count for file_count in os.listdir(animation_dir)])
 
         if invert:
-            animation_range = range(num_of_frames - 1, -1, -1)
+            animation_range = list(range(num_of_frames - 1, -1, -1))
         else:
-            animation_range = range(0, num_of_frames)
+            animation_range = list(range(0, num_of_frames))
 
         for _ in range(count):
             for i in animation_range:
