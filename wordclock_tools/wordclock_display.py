@@ -344,7 +344,10 @@ class wordclock_display:
         """
         This function provides the current color settings to the LEDs
         """
-        fps = 25
+        fps = self.config.getint('wordclock', 'animation_fps')
+
+        if fps == 0:
+            animation = 'None'
 
         if animation == 'typewriter':
             transition_cache = wordclock_screen.wordclock_screen(self)
