@@ -1,5 +1,5 @@
-from neopixel import Adafruit_NeoPixel, ws
-from neopixel import Color as NeoPixelColor
+from rpi_ws281x import Adafruit_NeoPixel, ws
+from rpi_ws281x import Color as NeoPixelColor
 import wordclock_tools.wordclock_colors as wcc
 import logging
 
