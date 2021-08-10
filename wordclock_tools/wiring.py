@@ -35,7 +35,7 @@ class wiring:
         logging.info('  Num of LEDs: ' + str(self.LED_COUNT))
         logging.info('  Wiring layout: ' + str(wiring_layout))
 
-        if config.getboolean('wordclock', 'developer_mode'):
+        if config.getboolean('wordclock', 'developer_mode') or config.getboolean('wordclock', 'developer_mode_macos'):
             self.wcl = gtk_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
             logging.warning('Developer mode overwrites wiring layout to gtk_wiring!')
         elif wiring_layout == 'bernds_wiring':

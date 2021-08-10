@@ -55,6 +55,9 @@ class wordclock_display:
         if config.getboolean('wordclock', 'developer_mode'):
             import wordclock_tools.wordclock_strip_gtk as wcs_gtk
             self.strip = wcs_gtk.GTKstrip(wci)
+        elif config.getboolean('wordclock', 'developer_mode_macos'):
+            import wordclock_tools.wordclock_strip_wx as wcs_wx
+            self.strip = wcs_wx.WXstrip(wci)
         else:
             import wordclock_tools.wordclock_strip_neopixel as wcs_neo
             self.strip = wcs_neo.wordclock_strip_neopixel(self.wcl)

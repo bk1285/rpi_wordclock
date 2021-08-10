@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 import _thread
 import logging
-from flask_restplus import Api, Resource, fields
+from flask_restx import Api, Resource, fields
 import wordclock_tools.wordclock_colors as wcc
 
 

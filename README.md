@@ -35,3 +35,36 @@
  * Star this repo, if you like the project. 
  * Request a new feature by [opening a issue](https://github.com/bk1285/rpi_wordclock/issues), describing your feature request.
  * Contribute your code: [Learn how to create your own plugin](https://rpi-wordclock.readthedocs.io/en/master/doc_further_reading.html#adding-a-new-plugin)
+
+### Python3
+When using the Python 3 branch the follwing changes have to be made during installation.
+Tested on latest Raspian Buster (02.12.2020)
+
+#### System Packages
+```
+sudo apt-get install python3-pip python3-scipy scons git swig fonts-freefont-ttf python3-rpi.gpio
+```
+
+#### Python Packages
+Instead of *flask-restplus* which is no longer maintained we are using now *flask-restx*.
+For the great *rpi-ws281x* Library there is no need to compile it yourself. It is just installed via pip now.
+
+```
+sudo pip3 install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic flask-restx rpi-ws281x
+```
+
+#### Repository
+For using pyhton3 branch:
+
+```
+git clone https://github.com/phenze/rpi_wordclock.git
+cd rpi_wordclock/
+git checkout --track origin/master-python3
+```
+
+#### Cronjob
+For the cronjob you have to use python3 instead of python command
+
+```
+@reboot sudo python3 /home/pi/rpi_wordclock/wordclock.py
+```

@@ -13,6 +13,7 @@ wordclock_config/wordclock_config.cfg
 
 # ignore swap-files
 *.swp
+.vscode
 
 # ignore vscode-files
 .vscode/launch.json
