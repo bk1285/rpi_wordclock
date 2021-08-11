@@ -38,11 +38,12 @@
 
 ### Python3
 When using the Python 3 branch the follwing changes have to be made during installation.
-Tested on latest Raspian Buster (02.12.2020)
+Tested on latest Raspian Buster (11.08.2021)
 
 #### System Packages
 ```
-sudo apt-get install python3-pip python3-scipy scons git swig fonts-freefont-ttf python3-rpi.gpio
+sudo apt-get update
+sudo apt-get install python3-pip python3-scipy scons git swig fonts-freefont-ttf libopenjp2-7
 ```
 
 #### Python Packages
@@ -54,12 +55,33 @@ sudo pip3 install pytz astral feedparser pillow svgwrite freetype-py netifaces m
 ```
 
 #### Repository
-For using pyhton3 branch:
+For using pyhton3-develop branch:
 
 ```
 git clone https://github.com/phenze/rpi_wordclock.git
 cd rpi_wordclock/
-git checkout --track origin/master-python3
+git checkout --track origin/develop
+```
+
+#### Brightness sensor
+
+For using brightness sensor (tsl2561) i2c must be ativated via raspi-config
+
+```
+sudo raspi-config
+use the arrow keys to select 'Interfacing Options' and 'I2C' to tell the RasPi to enable the I2C interface. Then select 'Finish' and reboot the RasPi
+```
+
+Install adafruit-circuitpython-tsl2561 lib
+```
+sudo pip3 install adafruit-circuitpython-tsl2561
+```
+
+Set use_brightness_sensor config value to true
+```
+# Set the brightness of the display (between 1 and 255)
+brightness = 200
+use_brightness_sensor = True
 ```
 
 #### Cronjob
