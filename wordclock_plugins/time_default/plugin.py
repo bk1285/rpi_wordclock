@@ -173,12 +173,9 @@ class plugin:
         """
         # Some initializations of the "previous" minute
         prev_min = -1
-        if self.use_brightness_sensor:            
-            sensorMin = 0.0
+        if self.use_brightness_sensor:
             sensorMax = 100.0
-
             sensorCurrent = 120.0
-
             brightnessMin = 50.0
             brightnessMax = 255.0
 
@@ -190,14 +187,14 @@ class plugin:
             newBrightness = self.brightness_mode_pos
             if self.use_brightness_sensor:
                 try:
-                    # sensorCurrent = float(self.i2c.readU16(0x8C))
                     sensorCurrent = self.sensor.lux
-                    # print('sensorCurrent is ' + str(sensorCurrent))
-                    newBrightness = min(((((brightnessMax - brightnessMin) / sensorMax) * sensorCurrent) + brightnessMin),255)
-                    newBrightness = int(newBrightness)
+                    if isinstance(sensorCurrent, float):
+                        # print('sensorCurrent is ' + str(sensorCurrent))
+                        newBrightness = min(((((brightnessMax - brightnessMin) / sensorMax) * sensorCurrent) + brightnessMin),255)
+                        newBrightness = int(newBrightness)
+                        time.sleep(0.2)
                 except IOError as e:
                     print(e)
-                time.sleep(0.2)
 
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
