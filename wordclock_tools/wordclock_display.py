@@ -178,7 +178,7 @@ class wordclock_display:
         self.transition_cache_next.matrix[x][y] = color
 
     def setColorByMinute(self, min, color):
-        if min > 0 and min < 5:
+        if min >= 0 and min < 4:
             self.transition_cache_next.minutes[min] = color
 
     def get_wca_height(self):

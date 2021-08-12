@@ -1,10 +1,6 @@
 import os
 import time
-
-try:
-    from rpi_ws281x import Color
-except:
-    from WXcolors import Color
+import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
     """
@@ -26,12 +22,20 @@ class plugin:
         """
         while True:
             """Reset all LEDs"""
-            wcd.setColorToAll(Color(0,0,0), includeMinutes=True)
+            wcd.resetDisplay()
             """Color wipe each LED to find the error"""
-            for i in range(wcd.get_led_count()):
-                wcd.setPixelColor(i, Color(255,0,0))
+            for x in range(wcd.get_wca_width()):
+                for y in range(wcd.get_wca_height()):
+                    #wcd.setPixelColor(i, self.wheel((i + j) & 255))
+                    wcd.setColorBy2DCoordinates(x,y, wcc.Color(255, 0, 0))
+                    wcd.show()
+                    time.sleep(0.05)
+                    if wci.waitForEvent(0.02) >= 0:
+                        return
+            for x in range(0,4):
+                wcd.setColorByMinute(x, wcc.Color(255, 0, 0))
                 wcd.show()
-                time.sleep(0.1)
+                time.sleep(0.05)
                 if wci.waitForEvent(0.02) >= 0:
                     return
-            time.sleep(10)
+            time.sleep(5)
