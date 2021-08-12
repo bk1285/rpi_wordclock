@@ -10,32 +10,22 @@ import wx
 # in all modules that use pubsub 
 from wx.lib.pubsub import pub as Publisher
 
-class Example(wx.Frame):
+class WxStripWindow(wx.Frame):
 
     def __init__(self, parent, title,weh):
-        super(Example, self).__init__(parent, title=title, 
+        super(WxStripWindow, self).__init__(parent, title=title, 
             size=(500, 500))            
         self.weh = weh
         self.panel = wx.Panel(self, wx.ID_ANY)
-        self.panel.Bind(wx.EVT_KEY_DOWN, self.onKeyPress)
-        
-        #self.panel.Bind(wx.EVT_KEY_UP, self.onKeyPress)
-        #self.panel.Bind(wx.EVT_CHAR, self.onKeyPress)
-        
+        self.panel.Bind(wx.EVT_KEY_DOWN, self.onKeyPress)        
         self.SetBackgroundColour('#000000')
+
         # create a pubsub receiver
-        
-        #self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
-        #self.Bind(wx.EVT_KEY_UP, self.OnKeyDown)
-        #self.Bind(wx.EVT_CHAR, self.OnKeyDown)
         self.panel.SetFocus()
-        #self.SetBackgroundColour(wx.BLACK)
         self.Show()
         
-    
     def onKeyPress(self, event=None):
         keycode = event.GetKeyCode()
-        print(keycode)
         if(keycode == wx.WXK_LEFT):
             self.weh.setEvent(weh.event_handler.EVENT_BUTTON_LEFT)
         elif(keycode == wx.WXK_RIGHT):
@@ -49,7 +39,7 @@ class Example(wx.Frame):
         """
         self.Update()
 
-class WXstrip():
+class WxStrip():
     def __init__(self, weh):        
         self.label = "QTstrip"
         
@@ -62,7 +52,7 @@ class WXstrip():
         Publisher.subscribe(self.update, "update")
         self.brightness = 255;
         if(isinstance(threading.current_thread(), threading._MainThread)):                
-            self.w =  Example(None, title='Wordclock',weh=weh)            
+            self.w =  WxStripWindow(None, title='Wordclock',weh=weh)            
             if(self.w != None):
                 
                 x = 0
@@ -107,19 +97,9 @@ class WXstrip():
         #os._exit(1)
     
     def setPixelColor(self, index, color):
-        # color is 24bit RGB
-        # b = int(color & 0xFF)
-        # g = int((color >> 8) & 0xFF)
-        # r = int((color >> 16) & 0xFF)
-
-        # color = Color(r, g, b)
-
         self.colors[int(index)] = color
-        #if(self.w != None):
-            
-    
+
     def update(self):  
-        
         if(self.w != None):
             if(isinstance(threading.current_thread(), threading._MainThread)):
                 for label,color in zip(self.labels, self.colors):            
@@ -127,6 +107,5 @@ class WXstrip():
             else:
                 wx.CallAfter(Publisher.sendMessage, "update")
                 
-    
     def show(self):        
         self.update()    
