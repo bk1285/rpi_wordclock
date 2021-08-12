@@ -53,9 +53,6 @@ class wordclock_display:
                 'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
-            import wordclock_tools.wordclock_strip_gtk as wcs_gtk
-            self.strip = wcs_gtk.GTKstrip(wci)
-        elif config.getboolean('wordclock', 'developer_mode_macos'):
             import wordclock_tools.wordclock_strip_wx as wcs_wx
             self.strip = wcs_wx.WxStrip(wci)
         else:

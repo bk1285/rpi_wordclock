@@ -59,22 +59,19 @@ class wordclock:
         logging.info("Software version: " + self.currentGitHash)
 
         self.config = loadConfig(self.basePath)
-        
-        self.developer_mode_macos_active = self.config.getboolean('wordclock', 'developer_mode_macos')
-           
-        if self.developer_mode_macos_active:
-            # must be created first
-            import wx        
-            self.app = wx.App()
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
-
-        self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode') or self.config.getboolean('wordclock', 'developer_mode_macos')
+        
+        self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')
 
         if not self.developer_mode_active:
             import wordclock_interfaces.gpio_interface as wcigpio
             self.gpio = wcigpio.gpio_interface(self.config, self.wci)
+        else:
+            # must be created first
+            import wx        
+            self.app = wx.App()
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
