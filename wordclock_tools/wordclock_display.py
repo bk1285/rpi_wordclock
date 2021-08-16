@@ -53,8 +53,8 @@ class wordclock_display:
                 'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
 
         if config.getboolean('wordclock', 'developer_mode'):
-            import wordclock_tools.wordclock_strip_gtk as wcs_gtk
-            self.strip = wcs_gtk.GTKstrip(wci)
+            import wordclock_tools.wordclock_strip_wx as wcs_wx
+            self.strip = wcs_wx.WxStrip(wci)
         else:
             import wordclock_tools.wordclock_strip_neopixel as wcs_neo
             self.strip = wcs_neo.wordclock_strip_neopixel(self.wcl)
@@ -114,13 +114,8 @@ class wordclock_display:
             print('Choosing default: black')
             self.default_bg_color = wcc.BLACK
 
-        # Choose language
-        try:
-            language = ''.join(config.get('wordclock_display', 'language'))
-        except:
-            # For backward compatibility
-            language = ''.join(config.get('plugin_time_default', 'language'))
-
+        # For backward compatibility
+        language = ''.join(config.get('wordclock_display', 'language'))
         logging.info('Setting language to ' + language + '.')
         if language == 'bavarian':
             self.taw = time_bavarian.time_bavarian()
@@ -183,7 +178,7 @@ class wordclock_display:
         self.transition_cache_next.matrix[x][y] = color
 
     def setColorByMinute(self, min, color):
-        if min > 0 and min < 5:
+        if min >= 0 and min < 4:
             self.transition_cache_next.minutes[min] = color
 
     def get_wca_height(self):
@@ -346,7 +341,8 @@ class wordclock_display:
         """
         This function provides the current color settings to the LEDs
         """
-        fps = 25
+        fps = self.config.getint('wordclock', 'animation_fps', fallback=25)
+        animation = None if fps == 0 else animation
 
         if animation == 'typewriter':
             transition_cache = wordclock_screen.wordclock_screen(self)

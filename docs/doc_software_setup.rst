@@ -41,7 +41,7 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
 
 To install 3rd party dependencies (packages) enter in a terminal/commandline::
 
-    sudo apt-get install python3-pip python3-scipy scons git swig ttf-freefont
+    sudo apt-get install python3-pip python3-scipy scons git swig fonts-freefont-ttf
 
 .. _temperature_sensor:
 

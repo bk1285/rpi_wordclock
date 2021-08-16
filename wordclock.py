@@ -14,6 +14,7 @@ import os
 import subprocess
 import time
 import traceback
+import threading
 from shutil import copyfile
 
 import wordclock_tools.wordclock_display as wcd
@@ -42,8 +43,6 @@ def loadConfig (basePath):
 
     return config
 
-
-
 class wordclock:
     """
     The class, which makes the wordclock run...
@@ -63,12 +62,16 @@ class wordclock:
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
-
+        
         self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')
 
         if not self.developer_mode_active:
             import wordclock_interfaces.gpio_interface as wcigpio
             self.gpio = wcigpio.gpio_interface(self.config, self.wci)
+        else:
+            # must be created first
+            import wx        
+            self.app = wx.App()
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
@@ -111,7 +114,8 @@ class wordclock:
                     self.default_plugin = index
                 logging.info('Imported plugin ' + str(index) + ': "' + plugin + '".')
                 index += 1
-            except:
+            except Exception as e:
+                print(e)
                 logging.warning('Failed to import plugin ' + plugin + '!')
                 #detailed error (traceback)
                 traceback.print_exc(limit=1)
@@ -202,13 +206,24 @@ class wordclock:
                             self.plugin_index = 0
                         time.sleep(self.wci.lock_time)
 
-if __name__ == '__main__':
+    def run_forever(self):
+        self.startup()        
+        self.run()
 
+if __name__ == '__main__':    
     # Setup logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
     coloredlogs.install()
 
-    # Run the word clock
     word_clock = wordclock()
-    word_clock.startup()
-    word_clock.run()
+    developer_mode = word_clock.developer_mode_active
+    if not developer_mode:
+        word_clock.run_forever()
+    else:
+        print("We are not on raspberry...open simulation window")        
+        wordclock_thread = threading.Thread(target=word_clock.run_forever)
+        # Exit the server thread when the main thread terminates
+        wordclock_thread.daemon = True
+        wordclock_thread.start()
+        word_clock.app.MainLoop()
+    

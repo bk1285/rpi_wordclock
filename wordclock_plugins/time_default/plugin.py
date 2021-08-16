@@ -2,7 +2,6 @@ import datetime
 import logging
 import os
 import time
-
 import wordclock_tools.wordclock_colors as wcc
 
 
@@ -151,16 +150,51 @@ class plugin:
             self.brightness_mode_pos = 255
         self.brightness_change = 8
 
+        try:
+            self.use_brightness_sensor = config.getboolean('wordclock_display', 'use_brightness_sensor')            
+        except:
+            print('Not found brigtness sensor value ')
+            self.use_brightness_sensor = False
+
+        print(('Using brigtness sensor : ' + str(self.use_brightness_sensor)))
+        if self.use_brightness_sensor:
+            print('Importing sensor Library ')
+            import board
+            import busio
+            import adafruit_tsl2561
+            i2c = busio.I2C(board.SCL, board.SDA)
+            self.sensor = adafruit_tsl2561.TSL2561(i2c)
+        # save current brightness for switching back from sleep mode
+        self.wake_brightness = self.brightness_mode_pos
+
     def run(self, wcd, wci):
         """
         Displays time until aborted by user interaction on pin button_return
         """
         # Some initializations of the "previous" minute
         prev_min = -1
+        if self.use_brightness_sensor:
+            sensorMax = 100.0
+            sensorCurrent = 120.0
+            brightnessMin = 50.0
+            brightnessMax = 255.0
+
+            self.brightness_mode_pos = min(((((brightnessMax - brightnessMin) / sensorMax) * sensorCurrent) + brightnessMin),255)
 
         while True:
             # Get current time
             now = datetime.datetime.now()
+            newBrightness = self.brightness_mode_pos
+            if self.use_brightness_sensor:
+                try:
+                    sensorCurrent = self.sensor.lux
+                    if isinstance(sensorCurrent, float):
+                        # print('sensorCurrent is ' + str(sensorCurrent))
+                        newBrightness = min(((((brightnessMax - brightnessMin) / sensorMax) * sensorCurrent) + brightnessMin),255)
+                        newBrightness = int(newBrightness)
+                        time.sleep(0.2)
+                except IOError as e:
+                    print(e)
 
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
@@ -169,12 +203,17 @@ class plugin:
                     self.sleep_end < self.sleep_begin <= now.time() <= datetime.time(23, 59, 59) or \
                     now.time() < self.sleep_end < self.sleep_begin
 
-                wcd.setBrightness(self.sleep_brightness if sleepActive else self.brightness_mode_pos)
+                wcd.setBrightness(self.sleep_brightness if sleepActive else newBrightness)
  
                 # Set background color
                 self.show_time(wcd, wci, animation=self.animation)
                 prev_min = -1 if now.minute == 59 else now.minute
-                
+
+            if newBrightness != self.brightness_mode_pos:
+                self.brightness_mode_pos = newBrightness
+                wcd.setBrightness(newBrightness)
+                self.show_time(wcd, wci, animation='None')
+
             event = wci.waitForEvent(2)
             # Switch display color, if button_left is pressed
             if event == wci.EVENT_BUTTON_LEFT:
@@ -189,6 +228,9 @@ class plugin:
             if (event == wci.EVENT_BUTTON_RETURN) \
                     or (event == wci.EVENT_EXIT_PLUGIN) \
                     or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
+                wcd.setBrightness(self.wake_brightness)
+                wcd.show()
+                self.skip_sleep = False
                 return
             if event == wci.EVENT_BUTTON_RIGHT:
                 time.sleep(wci.lock_time)
@@ -228,20 +270,21 @@ class plugin:
             if event != wci.EVENT_INVALID:
                 time.sleep(wci.lock_time)
                 break
-        while True:
-            self.brightness_mode_pos += self.brightness_change
-            # TODO: Evaluate taw_indices only every n-th loop (saving resources)
-            now = datetime.datetime.now()  # Set current time
-            taw_indices = wcd.taw.get_time(now, self.purist)
-            wcd.setColorToAll(self.bg_color, includeMinutes=True)
-            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
-            wcd.setMinutes(now, self.minute_color)
-            wcd.setBrightness(self.brightness_mode_pos)
-            wcd.show()
-            if self.brightness_mode_pos < abs(self.brightness_change) or self.brightness_mode_pos > 255 - abs(
-                    self.brightness_change):
-                self.brightness_change *= -1
-            event = wci.waitForEvent(0.1)
-            if event != wci.EVENT_INVALID:
-                time.sleep(wci.lock_time)
-                return
+        if not self.use_brightness_sensor:
+            while True:
+                self.brightness_mode_pos += self.brightness_change
+                # TODO: Evaluate taw_indices only every n-th loop (saving resources)
+                now = datetime.datetime.now()  # Set current time
+                taw_indices = wcd.taw.get_time(now, self.purist)
+                wcd.setColorToAll(self.bg_color, includeMinutes=True)
+                wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
+                wcd.setMinutes(now, self.minute_color)
+                wcd.setBrightness(self.brightness_mode_pos)
+                wcd.show()
+                if self.brightness_mode_pos < abs(self.brightness_change) or self.brightness_mode_pos > 255 - abs(
+                        self.brightness_change):
+                    self.brightness_change *= -1
+                event = wci.waitForEvent(0.1)
+                if event != wci.EVENT_INVALID:
+                    time.sleep(wci.lock_time)
+                    return
