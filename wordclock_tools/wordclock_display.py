@@ -67,7 +67,7 @@ class wordclock_display:
         self.strip.begin()
 
         # Choose default fgcolor
-        fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color', fallback='WWHITE'))
+        fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
 
         if fgcolor == 'BLACK':
             self.default_fg_color = wcc.BLACK
@@ -91,7 +91,7 @@ class wordclock_display:
             self.default_fg_color = wcc.WWHITE
 
         # Choose default bgcolor
-        bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color', fallback='BLACK'))
+        bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
 
         if bgcolor == 'BLACK':
             self.default_bg_color = wcc.BLACK
@@ -143,6 +143,9 @@ class wordclock_display:
             logging.error('Could not detect language: ' + language + '.')
             logging.info('Choosing default: german')
             self.taw = time_german.time_german()
+
+        self.fps = self.config.getint('wordclock', 'animation_fps')
+
 
     def getBrightness(self):
         """
@@ -341,8 +344,7 @@ class wordclock_display:
         """
         This function provides the current color settings to the LEDs
         """
-        fps = self.config.getint('wordclock', 'animation_fps', fallback=25)
-        animation = None if fps == 0 else animation
+        animation = None if self.fps == 0 else animation
 
         if animation == 'typewriter':
             transition_cache = wordclock_screen.wordclock_screen(self)
@@ -360,12 +362,12 @@ class wordclock_display:
                 while self.getBrightness() > 0:
                     self.setBrightness(self.getBrightness() - 5)
                     self.render_transition_step(self.transition_cache_curr)
-                    sleep(1.0/fps)
+                    sleep(1.0/self.fps)
                 self.transition_cache_curr = deepcopy(self.transition_cache_next)
                 while self.getBrightness() < brightness:
                     self.setBrightness(self.getBrightness() + 5)
                     self.render_transition_step(self.transition_cache_curr)
-                    sleep(1.0/fps)
+                    sleep(1.0/self.fps)
         else: # no animation
             self.transition_cache_curr = deepcopy(self.transition_cache_next)
             self.render_transition_step(self.transition_cache_curr)

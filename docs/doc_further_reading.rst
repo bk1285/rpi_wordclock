@@ -60,7 +60,11 @@ To do so, you need to...
   * Add an icon (with resolution 11x10 pixel) for the new plugin to the
     directory wordclock_plugins/`new_stuff`/icons/11x10/`logo.png`
 
-  * Add optional values to the config-file under the section `[plugin_new_stuff]`
+  * Add a section `[plugin_new_stuff]` to the reference config-file (wordclock_config/wordclock_config.reference.cfg) and store there all necessary config-values in a way that they are suitable for all wordclock users by default and out of the box.
+    * Even consider disableing your plugin by default..
+    * Disabling is mandatory, if additional hardware is required to run the plugin.
+  * Add the same section `[plugin_new_stuff]` to your local config-file (wordclock_config/wordclock_config.cfg), holding the (custom) values you want to have setup for your own clock.
+    * Your plugin will extract config values from wordclock_config.cfg first. If they are not set their, it will default to wordclock_config.reference.cfg
 
   * Document everything properly, so that others (and maybe you as well) can later understand it... ;)
 

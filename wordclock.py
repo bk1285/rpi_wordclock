@@ -1,11 +1,5 @@
 import sys
-
-if sys.version_info.major != 3:
-    print('Run \"sudo python3 wordclock.py\"')
-    raise Exception('python version unsupported')
-
 import coloredlogs
-import configparser
 from importlib import import_module
 import logging
 import netifaces
@@ -17,31 +11,10 @@ import traceback
 import threading
 from shutil import copyfile
 
+import wordclock_tools.wordclock_config as wccfg
 import wordclock_tools.wordclock_display as wcd
 import wordclock_interfaces.event_handler as wci
 import wordclock_interfaces.web_interface as wciweb
-
-
-# Get wordclock configuration from config-file
-def loadConfig (basePath):
-    pathToConfigFile = basePath + '/wordclock_config/wordclock_config.cfg'
-    if not os.path.exists(pathToConfigFile):
-        pathToConfigFileExample = basePath + '/wordclock_config/wordclock_config.example.cfg'
-        if not os.path.exists(pathToConfigFileExample):
-            logging.error('No config-file available!')
-            logging.error('  Expected ' + pathToConfigFile + ' or ' + pathToConfigFileExample)
-            raise Exception('Missing config-file')
-        copyfile(pathToConfigFileExample, pathToConfigFile)
-        logging.warning('No config-file specified! Was created from example-config!')
-    logging.info('Parsing ' + pathToConfigFile)
-    config = configparser.ConfigParser()
-    config.read(pathToConfigFile)
-
-    # Add to the loaded configuration the current base path to provide it
-    # to other classes/plugins for further usage
-    config.set('wordclock', 'base_path', basePath)
-
-    return config
 
 class wordclock:
     """
@@ -58,20 +31,19 @@ class wordclock:
         self.currentGitHash = subprocess.check_output(["git", "describe", "--tags"], cwd=self.basePath).strip().decode()
         logging.info("Software version: " + self.currentGitHash)
 
-        self.config = loadConfig(self.basePath)
+        self.config = wccfg.wordclock_config(self.basePath)
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
         
         self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')
 
-        if not self.developer_mode_active:
-            import wordclock_interfaces.gpio_interface as wcigpio
-            self.gpio = wcigpio.gpio_interface(self.config, self.wci)
-        else:
-            # must be created first
+        if self.developer_mode_active:
             import wx        
             self.app = wx.App()
+        else:
+            import wordclock_interfaces.gpio_interface as wcigpio
+            self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
         # Create object to display any content on the wordclock display
         # Its implementation depends on your (individual) wordclock layout/wiring
@@ -210,7 +182,12 @@ class wordclock:
         self.startup()        
         self.run()
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
+        
+    if sys.version_info.major != 3:
+        print('Run \"sudo python3 wordclock.py\"')
+        raise Exception('python version unsupported')
+
     # Setup logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
     coloredlogs.install()
