@@ -35,7 +35,7 @@ class wordclock:
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
-        
+
         self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')
 
         if self.developer_mode_active:
