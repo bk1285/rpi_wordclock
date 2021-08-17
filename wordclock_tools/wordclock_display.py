@@ -340,7 +340,7 @@ class wordclock_display:
             self.wcl.setColorToMinute(self.strip, m + 1, self.apply_brightness(transition_cache_step.minutes[m]))
         self.strip.show()
 
-    def show(self, animation = None):
+    def show(self, animation = None, animation_speed = 5):
         """
         This function provides the current color settings to the LEDs
         """
@@ -353,19 +353,19 @@ class wordclock_display:
                     if self.transition_cache_next.matrix[x][y] is not wcc.BLACK:
                         transition_cache.matrix[x][y] = self.transition_cache_next.matrix[x][y]
                         self.render_transition_step(transition_cache)
-                        sleep(0.12)
+                        sleep(1.0/animation_speed)
             self.transition_cache_curr = deepcopy(self.transition_cache_next)
             self.render_transition_step(self.transition_cache_curr)
         elif animation == 'fadeOutIn':
             with self.mutex:
                 brightness = self.getBrightness()
                 while self.getBrightness() > 0:
-                    self.setBrightness(self.getBrightness() - 5)
+                    self.setBrightness(self.getBrightness() - animation_speed)
                     self.render_transition_step(self.transition_cache_curr)
                     sleep(1.0/self.fps)
                 self.transition_cache_curr = deepcopy(self.transition_cache_next)
                 while self.getBrightness() < brightness:
-                    self.setBrightness(self.getBrightness() + 5)
+                    self.setBrightness(self.getBrightness() + animation_speed)
                     self.render_transition_step(self.transition_cache_curr)
                     sleep(1.0/self.fps)
         else: # no animation
