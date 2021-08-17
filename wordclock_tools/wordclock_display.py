@@ -45,12 +45,7 @@ class wordclock_display:
         self.base_path = config.get('wordclock', 'base_path')
         self.mutex = Lock()
 
-        try:
-            self.setBrightness(config.getint('wordclock_display', 'brightness'))
-        except:
-            self.brightness = 255
-            logging.warning(
-                'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
+        self.setBrightness(config.getint('wordclock_display', 'brightness'))
 
         if config.getboolean('wordclock', 'developer_mode'):
             import wordclock_tools.wordclock_strip_wx as wcs_wx
@@ -67,7 +62,7 @@ class wordclock_display:
         self.strip.begin()
 
         # Choose default fgcolor
-        fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
+        fgcolor = ''.join(config.get('plugin_time_default', 'default_fg_color'))
 
         if fgcolor == 'BLACK':
             self.default_fg_color = wcc.BLACK
@@ -86,12 +81,12 @@ class wordclock_display:
         elif fgcolor == 'BLUE':
             self.default_fg_color = wcc.BLUE
         else:
-            print('Could not detect default-fg-color: ' + fgcolor + '.')
+            print('Could not detect default_fg_color: ' + fgcolor + '.')
             print('Choosing default: warm white')
             self.default_fg_color = wcc.WWHITE
 
         # Choose default bgcolor
-        bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
+        bgcolor = ''.join(config.get('plugin_time_default', 'default_bg_color'))
 
         if bgcolor == 'BLACK':
             self.default_bg_color = wcc.BLACK
@@ -110,7 +105,7 @@ class wordclock_display:
         elif bgcolor == 'BLUE':
             self.default_bg_color = wcc.BLUE
         else:
-            print('Could not detect default-bg-color: ' + bgcolor + '.')
+            print('Could not detect default_bg_color: ' + bgcolor + '.')
             print('Choosing default: black')
             self.default_bg_color = wcc.BLACK
 

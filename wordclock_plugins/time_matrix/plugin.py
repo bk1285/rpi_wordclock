@@ -25,11 +25,7 @@ class plugin:
         self.pretty_name = "Matrix with time"
         self.description = "There is no spoon?"
 
-        try:
-            self.purist = config.getboolean('plugin_time_default', 'purist')
-        except:
-            logging.warning('No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
-            self.purist = False
+        self.purist = config.getboolean('plugin_time_default', 'purist')
 
         self.bg_color = wcc.BLACK  # default background color
         self.word_color = wcc.WHITE  # default word color

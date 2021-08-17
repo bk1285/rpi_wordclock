@@ -22,20 +22,7 @@ class plugin:
         self.pretty_name = "The time"
         self.description = "The minimum, you should expect from a wordclock."
 
-        # For backward compatibility
-        try:
-            typewriter = config.getboolean('plugin_' + self.name, 'typewriter')
-        except:
-            typewriter = False
-
-        # animation
-        if typewriter:
-            self.animation = "typewriter"
-        else:
-            try:
-                self.animation = ''.join(config.get('plugin_' + self.name, 'animation'))
-            except:
-                self.animation = "fadeOutIn"
+        self.animation = ''.join(config.get('plugin_' + self.name, 'animation'))
 
         animations = ["fadeOutIn", "typewriter", "none"]
 
@@ -43,41 +30,16 @@ class plugin:
             logging.warning('No animation set for default plugin within the config-file. ' + animations[0] + ' animation will be used.')
             self.animation = animations[0]
 
-        try:
-            self.animation_speed = config.getint('plugin_' + self.name, 'animation_speed')
-        except:
-            self.animation_speed = 5
-            logging.warning('No animation_speed set for default plugin within the config-file. Defaulting to ' + str(
-                self.animation_speed) + '.')
+        self.animation_speed = config.getint('plugin_' + self.name, 'animation_speed')
 
-        try:
-            self.purist = config.getboolean('plugin_time_default', 'purist')
-        except:
-            logging.warning('No purist-flag set for default plugin within the config-file. Prefix will be displayed.')
-            self.purist = False
+        self.purist = config.getboolean('plugin_time_default', 'purist')
 
-        # sleep mode
-        try:
-            self.sleep_begin = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_begin'), '%H:%M').time()
-            self.sleep_end = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_end'), '%H:%M').time()
-        except:
-            self.sleep_begin = datetime.time(0,0)
-            self.sleep_end = datetime.time(0,0)
-            logging.warning('  No sleeping time set, display will stay bright 24/7.')
-
-        try:
-            self.sleep_brightness = config.getint('plugin_' + self.name, 'sleep_brightness')
-        except:
-            self.sleep_brightness = 5
-            logging.warning('  No sleep brightness set within the config-file. Defaulting to ' + str(
-                self.sleep_brightness) + '.')
+        self.sleep_begin = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_begin'), '%H:%M').time()
+        self.sleep_end = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_end'), '%H:%M').time()
+        self.sleep_brightness = config.getint('plugin_' + self.name, 'sleep_brightness')
 
         # Choose default fgcolor
-        try:
-            fgcolor = ''.join(config.get('wordclock', 'default-fg-color'))
-        except:
-            # For backward compatibility
-            fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
+        fgcolor = ''.join(config.get('plugin_time_default', 'default_fg_color'))
 
         if fgcolor == 'BLACK':
             self.word_color = wcc.BLACK
@@ -104,17 +66,12 @@ class plugin:
             self.word_color = wcc.BLUE
             self.minute_color = wcc.BLUE
         else:
-            print('Could not detect default-fg-color: ' + fgcolor + '.')
+            print('Could not detect default_fg_color: ' + fgcolor + '.')
             print('Choosing default: warm white')
             self.word_color = wcc.WWHITE
             self.minute_color = wcc.WWHITE
 
-        # Choose default bgcolor
-        try:
-            bgcolor = ''.join(config.get('wordclock', 'default-bg-color'))
-        except:
-            # For backward compatibility
-            bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
+        bgcolor = ''.join(config.get('plugin_time_default', 'default_bg_color'))
 
         if bgcolor == 'BLACK':
             self.bg_color = wcc.BLACK
@@ -133,7 +90,7 @@ class plugin:
         elif bgcolor == 'BLUE':
             self.bg_color = wcc.BLUE
         else:
-            print('Could not detect default-bg-color: ' + bgcolor + '.')
+            print('Could not detect default_bg_color: ' + bgcolor + '.')
             print('Choosing default: black')
             self.bg_color = wcc.BLACK
 
@@ -155,18 +112,11 @@ class plugin:
              [wcc.BLACK, wcc.Color(30, 30, 30), wcc.Color(30, 30, 30)]]
         self.color_mode_pos = 0
         self.rb_pos = 0  # index position for "rainbow"-mode
-        try:
-            self.brightness_mode_pos = config.getint('wordclock_display', 'brightness')
-        except:
-            logging.warning("Brightness value not set in config-file: To do so, add a \"brightness\" between 1..255 to the [wordclock_display]-section.")
-            self.brightness_mode_pos = 255
+
+        self.brightness_mode_pos = config.getint('wordclock_display', 'brightness')
         self.brightness_change = 8
 
-        try:
-            self.use_brightness_sensor = config.getboolean('wordclock_display', 'use_brightness_sensor')            
-        except:
-            print('Not found brigtness sensor value ')
-            self.use_brightness_sensor = False
+        self.use_brightness_sensor = config.getboolean('wordclock_display', 'use_brightness_sensor')            
 
         print(('Using brigtness sensor : ' + str(self.use_brightness_sensor)))
         if self.use_brightness_sensor:
