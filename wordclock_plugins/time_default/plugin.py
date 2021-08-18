@@ -32,6 +32,7 @@ class plugin:
 
         self.animation_speed = config.getint('plugin_' + self.name, 'animation_speed')
 
+        self.animate_seconds = config.getboolean('plugin_time_default', 'animate_seconds')
         self.purist = config.getboolean('plugin_time_default', 'purist')
 
         self.sleep_begin = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_begin'), '%H:%M').time()
@@ -116,7 +117,7 @@ class plugin:
         self.brightness_mode_pos = config.getint('wordclock_display', 'brightness')
         self.brightness_change = 8
 
-        self.use_brightness_sensor = config.getboolean('wordclock_display', 'use_brightness_sensor')            
+        self.use_brightness_sensor = config.getboolean('wordclock_display', 'use_brightness_sensor')
 
         print(('Using brigtness sensor : ' + str(self.use_brightness_sensor)))
         if self.use_brightness_sensor:
@@ -168,7 +169,11 @@ class plugin:
                 wcd.setBrightness(self.sleep_brightness if sleepActive else newBrightness)
  
                 # Set background color
-                self.show_time(wcd, wci, animation=self.animation, animation_speed=self.animation_speed)
+                if self.animate_seconds:
+                    animation = self.animation
+                else:
+                    animation = self.animation if now.minute%5 == 0 else 'None'
+                self.show_time(wcd, wci, animation, animation_speed=self.animation_speed)
                 prev_min = -1 if now.minute == 59 else now.minute
 
             if newBrightness != self.brightness_mode_pos:
