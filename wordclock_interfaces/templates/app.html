@@ -12,9 +12,9 @@
     <script src='https://unpkg.com/vuetify@1.5.16/dist/vuetify.js'></script>
     <script src='https://unpkg.com/babel-polyfill/dist/polyfill.min.js'></script>
     <!--script src="https://unpkg.com/@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.js"></script-->
-	<script src="static/js/vue-color-picker.js"></script>
+	<!--script src="static/js/vue-color-picker.js"></script-->
 	<script src="static/js/iro.min.js"></script>
-    <link rel="stylesheet" href="static/vue-color-picker.css">
+    <!--link rel="stylesheet" href="static/vue-color-picker.css"-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
 
     <link rel="icon" sizes="512x512" href="/static/icon/icon512.png">
@@ -82,6 +82,128 @@
                                                 single-line menu-props="bottom">
                                             </v-select>
                                         </v-card-text>
+                                        
+                          <v-divider></v-divider>
+                          <v-expansion-panel>
+                            <v-expansion-panel-content>
+                              <template v-slot:header>
+                                <div>Scroll text</div>
+                              </template>
+                              <v-card-text>
+                                <v-flex xs12>
+                                  <v-text-field
+                                    hint="Text to be scrolled"
+                                    label="Text to be scrolled"
+                                    v-model="textToScroll"
+                                    v-on:change="updateScrolltext"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-container fluid text-xs-center>
+                                  <v-layout row justify-center>
+                                    <v-flex xs4>
+                                      <v-dialog
+                                        ref="menu"
+                                        v-model="menu"
+                                        :close-on-content-click="false"
+                                        :return-value.sync="date"
+                                        transition="scale-transition"
+                                        offset-y
+                                        max-width="290px"
+                                        min-width="290px"
+                                        >
+                                        <template v-slot:activator="{ on, attrs }">
+                                          <v-text-field
+                                            v-model="date"
+                                            label="Start date"
+                                            readonly
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                          v-model="date"
+                                          no-title
+                                          scrollable
+                                          v-on:change="updateScrolltext"
+                                          >
+                                          <v-spacer></v-spacer>
+                                          <v-btn
+                                            text
+                                            color="primary"
+                                            @click="menu = false"
+                                            >
+                                            Cancel
+                                          </v-btn>
+                                          <v-btn
+                                            text
+                                            color="primary"
+                                            @click="$refs.menu.save(date)"
+                                            >
+                                            OK
+                                          </v-btn>
+                                        </v-date-picker>
+                                      </v-dialog>
+                                    </v-flex>
+                                    <v-flex xs4>
+                                    </v-flex>
+                                    <v-flex xs4>
+                                      <v-dialog
+                                        ref="menutime"
+                                        v-model="menu_t"
+                                        :nudge-right="40"
+                                        :return-value.sync="time"
+                                        transition="scale-transition"
+                                        offset-y
+                                        max-width="290px"
+                                        min-width="290px"
+                                        >
+                                        <template v-slot:activator="{ on, attrs }">
+                                          <v-text-field
+                                            v-model="time"
+                                            label="Start time"
+                                            readonly
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-time-picker
+                                          v-if="menu_t"
+                                          v-model="time"
+                                          full-width
+                                          v-on:change="updateScrolltext"
+                                          @click:minute="$refs.menutime.save(time)"
+                                          ></v-time-picker>
+                                      </v-dialog>
+                                    </v-flex>
+                                  </v-layout>
+                                  <v-layout row px-0>
+                                    <v-flex xs4>
+                                      <v-text-field
+                                        label="Repeat time"
+                                        hint="Delay between the text, 0 for contious scrolling"
+                                        suffix="sec"
+                                        type="number"
+                                        v-model.number="textRepeat"
+                                        v-on:change="updateScrolltext"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs4>
+                                    </v-flex>
+                                    <v-flex xs4>
+                                      <v-switch
+                                        label="Enable"
+                                        v-model="textEnable"
+                                        v-on:change="updateScrolltext"
+                                        ></v-switch>
+                                    </v-flex>
+                                  </v-layout>
+                                </v-container>
+                              </v-card-text>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+                        <v-divider></v-divider>
+
+                                        
                                         <v-card-actions>
                                             <v-container fluid text-xs-center px-0>
                                                 <v-layout row px-0>
@@ -176,7 +298,7 @@
 </body>
 
 
-<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
 <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 
 </html>
