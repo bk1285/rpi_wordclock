@@ -3,7 +3,8 @@ import _thread
 import logging
 from flask_restx import Api, Resource, fields
 import wordclock_tools.wordclock_colors as wcc
-import schedule
+import wordclock_tools.wordclock_display as wcd
+import datetime
 
 class web_interface:
     app = Flask(__name__)
@@ -238,13 +239,12 @@ class scrolltext(Resource):
             200: 'Success',
             400: 'Bad request'})
     def get(self):
-        print("Get scroltext: ", web_interface.app.wclk.scrollenable)
         return {
-            'scrollenable': web_interface.app.wclk.scrollenable,
-            'scrolltext': web_interface.app.wclk.scrolltext,
-            'scrolldate': web_interface.app.wclk.scrolldate,
-            'scrolltime': web_interface.app.wclk.scrolltime,
-            'scrollrepeat': web_interface.app.wclk.scrollrepeat
+            'scrollenable': wcc.scrollenable, #web_interface.app.wclk
+            'scrolltext': wcc.scrolltext,
+            'scrolldate': wcc.scrolldate,
+            'scrolltime': wcc.scrolltime,
+            'scrollrepeat': wcc.scrollrepeat
         }
 
     @web_interface.api.doc(
@@ -254,17 +254,20 @@ class scrolltext(Resource):
             400: 'Bad request'})
     @web_interface.api.expect(web_interface.scrolltext_model)
     def post(self):
-        web_interface.app.wclk.scrolltext = web_interface.api.payload.get('scrolltext')
-        print("Put scrolltext: ",web_interface.app.wclk.scrolltext)
-        web_interface.app.wclk.scrolldate = web_interface.api.payload.get('scrolldate')
-        web_interface.app.wclk.scrolltime = web_interface.api.payload.get('scrolltime')
-        web_interface.app.wclk.scrollrepeat = web_interface.api.payload.get('scrollrepeat')
+        wcc.scrolltext = web_interface.api.payload.get('scrolltext')
+        wcc.scrolldate = web_interface.api.payload.get('scrolldate')
+        wcc.scrolltime = web_interface.api.payload.get('scrolltime')
+        try:
+            print(wcc.scrolldate, wcc.scrolltime)
+            wcc.scrolldatetime = datetime.datetime.strptime(wcc.scrolldate + " " + wcc.scrolltime, '%Y-%m-%d %H:%M')
+        except:
+            print("Not a date or time")
+        wcc.scrollrepeat = web_interface.api.payload.get('scrollrepeat')
         scrollenable_new = web_interface.api.payload.get('scrollenable')
-        if ((web_interface.app.wclk.scrollenable == False) and (scrollenable_new == True)):
-            print("Enable scrolltext")
-            schedule.every(10).seconds.do(web_interface.scrolltext_task)
-            web_interface.app.wclk.wcd.showText(web_interface.app.wclk.scrolltext)
-        if ((web_interface.app.wclk.scrollenable == True) and (scrollenable_new == False)):
-            print("Disable scrolltext")
-        web_interface.app.wclk.scrollenable = web_interface.api.payload.get('scrollenable')
+        if ((wcc.scrollenable == False) and (scrollenable_new == True)):
+            #print("Enable scrolltext")
+            web_interface.app.wclk.wcd.showText(wcc.scrolltext)
+        if ((wcc.scrollenable == True) and (scrollenable_new == False)):
+            #print("Disable scrolltext")
+        wcc.scrollenable = web_interface.api.payload.get('scrollenable')
         return "Wordclock scrolltext variables updated"
