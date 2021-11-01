@@ -269,5 +269,6 @@ class scrolltext(Resource):
             web_interface.app.wclk.wcd.showText(wcc.scrolltext)
         if ((wcc.scrollenable == True) and (scrollenable_new == False)):
             #print("Disable scrolltext")
+            pass
         wcc.scrollenable = web_interface.api.payload.get('scrollenable')
         return "Wordclock scrolltext variables updated"
