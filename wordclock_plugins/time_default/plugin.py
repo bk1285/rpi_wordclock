@@ -161,12 +161,14 @@ class plugin:
                     print(e)
 
             # Check if text needs to be displayed
-            #scrolldate_time = datetime.datetime.strptime(wcc.scrolldate + " " + wcc.scrolltime, '%Y-%m-%d %H:%M')
             if wcc.scrollenable:
-                if datetime.datetime.now() > wcc.scrolldatetime:
-                    wcd.showText(wcc.scrolltext)
-                    wcc.scrolldatetime = wcc.scrolldatetime + datetime.timedelta(seconds = wcc.scrollrepeat)
-                    #print("Next scroll: ",wcc.scrolldatetime)
+                try:
+                    if datetime.datetime.now() > wcc.scrolldatetime:
+                        wcd.showText(wcc.scrolltext)
+                        wcc.scrolldatetime = wcc.scrolldatetime + datetime.timedelta(seconds = wcc.scrollrepeat)
+                except:
+                    print("Date and time not set")
+
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
                 sleepActive = \
