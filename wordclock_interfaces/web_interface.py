@@ -265,10 +265,10 @@ class scrolltext(Resource):
         wcc.scrollrepeat = web_interface.api.payload.get('scrollrepeat')
         scrollenable_new = web_interface.api.payload.get('scrollenable')
         if ((wcc.scrollenable == False) and (scrollenable_new == True)):
-            #print("Enable scrolltext")
+            wcc.scrollactive = True
             web_interface.app.wclk.wcd.showText(wcc.scrolltext)
+            wcc.scrollactive = False
         if ((wcc.scrollenable == True) and (scrollenable_new == False)):
-            #print("Disable scrolltext")
             pass
         wcc.scrollenable = web_interface.api.payload.get('scrollenable')
         return "Wordclock scrolltext variables updated"

@@ -48,33 +48,44 @@ class plugin:
         # initialize rain start: set to end coordinate
         rain = [20 for _ in range(0, 11)]
         while True:
-            # Set background color
-            wcd.setColorToAll(self.bg_color, includeMinutes=True)
-            # Set current time
-            now = datetime.datetime.now()
-            # Returns indices, which represent the current time, when beeing illuminated
-            taw_indices = wcd.taw.get_time(now, self.purist)
+            # Check if text needs to be displayed
+            if wcc.scrollenable:
+                try:
+                    if datetime.datetime.now() > wcc.scrolldatetime:
+                        wcd.showText(wcc.scrolltext)
+                        wcc.scrolldatetime = wcc.scrolldatetime + datetime.timedelta(seconds = wcc.scrollrepeat)
+                        print("Next scroll: ",wcc.scrolldatetime)
+                except:
+                    pass
 
-            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
-            wcd.setMinutes(now, self.minute_color)
+            if not(wcc.scrollactive):
+                # Set background color
+                wcd.setColorToAll(self.bg_color, includeMinutes=True)
+                # Set current time
+                now = datetime.datetime.now()
+                # Returns indices, which represent the current time, when beeing illuminated
+                taw_indices = wcd.taw.get_time(now, self.purist)
 
-            for x, y in enumerate(rain):
-                if y == 20:
-                    # reset y coordinate randomly
-                    if random.random() > self.threshold:
-                        rain[x] = 0
-                else:
-                    # simple alpha blending using our predefined colors
-                    y0 = max(y - 10, 0)
-                    y1 = min(9, y)
-                    ci = y0 - (y - 10)
-                    for yi, yn in enumerate(range(y0, y1 + 1)):
-                        color = self.colors[ci + yi]
-                        wcd.setColorBy2DCoordinates(x, yn, color)
-                    # advance y coordinate
-                    rain[x] = y + 1
+                wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
+                wcd.setMinutes(now, self.minute_color)
 
-            wcd.show()
+                for x, y in enumerate(rain):
+                    if y == 20:
+                        # reset y coordinate randomly
+                        if random.random() > self.threshold:
+                            rain[x] = 0
+                    else:
+                        # simple alpha blending using our predefined colors
+                        y0 = max(y - 10, 0)
+                        y1 = min(9, y)
+                        ci = y0 - (y - 10)
+                        for yi, yn in enumerate(range(y0, y1 + 1)):
+                            color = self.colors[ci + yi]
+                            wcd.setColorBy2DCoordinates(x, yn, color)
+                        # advance y coordinate
+                        rain[x] = y + 1
+
+                    wcd.show()
 
             event = wci.waitForEvent(0.1)
             if event == wci.EVENT_BUTTON_RETURN \

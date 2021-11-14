@@ -39,6 +39,7 @@ scrolldate = ""
 scrolltime = ""
 scrolldatetime = 0
 scrollrepeat = 0
+scrollactive = False
 
 # Summarize colors: [BLACK->WHITE, RED->BLUE (rainbow)]
 colors = [BLACK, WHITE, WWHITE, RED, YELLOW, LIME, GREEN, BLUE]
