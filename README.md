@@ -51,7 +51,7 @@ Instead of *flask-restplus* which is no longer maintained we are using now *flas
 For the great *rpi-ws281x* Library there is no need to compile it yourself. It is just installed via pip now.
 
 ```
-sudo pip3 install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic flask-restx rpi-ws281x
+sudo pip3 install pytz astral feedparser pillow svgwrite freetype-py netifaces monotonic flask-restx rpi-ws281x coloredlogs
 ```
 
 #### Repository
