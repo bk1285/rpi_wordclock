@@ -5,9 +5,9 @@
       <meta name="mobile-web-app-capable" content="yes">
       <meta name="apple-mobile-web-app-capable" content="yes">
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-      <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'>
+      <link rel="stylesheet" href="static/material-design-icons/iconfont/material-icons.css">
       <link rel="stylesheet" href="static/vuetify.min.css">
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+      <link rel="stylesheet" href="static/fontawesome-free-5.1.0-web/css/all.css">
       <script src="static/js/vue.min.js"></script>
       <script src="static/js/vuetify.js"></script>
       <script src="static/js/iro.min.js"></script>
@@ -44,7 +44,8 @@
                            <v-spacer></v-spacer>
                            <v-dialog v-model="about" width="400">
                               <v-btn icon slot="activator">
-                                 <v-icon>fa fa-question-circle</v-icon>
+                                 <!--v-icon>fa fa-question-circle</v-icon-->
+                                 <v-icon>help_outline</v-icon>
                               </v-btn>
                               <v-card>
                                  <v-card-title>The Raspberry Wordclock</v-card-title>
@@ -202,7 +203,8 @@
                                                 <v-card tile flat>
                                                    <v-card-text>
                                                       <v-btn small color="primary" v-on:click="buttonClick('left')">
-                                                         <v-icon>fa fa-caret-left</v-icon>
+                                                         <!--v-icon>fa fa-caret-left</v-icon-->
+                                                         <v-icon>keyboard_arrow_left</v-icon>
                                                       </v-btn>
                                                    </v-card-text>
                                                 </v-card>
@@ -211,7 +213,8 @@
                                                 <v-card tile flat>
                                                    <v-card-text>
                                                       <v-btn small color="primary" v-on:click="buttonClick('return')">
-                                                         <v-icon>fa fa-circle </v-icon>
+                                                         <!--v-icon>fa fa-circle </v-icon-->
+                                                         <v-icon>fiber_manual_record</v-icon>
                                                       </v-btn>
                                                    </v-card-text>
                                                 </v-card>
@@ -220,7 +223,8 @@
                                                 <v-card tile flat>
                                                    <v-card-text>
                                                       <v-btn small color="primary" v-on:click="buttonClick('right')">
-                                                         <v-icon>fa fa-caret-right</v-icon>
+                                                         <!--v-icon>fa fa-caret-right</v-icon-->
+                                                         <v-icon>keyboard_arrow_right</v-icon>
                                                       </v-btn>
                                                    </v-card-text>
                                                 </v-card>
@@ -289,6 +293,6 @@
          </v-app>
       </div>
    </body>
-   <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+   <script src="static/js/vue-resource.js"></script>
    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </html>
