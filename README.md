@@ -58,7 +58,7 @@ sudo pip3 install pytz astral feedparser pillow svgwrite freetype-py netifaces m
 For using pyhton3-develop branch:
 
 ```
-git clone https://github.com/phenze/rpi_wordclock.git
+git clone https://github.com/bk1285/rpi_wordclock.git
 cd rpi_wordclock/
 git checkout --track origin/develop
 ```
