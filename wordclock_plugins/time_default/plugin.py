@@ -3,6 +3,7 @@ import logging
 import os
 import time
 import wordclock_tools.wordclock_colors as wcc
+import wordclock_tools.wordclock_display as wcd
 
 
 class plugin:
@@ -158,6 +159,15 @@ class plugin:
                         time.sleep(0.2)
                 except IOError as e:
                     print(e)
+
+            # Check if text needs to be displayed
+            if wcc.scrollenable:
+                try:
+                    if datetime.datetime.now() > wcc.scrolldatetime:
+                        wcd.showText(wcc.scrolltext)
+                        wcc.scrolldatetime = wcc.scrolldatetime + datetime.timedelta(seconds = wcc.scrollrepeat)
+                except:
+                    print("Date and time not set")
 
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:

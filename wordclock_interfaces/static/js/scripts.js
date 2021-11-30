@@ -26,7 +26,14 @@ var vm = new Vue(
 		switchMinutes: true,
 		switchBackground: false,
 		about: false,
-		colorByTemp: false
+		colorByTemp: false,
+		date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        menu: false,
+        time: "",
+        menu_t: false,
+        textToScroll: "",
+        textRepeat: 0,
+        textEnable: false
 	},
 	methods: {
 		loadApi: function () {
@@ -40,6 +47,8 @@ var vm = new Vue(
 			  then(this.successCallbackBrightness, this.errorCallback);
 			this.$http.get('/api/color_temperature').
 			  then(this.successCallbackColorTemperature, this.errorCallback);
+			this.$http.get('/api/scrolltext').
+			  then(this.successCallbackScrolltext, this.errorCallback);
 		},
 		successCallbackPlugins: function(response) {
 			this.apiData = response.data;
@@ -57,6 +66,14 @@ var vm = new Vue(
 		},
 		successCallbackColorTemperature: function(response) {
             this.color_temperature = response.data;
+		},
+		successCallbackScrolltext: function(response) {
+            this.textEnable = response.data.scrollenable; //.isChecked;
+            console.log("textEnable: ",this.textEnable);
+            this.textToScroll = response.data.scrolltext;
+            this.date = response.data.scrolldate; 
+            this.time = response.data.scrolltime;
+            this.textRepeat = response.data.scrollrepeat;
 		},
 		errorCallback: function(response) {
 			console.log('errorCallback response:' , response);
@@ -121,7 +138,14 @@ var vm = new Vue(
 			xmlhttp.open("POST", "/api/color");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 			xmlhttp.send(JSON.stringify({ "blue": color.rgb.b, "green": color.rgb.g, "red": color.rgb.r , "type": type}));
-		}
+		},
+       	updateScrolltext: function() {
+            console.log("updateScrolltext", this.textEnable, this.textToScroll, this.date, this.time, this.textRepeat)
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("POST", "/api/scrolltext");
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify({ scrollenable: this.textEnable, scrolltext: this.textToScroll, scrolldate: this.date, scrolltime: this.time, scrollrepeat: this.textRepeat}));
+        }
 	},
 	beforeMount(){
 		this.loadApi();

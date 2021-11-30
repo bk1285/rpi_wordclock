@@ -95,6 +95,12 @@ class wordclock:
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
         self.wciweb = wciweb.web_interface(self)
+        
+        self.scrollenable = False
+        self.scrolltext = ""
+        self.scrolldate = ""
+        self.scrolltime = ""
+        self.scrollrepeat = 0
 
     def startup(self):
         """

@@ -1,7 +1,7 @@
 import configparser
 import logging
 import os
-
+from shutil import copyfile
 
 class wordclock_config:
 

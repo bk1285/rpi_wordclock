@@ -3,7 +3,8 @@ import _thread
 import logging
 from flask_restx import Api, Resource, fields
 import wordclock_tools.wordclock_colors as wcc
-
+import wordclock_tools.wordclock_display as wcd
+import datetime
 
 class web_interface:
     app = Flask(__name__)
@@ -52,6 +53,14 @@ class web_interface:
         'color_temperature': fields.Integer(min=1000, max=40000, example=2000, required=True, description='Color temperature in Kelvin')
     })
 
+    scrolltext_model = api.model('scrolltext', {
+        'scrollenable': fields.Boolean(required=True, description='Enable text to scroll'),
+        'scrolltext': fields.String(required=True, description='Text to scroll'),
+        'scrolltime': fields.String(required=True, description='Date to start scroll'),
+        'scrolldate': fields.String(required=True, description='Time to start scroll'),
+        'scrollrepeat': fields.Integer(required=True, description='Repeat of text to scroll')
+    })
+
     def __init__(self, wordclock):
         self.app.wclk = wordclock
         self.app.debug = False
@@ -60,6 +69,9 @@ class web_interface:
     def threaded_app(self):
         port = 8080 if self.app.wclk.developer_mode_active else 80
         self.app.run(host='0.0.0.0', port=port)
+        
+    def scrolltext_task():
+        print("scrolltext_task")
 
 
 @web_interface.app.route('/')
@@ -137,7 +149,7 @@ class Color(Resource):
     def get(self):
         default_plugin = web_interface.app.wclk.plugins[web_interface.app.wclk.default_plugin]
         channel_wise = lambda x: {'red': x.r, 'green': x.g, 'blue': x.b}
-        channel_wise = lambda x: {'blue': x & 255, 'green': (x >> 8) & 255, 'red': (x >> 16) & 255}
+        #channel_wise = lambda x: {'blue': x & 255, 'green': (x >> 8) & 255, 'red': (x >> 16) & 255}
 
         return {
             'background': channel_wise(default_plugin.bg_color),
@@ -217,3 +229,46 @@ class ColorTemperature(Resource):
         default_plugin.minute_color = wcc.color_temperature_to_rgb(color_temperature)
         default_plugin.show_time(web_interface.app.wclk.wcd, web_interface.app.wclk.wci)
         return "Wordclock color temperature set to " + str(color_temperature)
+
+
+@web_interface.api.route('/scrolltext')
+class scrolltext(Resource):
+    @web_interface.api.doc(
+        description='Returns the text to scroll and associated variables',
+        responses={
+            200: 'Success',
+            400: 'Bad request'})
+    def get(self):
+        return {
+            'scrollenable': wcc.scrollenable, #web_interface.app.wclk
+            'scrolltext': wcc.scrolltext,
+            'scrolldate': wcc.scrolldate,
+            'scrolltime': wcc.scrolltime,
+            'scrollrepeat': wcc.scrollrepeat
+        }
+
+    @web_interface.api.doc(
+        description='Text to scroll',
+        responses={
+            200: 'Success',
+            400: 'Bad request'})
+    @web_interface.api.expect(web_interface.scrolltext_model)
+    def post(self):
+        wcc.scrolltext = web_interface.api.payload.get('scrolltext')
+        wcc.scrolldate = web_interface.api.payload.get('scrolldate')
+        wcc.scrolltime = web_interface.api.payload.get('scrolltime')
+        try:
+            print(wcc.scrolldate, wcc.scrolltime)
+            wcc.scrolldatetime = datetime.datetime.strptime(wcc.scrolldate + " " + wcc.scrolltime, '%Y-%m-%d %H:%M')
+        except:
+            print("Not a date or time")
+        wcc.scrollrepeat = web_interface.api.payload.get('scrollrepeat')
+        scrollenable_new = web_interface.api.payload.get('scrollenable')
+        if ((wcc.scrollenable == False) and (scrollenable_new == True)):
+            wcc.scrollactive = True
+            web_interface.app.wclk.wcd.showText(wcc.scrolltext)
+            wcc.scrollactive = False
+        if ((wcc.scrollenable == True) and (scrollenable_new == False)):
+            pass
+        wcc.scrollenable = web_interface.api.payload.get('scrollenable')
+        return "Wordclock scrolltext variables updated"
