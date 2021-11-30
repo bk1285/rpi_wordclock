@@ -68,7 +68,7 @@ var vm = new Vue(
             this.color_temperature = response.data;
 		},
 		successCallbackScrolltext: function(response) {
-            this.textEnable = response.data.scrollenable; //.isChecked;
+            this.textEnable = response.data.scrollenable;
             console.log("textEnable: ",this.textEnable);
             this.textToScroll = response.data.scrolltext;
             this.date = response.data.scrolldate; 

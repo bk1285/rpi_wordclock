@@ -20,6 +20,7 @@ import wordclock_plugins.time_default.time_swabian2 as time_swabian2
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
+import wordclock_tools.wordclock_scrolltext as wst
 import wordclock_tools.wordclock_screen as wordclock_screen
 import colorsys
 
@@ -44,6 +45,8 @@ class wordclock_display:
         self.config = config
         self.base_path = config.get('wordclock', 'base_path')
         self.mutex = Lock()
+
+        self.wst = wst.ScrollText()
 
         self.setBrightness(config.getint('wordclock_display', 'brightness'))
 

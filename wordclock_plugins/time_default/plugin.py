@@ -153,7 +153,6 @@ class plugin:
                 try:
                     sensorCurrent = self.sensor.lux
                     if isinstance(sensorCurrent, float):
-                        # print('sensorCurrent is ' + str(sensorCurrent))
                         newBrightness = min(((((brightnessMax - brightnessMin) / sensorMax) * sensorCurrent) + brightnessMin),255)
                         newBrightness = int(newBrightness)
                         time.sleep(0.2)
@@ -161,13 +160,8 @@ class plugin:
                     print(e)
 
             # Check if text needs to be displayed
-            if wcc.scrollenable:
-                try:
-                    if datetime.datetime.now() > wcc.scrolldatetime:
-                        wcd.showText(wcc.scrolltext)
-                        wcc.scrolldatetime = wcc.scrolldatetime + datetime.timedelta(seconds = wcc.scrollrepeat)
-                except:
-                    print("Date and time not set")
+            if wcd.wst.checkIfScrollIsRequired(now):
+                wcd.showText(wcd.wst.scrolltext)
 
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:

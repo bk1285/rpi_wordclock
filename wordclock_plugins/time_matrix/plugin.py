@@ -49,14 +49,8 @@ class plugin:
         rain = [20 for _ in range(0, 11)]
         while True:
             # Check if text needs to be displayed
-            if wcc.scrollenable:
-                try:
-                    if datetime.datetime.now() > wcc.scrolldatetime:
-                        wcd.showText(wcc.scrolltext)
-                        wcc.scrolldatetime = wcc.scrolldatetime + datetime.timedelta(seconds = wcc.scrollrepeat)
-                        print("Next scroll: ",wcc.scrolldatetime)
-                except:
-                    pass
+            if wcd.wst.ScrollText.checkIfScrollIsRequired(now):
+                wcd.showText(wcd.wst.scrolltext)
 
             if not(wcc.scrollactive):
                 # Set background color

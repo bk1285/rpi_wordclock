@@ -149,7 +149,6 @@ class Color(Resource):
     def get(self):
         default_plugin = web_interface.app.wclk.plugins[web_interface.app.wclk.default_plugin]
         channel_wise = lambda x: {'red': x.r, 'green': x.g, 'blue': x.b}
-        #channel_wise = lambda x: {'blue': x & 255, 'green': (x >> 8) & 255, 'red': (x >> 16) & 255}
 
         return {
             'background': channel_wise(default_plugin.bg_color),
@@ -240,11 +239,11 @@ class scrolltext(Resource):
             400: 'Bad request'})
     def get(self):
         return {
-            'scrollenable': wcc.scrollenable, #web_interface.app.wclk
-            'scrolltext': wcc.scrolltext,
-            'scrolldate': wcc.scrolldate,
-            'scrolltime': wcc.scrolltime,
-            'scrollrepeat': wcc.scrollrepeat
+            'scrollenable': web_interface.app.wclk.wcd.wst.scrollenable,
+            'scrolltext': web_interface.app.wclk.wcd.wst.scrolltext,
+            'scrolldate': web_interface.app.wclk.wcd.wst.scrolldate,
+            'scrolltime': web_interface.app.wclk.wcd.wst.scrolltime,
+            'scrollrepeat': web_interface.app.wclk.wcd.wst.scrollrepeat
         }
 
     @web_interface.api.doc(
@@ -254,21 +253,12 @@ class scrolltext(Resource):
             400: 'Bad request'})
     @web_interface.api.expect(web_interface.scrolltext_model)
     def post(self):
-        wcc.scrolltext = web_interface.api.payload.get('scrolltext')
-        wcc.scrolldate = web_interface.api.payload.get('scrolldate')
-        wcc.scrolltime = web_interface.api.payload.get('scrolltime')
+        web_interface.app.wclk.wcd.wst.scrolltext = web_interface.api.payload.get('scrolltext')
         try:
             print(wcc.scrolldate, wcc.scrolltime)
-            wcc.scrolldatetime = datetime.datetime.strptime(wcc.scrolldate + " " + wcc.scrolltime, '%Y-%m-%d %H:%M')
+            web_interface.app.wclk.wcd.wst.scrolldatetime = datetime.datetime.strptime( web_interface.api.payload.get('scrolldate') + " " + web_interface.api.payload.get('scrolltime'), '%Y-%m-%d %H:%M')
         except:
             print("Not a date or time")
-        wcc.scrollrepeat = web_interface.api.payload.get('scrollrepeat')
-        scrollenable_new = web_interface.api.payload.get('scrollenable')
-        if ((wcc.scrollenable == False) and (scrollenable_new == True)):
-            wcc.scrollactive = True
-            web_interface.app.wclk.wcd.showText(wcc.scrolltext)
-            wcc.scrollactive = False
-        if ((wcc.scrollenable == True) and (scrollenable_new == False)):
-            pass
-        wcc.scrollenable = web_interface.api.payload.get('scrollenable')
+        web_interface.app.wclk.wcd.wst.scrollrepeat = web_interface.api.payload.get('scrollrepeat')
+        web_interface.app.wclk.wcd.wst.scrollenable = web_interface.api.payload.get('scrollenable')
         return "Wordclock scrolltext variables updated"

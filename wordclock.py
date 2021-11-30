@@ -89,19 +89,12 @@ class wordclock:
             except Exception as e:
                 print(e)
                 logging.warning('Failed to import plugin ' + plugin + '!')
-                #detailed error (traceback)
                 traceback.print_exc(limit=1)
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
         self.wciweb = wciweb.web_interface(self)
         
-        self.scrollenable = False
-        self.scrolltext = ""
-        self.scrolldate = ""
-        self.scrolltime = ""
-        self.scrollrepeat = 0
-
     def startup(self):
         """
         Startup behavior
