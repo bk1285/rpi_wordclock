@@ -162,6 +162,7 @@ class plugin:
             # Check if text needs to be displayed
             if wcd.wst.checkIfScrollIsRequired(now):
                 wcd.showText(wcd.wst.scrolltext)
+                continue
 
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:

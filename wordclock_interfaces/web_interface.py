@@ -241,8 +241,8 @@ class scrolltext(Resource):
         return {
             'scrollenable': web_interface.app.wclk.wcd.wst.scrollenable,
             'scrolltext': web_interface.app.wclk.wcd.wst.scrolltext,
-            'scrolldate': web_interface.app.wclk.wcd.wst.scrolldate,
-            'scrolltime': web_interface.app.wclk.wcd.wst.scrolltime,
+            'scrolldate': web_interface.app.wclk.wcd.wst.scrolldatetime.date(),
+            'scrolltime': web_interface.app.wclk.wcd.wst.scrolldatetime.time(),
             'scrollrepeat': web_interface.app.wclk.wcd.wst.scrollrepeat
         }
 
