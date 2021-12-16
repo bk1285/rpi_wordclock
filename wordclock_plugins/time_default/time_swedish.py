@@ -9,17 +9,17 @@ class time_swedish:
         self.prefix = list(range(0,7)) +  list(range(8,10))
         self.minutes=[[], \
             list(range(11,14)) + list(range(44,48)), \
-            list(range(99,102)) + list(range(44,48)), \
+            list(range(17,20)) + list(range(44,48)), \
             list(range(22,27)) + list(range(44,48)), \
             list(range(33,38)) + list(range(44,48)), \
             list(range(11,14)) + list(range(15,16)) + list(range(51,55)), \
             list(range(51,55)), \
-            list(range(33,38)) + list(range(44,48)) + list(range(51,55)), \
-            list(range(33,38)) + list(range(39,41)), \
-            list(range(22,27)) + list(range(39,41)), \
-            list(range(17,20)) + list(range(39,41)), \
-            list(range(11,14)) + list(range(39,41)) ]
-        self.hours= [list(range(106,110)), \
+            list(range(11,14)) + list(range(44,48)) + list(range(51,55)), \
+            list(range(33,38)) + list(range(39,40)), \
+            list(range(22,27)) + list(range(39,40)), \
+            list(range(17,20)) + list(range(39,40)), \
+            list(range(11,14)) + list(range(39,40)) ]
+        self.hours= [list(range(107,110)), \
             list(range(55,58)), \
             list(range(63,66)), \
             list(range(66,69)), \
@@ -32,7 +32,7 @@ class time_swedish:
             list(range(99,102)), \
             list(range(102,106)), \
             list(range(106,110))]
-        self.full_hour= list(range(107,110))
+#        self.full_hour= list(range(107,110))
 
     def get_time(self, time, purist):
         hour=time.hour%12+(1 if time.minute//5 > 4 else 0)
@@ -42,6 +42,6 @@ class time_swedish:
             (self.prefix if not purist else []) + \
             self.minutes[minute] + \
             self.hours[hour] + \
-            ([60] if (hour == 1 and minute != 0) else []) + \
-            (self.full_hour if (minute == 0) else [])
+            ([60] if (hour == 1 and minute != 0) else [])# + \
+#            (self.full_hour if (minute == 0) else [])
 
