@@ -16,10 +16,10 @@ class time_swedish:
             list(range(51,55)), \
             list(range(11,14)) + list(range(44,48)) + list(range(51,55)), \
             list(range(33,38)) + list(range(39,40)), \
-            list(range(22,27)) + list(range(39,40)), \
-            list(range(17,20)) + list(range(39,40)), \
-            list(range(11,14)) + list(range(39,40)) ]
-        self.hours= [list(range(107,110)), \
+            list(range(22,27)) + list(range(28,29)), \
+            list(range(17,20)) + list(range(21,22)), \
+            list(range(11,14)) + list(range(15,16)) ]
+        self.hours= [list(range(106,110)), \
             list(range(55,58)), \
             list(range(63,66)), \
             list(range(66,69)), \
@@ -41,7 +41,7 @@ class time_swedish:
         return  \
             (self.prefix if not purist else []) + \
             self.minutes[minute] + \
-            self.hours[hour] + \
-            ([60] if (hour == 1 and minute != 0) else [])# + \
+            self.hours[hour]# + \
+#            ([60] if (hour == 1 and minute != 0) else [])# + \
 #            (self.full_hour if (minute == 0) else [])
 
