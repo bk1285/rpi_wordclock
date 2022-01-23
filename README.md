@@ -23,10 +23,8 @@
      * Linking the webinterface to your smartphones homescreen provides an app-like usage of the interface
      * Hardware buttons are not mandatory anymore.
  * Integration to your instance of [home-assistant](https://www.home-assistant.io/) using [this repository](https://github.com/bk1285/rpi_wordclock_for_homeassistant/)
+ * Support for a brightness sensor (TSL2561)
   
-### ⏳ In progress
- * Integration of a brightness sensor
-
 ### :books: Further reading
  * Exemplary builds are available at [pinterest](https://www.pinterest.de/berndkrolla/wordclock-gallery/)
  * [Roadmap](https://github.com/bk1285/rpi_wordclock/projects)
@@ -77,11 +75,12 @@ Install adafruit-circuitpython-tsl2561 lib
 sudo pip3 install adafruit-circuitpython-tsl2561
 ```
 
-Set use_brightness_sensor config value to true
+Set use_brightness_sensor config value to true and its address
 ```
 # Set the brightness of the display (between 1 and 255)
 brightness = 200
 use_brightness_sensor = True
+sensor_address = 0x39
 ```
 
 #### Cronjob
