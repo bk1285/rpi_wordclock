@@ -20,6 +20,7 @@ If you want to build a wordclock
           * dutch (Thanks to svenjacobi, resolution is 10x9. Therefore, not all plugins are supported!)
           * swiss
           * french
+          * romanian (Thanks to Darius)
 
       * Stancil layout only (requiring some python-implementations: See wordclock_plugins/time_default):
 
