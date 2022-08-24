@@ -99,7 +99,7 @@ Run software
 To run the wordclock software (with adapted wiring and config-file) do::
 
     cd ~/rpi_wordclock
-    sudo python wordclock.py
+    sudo python3 wordclock.py
 
 In case, the whole thing is not working as expected: Maybe the section :ref:`trouble-shooting` might help...
 
@@ -115,7 +115,7 @@ Add the python-script to crontab by calling the command::
 
 Add here::
 
-    @reboot sudo python /home/pi/rpi_wordclock/wordclock.py
+    @reboot sudo python3 /home/pi/rpi_wordclock/wordclock.py
 
 Access the wordclock via webinterface
 -------------------------------------
