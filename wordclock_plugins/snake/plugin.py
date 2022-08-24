@@ -116,13 +116,14 @@ class plugin:
         elif (snakeBoard[newHeadRow][newHeadCol] < 0):
             # eating food!  Yum!
             sn.data["points"] = 1 + sn.data["points"]
-            snakeBoard[newHeadRow][newHeadCol] = 1 + snakeBoard[headRow][headCol];
+            snakeBoard[newHeadRow][newHeadCol] = 1 + snakeBoard[headRow][headCol]
             sn.data["headRow"] = newHeadRow
             sn.data["headCol"] = newHeadCol
             self.placeFood(sn)
+            sn.data["speed"] = 1.1 * sn.data["speed"]
         else:
             # normal move forward (not eating food)
-            snakeBoard[newHeadRow][newHeadCol] = 1 + snakeBoard[headRow][headCol];
+            snakeBoard[newHeadRow][newHeadCol] = 1 + snakeBoard[headRow][headCol]
             sn.data["headRow"] = newHeadRow
             sn.data["headCol"] = newHeadCol
             self.removeTail(sn)
@@ -260,6 +261,7 @@ class plugin:
         sn.data["snakeDcol"] = -1 # start moving left
         sn.data["ignoreNextTimerEvent"] = False
         sn.data["points"] = 0
+        sn.data["speed"] = 1.0
         self.redrawAll(sn, wcd)
         
     def run(self, wcd, wci):
@@ -270,18 +272,18 @@ class plugin:
         self.init(sn, wcd)
         skipWait=False
         while True:
-            event=0
+            event=-1
             if (sn.data["isGameOver"] == True):
                 return
             
             if (skipWait == False):
-                event = wci.waitForEvent(1)
+                event = wci.waitForEvent(1.0 / sn.data["speed"] )
             else:
                 skipWait=False
             if (event == wci.EVENT_BUTTON_RETURN):
                 return # Exit snake and return to wordclock
             
-            if event > 0:
+            if event >= 0:
                 self.keyPressed(event, sn, wcd, wci)
                 time.sleep(wci.lock_time)
                 skipWait=True
