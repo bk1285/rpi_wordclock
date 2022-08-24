@@ -21,6 +21,7 @@ import wordclock_plugins.time_default.time_swabian as time_swabian
 import wordclock_plugins.time_default.time_swabian2 as time_swabian2
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
+import wordclock_plugins.time_default.time_swedish as time_swedish
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_screen as wordclock_screen
 import colorsys
@@ -128,16 +129,18 @@ class wordclock_display:
             self.taw = time_german2.time_german2()
         elif language == 'italian':
             self.taw = time_italian.time_italian()
+        elif language == 'romanian':
+            self.taw = time_romanian.time_romanian()
         elif language == 'swabian':
             self.taw = time_swabian.time_swabian()
         elif language == 'swabian2':
             self.taw = time_swabian2.time_swabian2()
+        elif language == 'swedish':
+            self.taw = time_swedish.time_swedish()
         elif language == 'swiss_german':
             self.taw = time_swiss_german.time_swiss_german()
         elif language == 'swiss_german2':
             self.taw = time_swiss_german2.time_swiss_german2()
-        elif language == 'romanian':
-            self.taw = time_romanian.time_romanian()
         else:
             logging.error('Could not detect language: ' + language + '.')
             logging.info('Choosing default: german')

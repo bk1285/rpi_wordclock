@@ -21,6 +21,7 @@ If you want to build a wordclock
           * swiss
           * french
           * romanian (Thanks to Darius)
+          * swedish
 
       * Stancil layout only (requiring some python-implementations: See wordclock_plugins/time_default):
 
