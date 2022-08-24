@@ -119,6 +119,7 @@ class plugin:
         self.brightness_change = 8
 
         self.use_brightness_sensor = config.getboolean('wordclock_display', 'use_brightness_sensor')
+        self.brightness_sensor_address = config.getint('wordclock_display', 'sensor_address')
 
         print(('Using brigtness sensor : ' + str(self.use_brightness_sensor)))
         if self.use_brightness_sensor:
@@ -127,7 +128,7 @@ class plugin:
             import busio
             import adafruit_tsl2561
             i2c = busio.I2C(board.SCL, board.SDA)
-            self.sensor = adafruit_tsl2561.TSL2561(i2c)
+            self.sensor = adafruit_tsl2561.TSL2561(i2c,self.brightness_sensor_address)
         # save current brightness for switching back from sleep mode
         self.wake_brightness = self.brightness_mode_pos
 
