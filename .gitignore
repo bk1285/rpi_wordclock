@@ -15,5 +15,4 @@ wordclock_config/wordclock_config.cfg
 *.swp
 
 # ignore vscode-files
-.vscode/launch.json
-.vscode/settings.json
+.vscode/*

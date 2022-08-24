@@ -1,25 +1,26 @@
-import ConfigParser
+import configparser
 import fontdemo
 import itertools
 import logging
 import os
 from copy import deepcopy
 from PIL import Image
+from . import wiring
 from time import sleep
 from threading import Lock
-import wiring
+import wordclock_plugins.time_default.time_bavarian as time_bavarian
+import wordclock_plugins.time_default.time_dutch as time_dutch
 import wordclock_plugins.time_default.time_english as time_english
 import wordclock_plugins.time_default.time_french as time_french
 import wordclock_plugins.time_default.time_german as time_german
 import wordclock_plugins.time_default.time_german2 as time_german2
-import wordclock_plugins.time_default.time_dutch as time_dutch
+import wordclock_plugins.time_default.time_italian as time_italian
 import wordclock_plugins.time_default.time_swabian as time_swabian
 import wordclock_plugins.time_default.time_swabian2 as time_swabian2
-import wordclock_plugins.time_default.time_bavarian as time_bavarian
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_tools.wordclock_colors as wcc
-import wordclock_screen
+import wordclock_tools.wordclock_screen as wordclock_screen
 import colorsys
 
 
@@ -44,18 +45,13 @@ class wordclock_display:
         self.base_path = config.get('wordclock', 'base_path')
         self.mutex = Lock()
 
-        try:
-            self.setBrightness(config.getint('wordclock_display', 'brightness'))
-        except:
-            self.brightness = 255
-            logging.warning(
-                'Default brightness value not set in config-file: To do so, add a "brightness" between 1..255 to the [wordclock_display]-section.')
+        self.setBrightness(config.getint('wordclock_display', 'brightness'))
 
         if config.getboolean('wordclock', 'developer_mode'):
-            import wordclock_strip_gtk as wcs_gtk
-            self.strip = wcs_gtk.GTKstrip(wci)
+            import wordclock_tools.wordclock_strip_wx as wcs_wx
+            self.strip = wcs_wx.WxStrip(wci)
         else:
-            import wordclock_strip_neopixel as wcs_neo
+            import wordclock_tools.wordclock_strip_neopixel as wcs_neo
             self.strip = wcs_neo.wordclock_strip_neopixel(self.wcl)
 
         if config.get('wordclock_display', 'default_font') == 'wcfont':
@@ -65,13 +61,8 @@ class wordclock_display:
 
         self.strip.begin()
 
-        # Choose default minutes_map
-        minutes_map_str = ''.join(config.get('plugin_time_default', 'minutes-map'))
-        minutes_map_str_list = minutes_map_str.split(',')
-        self.minutes_map = list(map(int, minutes_map_str_list))
-
         # Choose default fgcolor
-        fgcolor = ''.join(config.get('plugin_time_default', 'default-fg-color'))
+        fgcolor = ''.join(config.get('plugin_time_default', 'default_fg_color'))
 
         if fgcolor == 'BLACK':
             self.default_fg_color = wcc.BLACK
@@ -90,12 +81,12 @@ class wordclock_display:
         elif fgcolor == 'BLUE':
             self.default_fg_color = wcc.BLUE
         else:
-            print('Could not detect default-fg-color: ' + fgcolor + '.')
+            print('Could not detect default_fg_color: ' + fgcolor + '.')
             print('Choosing default: warm white')
             self.default_fg_color = wcc.WWHITE
 
         # Choose default bgcolor
-        bgcolor = ''.join(config.get('plugin_time_default', 'default-bg-color'))
+        bgcolor = ''.join(config.get('plugin_time_default', 'default_bg_color'))
 
         if bgcolor == 'BLACK':
             self.default_bg_color = wcc.BLACK
@@ -114,19 +105,16 @@ class wordclock_display:
         elif bgcolor == 'BLUE':
             self.default_bg_color = wcc.BLUE
         else:
-            print('Could not detect default-bg-color: ' + bgcolor + '.')
+            print('Could not detect default_bg_color: ' + bgcolor + '.')
             print('Choosing default: black')
             self.default_bg_color = wcc.BLACK
 
-        # Choose language
-        try:
-            language = ''.join(config.get('wordclock_display', 'language'))
-        except:
-            # For backward compatibility
-            language = ''.join(config.get('plugin_time_default', 'language'))
-
+        # For backward compatibility
+        language = ''.join(config.get('wordclock_display', 'language'))
         logging.info('Setting language to ' + language + '.')
-        if language == 'dutch':
+        if language == 'bavarian':
+            self.taw = time_bavarian.time_bavarian()
+        elif language == 'dutch':
             self.taw = time_dutch.time_dutch()
         elif language == 'english':
             self.taw = time_english.time_english()
@@ -136,12 +124,12 @@ class wordclock_display:
             self.taw = time_german.time_german()
         elif language == 'german2':
             self.taw = time_german2.time_german2()
+        elif language == 'italian':
+            self.taw = time_italian.time_italian()
         elif language == 'swabian':
             self.taw = time_swabian.time_swabian()
         elif language == 'swabian2':
             self.taw = time_swabian2.time_swabian2()
-        elif language == 'bavarian':
-            self.taw = time_bavarian.time_bavarian()
         elif language == 'swiss_german':
             self.taw = time_swiss_german.time_swiss_german()
         elif language == 'swiss_german2':
@@ -150,6 +138,9 @@ class wordclock_display:
             logging.error('Could not detect language: ' + language + '.')
             logging.info('Choosing default: german')
             self.taw = time_german.time_german()
+
+        self.fps = self.config.getint('wordclock', 'animation_fps')
+
 
     def getBrightness(self):
         """
@@ -176,7 +167,7 @@ class wordclock_display:
         Sets a pixel at given 1D coordinates
         """
         for i in ledCoordinates:
-            self.setColorBy2DCoordinates(i % self.get_wca_width(), i / self.get_wca_width(), color)
+            self.setColorBy2DCoordinates(i % self.get_wca_width(), i // self.get_wca_width(), color)
 
     def setColorBy2DCoordinates(self, x, y, color):
         """
@@ -185,7 +176,7 @@ class wordclock_display:
         self.transition_cache_next.matrix[x][y] = color
 
     def setColorByMinute(self, min, color):
-        if min > 0 and min < 5:
+        if min >= 0 and min < 4:
             self.transition_cache_next.minutes[min] = color
 
     def get_wca_height(self):
@@ -199,7 +190,7 @@ class wordclock_display:
         Returns the width of the WCA
         """
         return self.wcl.WCA_WIDTH
- 
+
     def get_led_count(self):
         """
         Returns the overall number of LEDs
@@ -272,9 +263,9 @@ class wordclock_display:
         num_of_frames = len([file_count for file_count in os.listdir(animation_dir)])
 
         if invert:
-            animation_range = range(num_of_frames - 1, -1, -1)
+            animation_range = list(range(num_of_frames - 1, -1, -1))
         else:
-            animation_range = range(0, num_of_frames)
+            animation_range = list(range(0, num_of_frames))
 
         for _ in range(count):
             for i in animation_range:
@@ -329,7 +320,7 @@ class wordclock_display:
     def setMinutes(self, time, color):
         if time.minute % 5 != 0:
             for i in range(0, time.minute % 5):
-                self.transition_cache_next.minutes[self.minutes_map[i]] = color
+                self.transition_cache_next.minutes[i] = color
 
     def apply_brightness(self, color):
         [h, s, v] = colorsys.rgb_to_hsv(color.r/255.0, color.g/255.0, color.b/255.0)
@@ -348,7 +339,7 @@ class wordclock_display:
         """
         This function provides the current color settings to the LEDs
         """
-        fps = 25
+        animation = None if self.fps == 0 else animation
 
         if animation == 'typewriter':
             transition_cache = wordclock_screen.wordclock_screen(self)
@@ -366,12 +357,12 @@ class wordclock_display:
                 while self.getBrightness() > 0:
                     self.setBrightness(self.getBrightness() - animation_speed)
                     self.render_transition_step(self.transition_cache_curr)
-                    sleep(1.0/fps)
+                    sleep(1.0/self.fps)
                 self.transition_cache_curr = deepcopy(self.transition_cache_next)
                 while self.getBrightness() < brightness:
                     self.setBrightness(self.getBrightness() + animation_speed)
                     self.render_transition_step(self.transition_cache_curr)
-                    sleep(1.0/fps)
+                    sleep(1.0/self.fps)
         else: # no animation
             self.transition_cache_curr = deepcopy(self.transition_cache_next)
             self.render_transition_step(self.transition_cache_curr)

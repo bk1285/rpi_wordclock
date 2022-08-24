@@ -33,6 +33,14 @@ YELLOW= Color(255,255,  0)
 ORANGE= Color(212,165,  25)
 LIME  = Color(104,255, 74)
 
+scrollenable = False
+scrolltext = ""
+scrolldate = ""
+scrolltime = ""
+scrolldatetime = 0
+scrollrepeat = 0
+scrollactive = False
+
 # Summarize colors: [BLACK->WHITE, RED->BLUE (rainbow)]
 colors = [BLACK, WHITE, WWHITE, RED, YELLOW, LIME, GREEN, BLUE]
 num_of_colors = len(colors)

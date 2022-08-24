@@ -1,6 +1,5 @@
 import logging
 import os
-import pywapi
 import requests
 import json
 import time
@@ -22,9 +21,12 @@ class plugin:
         self.pretty_name = "Weather forecast"
         self.description = "Displays the current temperature"
 
-        self.zipcode = config.get('plugin_' + self.name, 'zipcode')
-        self.location_id = config.get('plugin_' + self.name, 'location_id')
         self.weather_service = config.get('plugin_weather_forecast', 'weather_service')
+        if self.weather_service == 'openweathermap':
+            self.api_key = config.get('plugin_weather_forecast', 'api_key')
+            self.city = config.get('plugin_weather_forecast', 'city')
+        elif self.weather_service == 'meteoswiss':
+            self.zipcode = config.get('plugin_weather_forecast', 'zipcode')
 
         try:
             import am2302_ths
@@ -40,14 +42,10 @@ class plugin:
         Displaying expected temperature
         """
         # Get current forecast
-        if self.weather_service == 'yahoo':
-            current_weather_forecast = pywapi.get_weather_from_yahoo(self.location_id)
-            outdoor_temp = current_weather_forecast['current_conditions']['temperature']
-        elif self.weather_service == 'weather_dot_com':
-            current_weather_forecast = pywapi.get_weather_from_weather_com(self.location_id)
-            outdoor_temp = current_weather_forecast['current_conditions']['temperature']
+        if self.weather_service == 'openweathermap':
+            outdoor_temp = str((json.loads(requests.get('http://api.openweathermap.org/data/2.5/weather?q=' + self.city + '&appid=' + self.api_key + '&units=metric').text))['main']['temp'])
         elif self.weather_service == 'meteoswiss':
-            outdoor_temp = (json.loads(requests.get('https://www.meteoschweiz.admin.ch/product/output/weather-widget/forecast/version__20210514_1034/de/' + zipcode + '00.json', headers={'referer': 'https://www.meteoschweiz.admin.ch/home/service-und-publikationen/produkte.html'}).text))['data']['current']['temperature']
+            outdoor_temp = (json.loads(requests.get('https://www.meteoschweiz.admin.ch/product/output/weather-widget/forecast/version__20210514_1034/de/' + self.zipcode + '00.json', headers={'referer': 'https://www.meteoschweiz.admin.ch/home/service-und-publikationen/produkte.html'}).text))['data']['current']['temperature']
         else:
             logging.warning('No valid weather_forecast found!')
             return

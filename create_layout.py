@@ -1,5 +1,5 @@
 import ast
-import ConfigParser
+import configparser
 import getopt
 import os
 import svgwrite
@@ -105,8 +105,8 @@ def create_svg(lang, config, side='front', mode='stencil'):
 
     # Process letters
     wca_top_left = [(width - wca_width) / 2, (height - wca_height) / 2]
-    x_coords = range(0, col_num, 1)
-    y_coords = range(0, row_num, 1)
+    x_coords = list(range(0, col_num, 1))
+    y_coords = list(range(0, row_num, 1))
     x_spacing = wca_width / (col_num - 1)
     y_spacing = wca_height / (row_num - 1)
 
@@ -241,7 +241,7 @@ def main():
 
     print('Using ' + configFile + ' to parse configuration.')
     print('Use\n\t' + str(sys.argv[0]) + ' -c "config-file"\nto change')
-    cfg = ConfigParser.ConfigParser()
+    cfg = configparser.ConfigParser()
     cfg.read(configFile)
 
     if process_all:

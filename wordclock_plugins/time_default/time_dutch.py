@@ -36,41 +36,41 @@ class time_dutch:
     """
 
     def __init__(self):
-        self.prefix = range(0,3) +  range(4,6)
+        self.prefix = list(range(0,3)) +  list(range(4,6))
         self.minutes=[[], \
-            range(7,11) + range(40,44), \
-            range(11,15) + range(40,44), \
-            range(28,33) + range(40,44), \
-            range(11,15) + range(18,22) + range(33,37), \
-            range(7,11) + range(18,22) + range(33,37), \
-            range(33,37), \
-            range(7,11) + range(22,26) + range(33,37), \
-            range(11,15) + range(22,26) + range(33,37), \
-            range(28,33) + range(44,48), \
-            range(11,15) + range(44,48), \
-            range(7,11) + range(44,48) ]
-        self.hours= [range(99,105), \
-            range(51,54), \
-            range(55,59), \
-            range(62,66), \
-            range(66,70), \
-            range(70,74), \
-            range(74,77), \
-            range(77,82), \
-            range(88,92), \
-            range(83,88), \
-            range(91,95), \
-            range(96,99), \
-            range(99,105)]
-        self.full_hour= range(107,110)
+            list(range(7,11)) + list(range(40,44)), \
+            list(range(11,15)) + list(range(40,44)), \
+            list(range(28,33)) + list(range(40,44)), \
+            list(range(11,15)) + list(range(18,22)) + list(range(33,37)), \
+            list(range(7,11)) + list(range(18,22)) + list(range(33,37)), \
+            list(range(33,37)), \
+            list(range(7,11)) + list(range(22,26)) + list(range(33,37)), \
+            list(range(11,15)) + list(range(22,26)) + list(range(33,37)), \
+            list(range(28,33)) + list(range(44,48)), \
+            list(range(11,15)) + list(range(44,48)), \
+            list(range(7,11)) + list(range(44,48)) ]
+        self.hours= [list(range(99,105)), \
+            list(range(51,54)), \
+            list(range(55,59)), \
+            list(range(62,66)), \
+            list(range(66,70)), \
+            list(range(70,74)), \
+            list(range(74,77)), \
+            list(range(77,82)), \
+            list(range(88,92)), \
+            list(range(83,88)), \
+            list(range(91,95)), \
+            list(range(96,99)), \
+            list(range(99,105))]
+        self.full_hour= list(range(107,110))
 
     def get_time(self, time, purist):
-        hour=time.hour%12+(1 if time.minute/5 > 3 else 0)
-        minute=time.minute/5
+        hour=time.hour%12+(1 if time.minute//5 > 3 else 0)
+        minute=time.minute//5
         # Assemble indices
         return  \
             (self.prefix if not purist else []) + \
-            self.minutes[minute] + \
+            self.minutes[int(minute)] + \
             self.hours[hour] + \
             (self.full_hour if (minute == 0) else [])
 

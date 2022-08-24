@@ -36,8 +36,8 @@ class time_italian():
         self.full_hour= range(0,0)
 
     def get_time(self, time, withPrefix=True):
-        hour=time.hour%12+(1 if time.minute/5 > 6 else 0)
-        minute=time.minute/5
+        hour=time.hour%12+(1 if time.minute//5 > 6 else 0)
+        minute=time.minute//5
         # Assemble indices
         return  \
             (self.prefix if withPrefix else []) + \
