@@ -3,10 +3,18 @@
 Software setup
 ==============
 
+
+Setup your raspberry pi 
++++++++++++
+
+Setup your raspberry pi (e.g. using Raspberry Pi Imager) by downloading and installing latest Raspian on the SD card.
+
+During the installation process, configure the location according to your needs (incl. time zone, etc.) 
+
 Set locales
 +++++++++++
 
-Since the config-file contains layouts for multiple languages, assure to have a utf-8 compatible locale::
+Since the config-file contains layouts for multiple languages, assure to have a utf-8 compatible locale after setting up your raspberry::
 
     echo $LANG
 
