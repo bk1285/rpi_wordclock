@@ -64,6 +64,28 @@ and::
 
     sudo pip install am2302_rpi
 
+.. _brightness_sensor:
+
+(Optional) brightness sensor
+----------------------------
+
+For using brightness sensor (tsl2561) i2c must be activated via raspi-config::
+
+    sudo raspi-config
+
+use the arrow keys to select 'Interfacing Options' and 'I2C' to tell the RasPi to enable the I2C interface. Then select 'Finish' and reboot the RasPi
+
+Install adafruit-circuitpython-tsl2561 lib::
+
+    sudo pip3 install adafruit-circuitpython-tsl2561
+
+
+Set use_brightness_sensor config value to true and its address::
+
+    # Set the brightness of the display (between 1 and 255)
+    brightness = 200
+    use_brightness_sensor = True
+    sensor_address = 0x39
 
 .. _3rd_party_deps_python:
 
