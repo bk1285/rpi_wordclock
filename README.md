@@ -16,7 +16,7 @@
      * play tetris (credits to [@mrksngl](https://github.com/mrksngl))
      * View a demo [here](https://youtu.be/wcLQDykRBbM?t=84)
  * RESTful, [swagger](https://swagger.io/specification/)-based API to access and control the wordclock functionality
- * [Documentation](http://rpi-wordclock.readthedocs.io/en/master/) on how to build the clock.
+ * [Documentation](https://rpi-wordclock.readthedocs.io/en/main/) on how to build the clock.
  * Remote control via webinterface (credits to [@FrankX0](https://github.com/FrankX0))
      * Control the wordclock with a browser within your local network
      * Linking the webinterface to your smartphones homescreen provides an app-like usage of the interface
