@@ -115,6 +115,8 @@ class plugin:
         self.color_mode_pos = 0
         self.rb_pos = 0  # index position for "rainbow"-mode
 
+        self.color_cycling = config.getboolean('wordclock_display', 'cycle_color')
+
         self.brightness_mode_pos = config.getint('wordclock_display', 'brightness')
         self.brightness_change = 8
 
@@ -145,6 +147,8 @@ class plugin:
             brightnessMax = 255.0
 
             self.brightness_mode_pos = min(((((brightnessMax - brightnessMin) / sensorMax) * sensorCurrent) + brightnessMin),255)
+
+        has_run = False
 
         while True:
             # Get current time
@@ -192,6 +196,10 @@ class plugin:
                 self.brightness_mode_pos = newBrightness
                 wcd.setBrightness(newBrightness)
                 self.show_time(wcd, wci, animation='None')
+
+            if not(has_run) and self.color_cycling:
+                self.color_selection(wcd, wci)
+                has_run = True
 
             event = wci.waitForEvent(2)
             # Switch display color, if button_left is pressed
