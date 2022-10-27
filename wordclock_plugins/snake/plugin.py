@@ -6,7 +6,7 @@ import time
 import random
 import sys
 import re
-from Snakeobject import Snakeobject
+from .Snakeobject import Snakeobject
 import wordclock_tools.wordclock_colors as wcc
 
 class plugin:
@@ -20,43 +20,34 @@ class plugin:
         '''
         # Get plugin name (according to the folder, it is contained in)
         self.name = os.path.dirname(__file__).split('/')[-1]
+        self.pretty_name = "Snake"
+        self.description = "... back to the 90ies"
 
     def updatePoints(self, sn, wcd):
         points = sn.data["points"]
-        #print(str(points))
-
-        ''' ToDo: Change to your pixel layout!
-        The second pixels of the wordclock represent the 'small' points.
-        For every single food taken by the snake, you get one small point.
-        12 small points are 1 big point (see code below)
         '''
-        s = int(points%12)
-        for i in range(s):
-            wcd.setPixelColor(114+1+i, wcc.BLUE)
-
-        ''' ToDo: Change to your pixel layout!
-        The minute pixels of the wordclock represent the 'big' pointss.
+        The minute pixels of the wordclock represent the 'big' points.
         A big point will represent 12 single points.
         The first four big points will be in yellow color, then the points become pink
         '''
         m = int(points/12)
-        if (m >= 1): wcd.setPixelColor(113, wcc.YELLOW)
-        if (m >= 2): wcd.setPixelColor(1, wcc.YELLOW)
-        if (m >= 3): wcd.setPixelColor(112, wcc.YELLOW)
-        if (m >= 4): wcd.setPixelColor(0, wcc.YELLOW)
-        if (m >= 5): wcd.setPixelColor(113, wcc.PINK)
-        if (m >= 6): wcd.setPixelColor(1, wcc.PINK)
-        if (m >= 7): wcd.setPixelColor(112, wcc.PINK)
-        if (m >= 8): wcd.setPixelColor(0, wcc.PINK)
+        if (m >= 1): wcd.setColorBy1DCoordinates([113], wcc.YELLOW)
+        if (m >= 2): wcd.setColorBy1DCoordinates([1], wcc.YELLOW)
+        if (m >= 3): wcd.setColorBy1DCoordinates([112], wcc.YELLOW)
+        if (m >= 4): wcd.setColorBy1DCoordinates([0], wcc.YELLOW)
+        if (m >= 5): wcd.setPixesetColorBy1DCoordinateslColor([113], wcc.PINK)
+        if (m >= 6): wcd.setColorBy1DCoordinates([1], wcc.PINK)
+        if (m >= 7): wcd.setColorBy1DCoordinates([112], wcc.PINK)
+        if (m >= 8): wcd.setColorBy1DCoordinates([0], wcc.PINK)
 
     def keyPressed(self, event, sn, wcd, wci):
         sn.data["ignoreNextTimerEvent"] = True # for better timing
                 
         # now process keys that only work if the game is not over
         if (sn.data["isGameOver"] == False):
-            if (event == wci.button_left):
+            if (event == wci.EVENT_BUTTON_LEFT):
                 self.moveSnake(sn, 0, -2)
-            elif (event == wci.button_right):
+            elif (event == wci.EVENT_BUTTON_RIGHT):
                 self.moveSnake(sn, 0, 2)
         self.redrawAll(sn, wcd)
     
@@ -125,13 +116,14 @@ class plugin:
         elif (snakeBoard[newHeadRow][newHeadCol] < 0):
             # eating food!  Yum!
             sn.data["points"] = 1 + sn.data["points"]
-            snakeBoard[newHeadRow][newHeadCol] = 1 + snakeBoard[headRow][headCol];
+            snakeBoard[newHeadRow][newHeadCol] = 1 + snakeBoard[headRow][headCol]
             sn.data["headRow"] = newHeadRow
             sn.data["headCol"] = newHeadCol
             self.placeFood(sn)
+            sn.data["speed"] = 1.1 * sn.data["speed"]
         else:
             # normal move forward (not eating food)
-            snakeBoard[newHeadRow][newHeadCol] = 1 + snakeBoard[headRow][headCol];
+            snakeBoard[newHeadRow][newHeadCol] = 1 + snakeBoard[headRow][headCol]
             sn.data["headRow"] = newHeadRow
             sn.data["headCol"] = newHeadCol
             self.removeTail(sn)
@@ -152,17 +144,17 @@ class plugin:
         sn.data["isGameOver"] = True
     
     def drawSnakeCell(self, sn, snakeBoard, row, col, headRow, headCol, wcd):
-        wcd.setColorBy2DCoordinates(wcd.strip, col, row, wcc.BLACK)
+        wcd.setColorBy2DCoordinates(col, row, wcc.BLACK)
         
         if((row == headRow) and (headCol == col)):
             # draw snake body head
-             wcd.setColorBy2DCoordinates(wcd.strip,col, row, wcc.YELLOW) #Green
+             wcd.setColorBy2DCoordinates(col, row, wcc.YELLOW) #Green
         elif (snakeBoard[row][col] > 0):
             # draw part of the snake body
-            wcd.setColorBy2DCoordinates(wcd.strip,col, row, wcc.Color(34, 177, 76)) #Green
+            wcd.setColorBy2DCoordinates(col, row, wcc.Color(34, 177, 76)) #Green
         elif (snakeBoard[row][col] < 0):
             # draw food
-            wcd.setColorBy2DCoordinates(wcd.strip, col, row, wcc.RED)
+            wcd.setColorBy2DCoordinates(col, row, wcc.RED)
         
     def drawSnakeBoard(self, sn, wcd):
         snakeBoard = sn.data["snakeBoard"]
@@ -179,15 +171,13 @@ class plugin:
                 self.drawSnakeCell(sn, snakeBoard, row, col, headRow, headCol, wcd)
     
     def redrawAll(self, sn, wcd):
-        # wcd.clearLetters(wcc.BLACK)
-        # wcd.clearMinutes(wcc.BLACK)
-        # wcd.clearSeconds(wcc.BLACK)
+        wcd.resetDisplay()
         self.drawSnakeBoard(sn, wcd)
         self.updatePoints(sn, wcd)
         wcd.show()
         if (sn.data["isGameOver"] == True):
             for i in range(3):
-                wcd.clearLetters(wcc.BLACK)
+                wcd.resetDisplay()
                 wcd.show()
                 time.sleep(0.3)
                 self.drawSnakeBoard(sn, wcd)
@@ -271,6 +261,7 @@ class plugin:
         sn.data["snakeDcol"] = -1 # start moving left
         sn.data["ignoreNextTimerEvent"] = False
         sn.data["points"] = 0
+        sn.data["speed"] = 1.0
         self.redrawAll(sn, wcd)
         
     def run(self, wcd, wci):
@@ -281,18 +272,18 @@ class plugin:
         self.init(sn, wcd)
         skipWait=False
         while True:
-            event=0
+            event=-1
             if (sn.data["isGameOver"] == True):
                 return
             
             if (skipWait == False):
-                event = wci.waitForEvent(0.8)
-                # event = wci.waitSecondsForEvent([wci.button_return, wci.button_left, wci.button_right], 0.8)
+                event = wci.waitForEvent(1.0 / sn.data["speed"] )
             else:
                 skipWait=False
             if (event == wci.EVENT_BUTTON_RETURN):
                 return # Exit snake and return to wordclock
-            if event > 0:
+            
+            if event >= 0:
                 self.keyPressed(event, sn, wcd, wci)
                 time.sleep(wci.lock_time)
                 skipWait=True

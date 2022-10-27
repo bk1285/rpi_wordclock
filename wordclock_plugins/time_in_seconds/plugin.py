@@ -1,7 +1,7 @@
 import datetime
 import os
 import time
-import time_seconds
+from .time_seconds import time_seconds
 import wordclock_tools.wordclock_colors as wcc
 
 
@@ -21,9 +21,9 @@ class plugin:
         self.pretty_name = "Seconds"
         self.description = "Shows the current seconds. The fool thinks no time flies;)"
 
-	self.taw = time_seconds.time_seconds()
+        self.taw = time_seconds()
 
-	self.bg_color = wcc.BLACK  # default background color
+        self.bg_color = wcc.BLACK  # default background color
         self.word_color = wcc.WHITE  # default word color
         self.minute_color = wcc.BLACK  # default minute color
 
@@ -44,19 +44,19 @@ class plugin:
             event = wci.waitForEvent(0.05)
             if (event == wci.EVENT_BUTTON_RETURN) \
                     or (event == wci.EVENT_EXIT_PLUGIN) \
-		            or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
+                    or (event == wci.EVENT_NEXT_PLUGIN_REQUESTED):
                 return
 
     def show_time(self, wcd, wci, currentSecond):
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
-        #show seconds based on numbers defined in time_seconds
-	for i in range(110, -1, -110/11):
-		#previous seconds, dimming down
-		taw_indices = self.taw.get_time(currentSecond-1 if currentSecond != 0 else 59)
-		wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, wcc.Color(i, i, i))
-		#current seconds
-		taw_indices = self.taw.get_time(currentSecond)
-		wcd.setColorBy1DCoordinates(wcd.strip, taw_indices, self.word_color)
-		wcd.show()
-		time.sleep(0.05)
+        # show seconds based on numbers defined in time_seconds
+        for i in range(110, -1, int(-110 / 11)):
+            # previous seconds, dimming down
+            taw_indices = self.taw.get_time(currentSecond - 1 if currentSecond != 0 else 59)
+            wcd.setColorBy1DCoordinates(taw_indices, wcc.Color(i, i, i))
+            # current seconds
+            taw_indices = self.taw.get_time(currentSecond)
+            wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
+            wcd.show()
+            time.sleep(0.05)

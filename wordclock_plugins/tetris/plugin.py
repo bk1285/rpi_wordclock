@@ -5,8 +5,9 @@ import os
 import wordclock_tools.wordclock_colors as wcc
 import random
 import time
-from brick import brick
+from .brick import brick
 from time import sleep
+from functools import reduce
 
 
 class plugin:
@@ -147,21 +148,21 @@ class plugin:
     def clear_lines(self, wcd):
         # get all full lines
         rows = [x for x, row in enumerate(self.field) if
-                reduce(lambda x, y: x and y, map(lambda x: x is not None, row), True)]
+                reduce(lambda x, y: x and y, [x is not None for x in row], True)]
         if len(rows):
             for k in range(4):  # blink them 2 times
                 for r, row in enumerate(self.field):
                     for c, cell in enumerate(row):
                         if k % 2 == 0 and r in rows:
-                            wcd.setColorBy2DCoordinates(wcd.strip, c, r, self.bg_color)
+                            wcd.setColorBy2DCoordinates(c, r, self.bg_color)
                         else:
-                            wcd.setColorBy2DCoordinates(wcd.strip, c, r,
+                            wcd.setColorBy2DCoordinates(c, r,
                                                         cell.color if cell is not None else self.bg_color)
                 # redraw
                 wcd.show()
                 sleep(0.3)
         for row in rows:  # clear lines
-            for k in reversed(range(row)):
+            for k in reversed(list(range(row))):
                 self.field[k + 1] = self.field[k][:]
         self.draw(wcd)
         return len(rows)
@@ -171,9 +172,9 @@ class plugin:
             for r, row in enumerate(self.field):
                 for c, cell in enumerate(row):
                     if k % 2 == 0:
-                        wcd.setColorBy2DCoordinates(wcd.strip, c, r, self.bg_color)
+                        wcd.setColorBy2DCoordinates(c, r, self.bg_color)
                     else:
-                        wcd.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
+                        wcd.setColorBy2DCoordinates(c, r, cell.color if cell is not None else self.bg_color)
             wcd.show()
             sleep(0.3)
 
@@ -181,7 +182,7 @@ class plugin:
         # redraw field
         for r, row in enumerate(self.field):
             for c, cell in enumerate(row):
-                wcd.setColorBy2DCoordinates(wcd.strip, c, r, cell.color if cell is not None else self.bg_color)
+                wcd.setColorBy2DCoordinates(c, r, cell.color if cell is not None else self.bg_color)
         wcd.show()
 
     def carve(self, brick, x, y):

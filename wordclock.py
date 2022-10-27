@@ -1,12 +1,17 @@
-#!/usr/bin/env python
-import ConfigParser
+import sys
+import coloredlogs
 from importlib import import_module
+import logging
 import netifaces
 import inspect
 import os
+import subprocess
 import time
+import traceback
 import threading
 from shutil import copyfile
+
+import wordclock_tools.wordclock_config as wccfg
 import wordclock_tools.wordclock_display as wcd
 import wordclock_interfaces.event_handler as wci
 import wordclock_interfaces.web_interface as wciweb
@@ -23,34 +28,20 @@ class wordclock:
         # Get path of the directory where this file is stored
         self.basePath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-        # Get wordclock configuration from config-file
-        pathToConfigFile = self.basePath + '/wordclock_config/wordclock_config.cfg'
-        if not os.path.exists(pathToConfigFile):
-            pathToConfigFileExample = self.basePath + '/wordclock_config/wordclock_config.example.cfg'
-            if not os.path.exists(pathToConfigFileExample):
-                print('Error: No config-file available!')
-                print('  Expected ' + pathToConfigFile + ' or ' + pathToConfigFileExample)
-                raise Exception('Missing config-file')
-            copyfile(pathToConfigFileExample, pathToConfigFile)
-            print('Warning: No config-file specified! Was created from example-config!')
-        print('Parsing ' + pathToConfigFile)
-        self.config = ConfigParser.ConfigParser()
-        self.config.read(pathToConfigFile)
+        self.currentGitHash = subprocess.check_output(["git", "describe", "--tags"], cwd=self.basePath).strip().decode()
+        logging.info("Software version: " + self.currentGitHash)
 
-        # Add to the loaded configuration the current base path to provide it
-        # to other classes/plugins for further usage
-        self.config.set('wordclock', 'base_path', self.basePath)
-
-        self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')        
-        if self.developer_mode_active:
-            # must be created first
-            import wx        
-            self.app = wx.App()
+        self.config = wccfg.wordclock_config(self.basePath)
 
         # Create object to interact with the wordclock using the interface of your choice
         self.wci = wci.event_handler()
 
-        if not self.developer_mode_active:
+        self.developer_mode_active = self.config.getboolean('wordclock', 'developer_mode')
+
+        if self.developer_mode_active:
+            import wx        
+            self.app = wx.App()
+        else:
             import wordclock_interfaces.gpio_interface as wcigpio
             self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
@@ -71,13 +62,17 @@ class wordclock:
         index = 0  # A helper variable (only incremented on successful import)
         self.plugins = []
         for plugin in plugins:
+            #only neccessary when using PyCharm
+            if plugin == '__pycache__':
+                continue
+
             # Check the config-file, whether to activate or deactivate the plugin
             try:
                 if not self.config.getboolean('plugin_' + plugin, 'activate'):
-                    print('Skipping plugin ' + plugin + ' since it is set to activate=false in the config-file.')
+                    logging.info('Skipping plugin ' + plugin + ' since it is set to activate=false in the config-file.')
                     continue
             except:
-                print('  INFO: No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.')
+                logging.debug('No activate-flag set for plugin ' + plugin + ' within the config-file. Will be imported.')
 
             try:
                 # Perform a minimal (!) validity check
@@ -87,17 +82,25 @@ class wordclock:
                 self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
                 # Search for default plugin to display the time
                 if plugin == 'time_default':
-                    print('  Selected "' + plugin + '" as default plugin')
+                    logging.info('Selected "' + plugin + '" as default plugin')
                     self.default_plugin = index
-                print('Imported plugin ' + str(index) + ': "' + plugin + '".')
+                logging.info('Imported plugin ' + str(index) + ': "' + plugin + '".')
                 index += 1
             except Exception as e:
                 print(e)
-                print('Failed to import plugin ' + plugin + '!')
+                logging.warning('Failed to import plugin ' + plugin + '!')
+                #detailed error (traceback)
+                traceback.print_exc(limit=1)
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
         self.wciweb = wciweb.web_interface(self)
+        
+        self.scrollenable = False
+        self.scrolltext = ""
+        self.scrolldate = ""
+        self.scrolltime = ""
+        self.scrollrepeat = 0
 
     def startup(self):
         """
@@ -106,8 +109,12 @@ class wordclock:
         if self.config.getboolean('wordclock', 'show_startup_message'):
             startup_message = self.config.get('wordclock', 'startup_message')
             if startup_message == "ShowIP":
-                interface = self.config.get('plugin_ip_address', 'interface')
-                self.wcd.showText("IP: " + netifaces.ifaddresses(interface)[2][0]['addr'])
+                try:
+                    interface = self.config.get('plugin_ip_address', 'interface')
+                    self.wcd.showText("IP: " + netifaces.ifaddresses(interface)[2][0]['addr'])
+                except:
+                    logging.warning("Failed to retrieve IP address")
+                    self.wcd.showText("No IP")
             else:
                 self.wcd.showText(startup_message)
 
@@ -117,17 +124,26 @@ class wordclock:
         """
 
         try:
-	    print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-	    self.plugins[self.plugin_index].run(self.wcd, self.wci)
-        except Exception as e:
-            print(e)
-            print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
+	        logging.info('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+	        self.plugins[self.plugin_index].run(self.wcd, self.wci)
+        except:
+            logging.error('Error in plugin ' + self.plugins[self.plugin_index].name + '.')
+            logging.error('PLEASE PROVIDE THE CURRENT SOFTWARE VERSION (GIT HASH), WHEN REPORTING THIS ERROR: ' + self.currentGitHash)
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
+            traceback.print_exc()
+            raise
+            time.sleep(2)
+
+            #goto menu afterwards to prevent being stuck in an error loop
+            event = self.wci.BUTTONS.get("return")
+            self.wci.getNextAction(event)
 
         # Cleanup display after exiting plugin
         self.wcd.resetDisplay()
 
     def runNext(self, plugin_index=None):
+        if(plugin_index == self.plugin_index):
+            return
         self.plugin_index = plugin_index if plugin_index is not None else self.default_plugin
         self.wci.setEvent(self.wci.EVENT_NEXT_PLUGIN_REQUESTED)
 
@@ -167,15 +183,21 @@ class wordclock:
                         if self.plugin_index == len(self.plugins):
                             self.plugin_index = 0
                         time.sleep(self.wci.lock_time)
+
     def run_forever(self):
         self.startup()        
         self.run()
 
+if __name__ == '__main__':
+        
+    if sys.version_info.major != 3:
+        print('Run \"sudo python3 wordclock.py\"')
+        raise Exception('python version unsupported')
 
-if __name__ == '__main__':    
-    #word_clock = wordclock()
-    #word_clock.startup()
-    #word_clock.run()
+    # Setup logging
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
+    coloredlogs.install()
+
     word_clock = wordclock()
     developer_mode = word_clock.developer_mode_active
     if not developer_mode:
