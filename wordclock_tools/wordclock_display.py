@@ -113,36 +113,41 @@ class wordclock_display:
             self.default_bg_color = wcc.BLACK
 
         # For backward compatibility
-        language = ''.join(config.get('wordclock_display', 'language'))
-        logging.info('Setting language to ' + language + '.')
-        if language == 'bavarian':
+        try:
+            dialect = ''.join(config.get('wordclock_display', 'dialect'))
+        except:
+            # For backward compatibility
+            dialect = ''.join(config.get('wordclock_display', 'language'))
+        logging.info('Setting dialect to ' + dialect + '.')
+
+        if dialect == 'bavarian':
             self.taw = time_bavarian.time_bavarian()
-        elif language == 'dutch':
+        elif dialect == 'dutch':
             self.taw = time_dutch.time_dutch()
-        elif language == 'english':
+        elif dialect == 'english':
             self.taw = time_english.time_english()
-        elif language == 'french':
+        elif dialect == 'french':
             self.taw = time_french.time_french()
-        elif language == 'german':
+        elif dialect == 'german':
             self.taw = time_german.time_german()
-        elif language == 'german2':
+        elif dialect == 'german2':
             self.taw = time_german2.time_german2()
-        elif language == 'italian':
+        elif dialect == 'italian':
             self.taw = time_italian.time_italian()
-        elif language == 'romanian':
+        elif dialect == 'romanian':
             self.taw = time_romanian.time_romanian()
-        elif language == 'swabian':
+        elif dialect == 'swabian':
             self.taw = time_swabian.time_swabian()
-        elif language == 'swabian2':
+        elif dialect == 'swabian2':
             self.taw = time_swabian2.time_swabian2()
-        elif language == 'swedish':
+        elif dialect == 'swedish':
             self.taw = time_swedish.time_swedish()
-        elif language == 'swiss_german':
+        elif dialect == 'swiss_german':
             self.taw = time_swiss_german.time_swiss_german()
-        elif language == 'swiss_german2':
+        elif dialect == 'swiss_german2':
             self.taw = time_swiss_german2.time_swiss_german2()
         else:
-            logging.error('Could not detect language: ' + language + '.')
+            logging.error('Could not detect dialect: ' + dialect + '.')
             logging.info('Choosing default: german')
             self.taw = time_german.time_german()
 
