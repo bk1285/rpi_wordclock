@@ -31,6 +31,15 @@ If not, check this website, to adjust it: http://perlgeek.de/en/article/set-up-a
 The wordclock software
 ++++++++++++++++++++++
 
+.. _3rd_party_deps_packages:
+
+3rd party dependencies (packages)
+---------------------------------
+
+To install 3rd party dependencies (packages) enter in a terminal/commandline::
+
+    sudo apt-get install git python3-pip python3-scipy swig fonts-freefont-ttf libopenjp2-7
+
 .. _download_software:
 
 Download software
@@ -40,16 +49,6 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
 
     cd ~
     git clone https://github.com/bk1285/rpi_wordclock.git
-
-
-.. _3rd_party_deps_packages:
-
-3rd party dependencies (packages)
----------------------------------
-
-To install 3rd party dependencies (packages) enter in a terminal/commandline::
-
-    sudo apt-get install python3-pip python3-scipy swig fonts-freefont-ttf libopenjp2-7
 
 .. _temperature_sensor:
 
