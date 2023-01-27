@@ -139,7 +139,7 @@ class wordclock_display:
             self.taw = time_swabian2.time_swabian2()
         elif language == 'swedish':
             self.taw = time_swedish.time_swedish()
-        elif language == 'chineseh':
+        elif language == 'chinese':
             self.taw = time_chinese.time_chinese()
         elif language == 'swiss_german':
             self.taw = time_swiss_german.time_swiss_german()
