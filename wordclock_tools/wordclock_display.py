@@ -22,6 +22,7 @@ import wordclock_plugins.time_default.time_swabian2 as time_swabian2
 import wordclock_plugins.time_default.time_swiss_german as time_swiss_german
 import wordclock_plugins.time_default.time_swiss_german2 as time_swiss_german2
 import wordclock_plugins.time_default.time_swedish as time_swedish
+import wordclock_plugins.time_default.time_chinese as time_chinese
 import wordclock_plugins.time_default.time_hindi as time_hindi
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_screen as wordclock_screen
@@ -139,6 +140,8 @@ class wordclock_display:
             self.taw = time_swabian2.time_swabian2()
         elif language == 'swedish':
             self.taw = time_swedish.time_swedish()
+        elif language == 'chinese':
+            self.taw = time_chinese.time_chinese()
         elif language == 'hindi':
             self.taw = time_hindi.time_hindi()
         elif language == 'swiss_german':
