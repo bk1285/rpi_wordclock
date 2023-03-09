@@ -122,7 +122,10 @@ To run the wordclock software (with adapted wiring and config-file) do::
     cd ~/rpi_wordclock
     sudo python3 wordclock.py
 
-In case, the whole thing is not working as expected: Maybe the section :ref:`trouble-shooting` might help...
+In case the whole thing is not working as expected: Maybe the section :ref:`trouble-shooting` might help...
+
+.. note:: Please be aware, that running the wordclock this way is mainly to ensure it is working. If you close the SSH
+  connection or stop the command, the wordclock will no longer update.
 
 
 .. _run_software_on_startup:
@@ -130,13 +133,27 @@ In case, the whole thing is not working as expected: Maybe the section :ref:`tro
 Make software run on every startup
 ----------------------------------
 
-Add the python-script to crontab by calling the command::
+Link and enable the systemd unit by running the following commands::
 
-    sudo crontab -e
+    sudo ln -s /home/pi/rpi_wordclock/wordclock_config/wordclock.service /etc/systemd/system
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now wordclock.service
 
-Add here::
+For more information on systemd related operations, please see :ref:`systemd`.
 
-    @reboot sudo python3 /home/pi/rpi_wordclock/wordclock.py
+Migration from the former crontab startup solution
+--------------------------------------------------
+
+If you have a working wordclock which was configured with the former `crontab` solution and like to migrate to systemd,
+just run::
+
+    crontab -e
+
+And remove the `@reboot python3 /home/pi/rpi_wordclock/wordclock.py` line. Now you can follow the steps above.
+
+.. note:: If the wordclock software is currently running you should either omit the `--now` option from the command above
+or reboot after the `daemon-reload` command. Else the wordclock software will run twice which will result in strange
+behaviour. Just reboot if you run into this.
 
 Access the wordclock via webinterface
 -------------------------------------
