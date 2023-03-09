@@ -151,7 +151,7 @@ just run::
 
 And remove the `@reboot python3 /home/pi/rpi_wordclock/wordclock.py` line. Now you can follow the steps above.
 
-.. note:: If the wordclock software is currently running you should either omit the `--now` option from the command above
+.. note:: If the wordclock software is currently running, you should either omit the `--now` option from the command above
 or reboot after the `daemon-reload` command. Else the wordclock software will run twice which will result in strange
 behaviour. Just reboot if you run into this.
 
