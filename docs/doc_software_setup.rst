@@ -147,7 +147,7 @@ Migration from the former crontab startup solution
 If you have a working wordclock which was configured with the former `crontab` solution and like to migrate to systemd,
 just run::
 
-    crontab -e
+    sudo crontab -e
 
 And remove the `@reboot python3 /home/pi/rpi_wordclock/wordclock.py` line. Now you can follow the steps above.
 

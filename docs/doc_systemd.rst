@@ -34,11 +34,12 @@ To start the wordclock, run the following command::
     sudo systemctl start wordclock.service
 
 
+.. note:: Please be aware, that the service will not be started after the next reboot this way.
+
 And to stop the wordclock, run the following command::
 
     sudo systemctl stop wordclock.service
 
-.. note:: Please be aware, that the service will not be started after the next reboot this way.
 
 Enabling and disabling the wordclock
 ------------------------------------
@@ -66,4 +67,4 @@ If you want to check the output of the wordclock software, you can run::
 
     sudo journalctl -fu wordclock.service
 
-The `f` option will follow the output and the `u` option specifies the unit.
+The optional `f` option will follow the output and the `u` option specifies the unit.
