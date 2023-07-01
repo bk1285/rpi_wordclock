@@ -1,6 +1,9 @@
 # ignore pyc-files
 *.pyc
 
+# ignore python venv
+venv
+
 # ignore build of documentation (to build latest documentation on your own)
 doc/_build*
 doc/_apidoc/*

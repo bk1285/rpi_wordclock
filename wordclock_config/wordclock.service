@@ -3,7 +3,7 @@ Description=Wordclock
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/env python3 /home/pi/rpi_wordclock/wordclock.py
+ExecStart=/home/pi/rpi_wordclock/venv/bin/python3 /home/pi/rpi_wordclock/wordclock.py
 WorkingDirectory=/home/pi/rpi_wordclock/
 Restart=always
 RestartSec=5
