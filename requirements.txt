@@ -9,3 +9,4 @@ monotonic==1.6
 pillow==9.3.0
 rpi-ws281x==4.3.0
 svgwrite==1.4.3
+werkzeug==2.1.2
