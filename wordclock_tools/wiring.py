@@ -59,6 +59,9 @@ class wiring:
             self.wcl = webdisaster_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'momonunu_wiring':
             self.wcl = momonunu_wiring(self.self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'mini_wiring_first_class':
+            self.LED_COUNT = 168
+            self.wcl = mini_wiring_first_class(self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
             logging.warning('No valid wiring layout found. Falling back to default!')
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
@@ -334,4 +337,64 @@ class momonunu_wiring(base_wiring):
             return 1
         elif min == 4:
             return 0
+
+class mini_wiring_first_class(base_wiring):
+    """
+    A class, holding all information of the wordclock's layout to map given
+    timestamps, 2d-coordinates to the corresponding LEDs (corresponding to
+    the individual wiring/layout of any wordclock).
+    If a different wordclock wiring/layout is chosen, select or implement a child class.
+    """
+
+    def __init__(self, WCA_WIDTH, WCA_HEIGHT):
+        self.WCA_WIDTH = WCA_WIDTH
+        self.WCA_HEIGHT = WCA_HEIGHT + 3
+        self.LED_COUNT = 168
+
+    def getStripIndexFrom2D(self, x, y):
+        """
+        Mapping coordinates to the wordclocks display
+        Implementation is hardware/wiring dependent
+        Final range:
+             (0,0): top-left
+             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        """
+        if x % 2 == 0:
+            return (self.WCA_WIDTH - x - 1) * self.WCA_HEIGHT + y + 14
+            #return (self.WCA_WIDTH - x) * self.WCA_HEIGHT + y + 14
+        else:
+            return (self.WCA_WIDTH - x) * self.WCA_HEIGHT - y + 10
+
+    def mapMinutes(self, min):
+        """
+        Access minutes (1,2,3,4)
+        Implementation is hardware/wiring dependent
+        This implementation assumes the minutes to be wired as first and last two leds of the led-strip
+        """
+        if min < 1 or min > 4:
+            logging.error('Minute index of range. Expected 1,2,3 or 4, but received ' + min)
+            return 0
+        return self.mapMinutesInternal(min)
+
+    def mapMinutesInternal(self, min):
+        if min == 1:
+            return self.LED_COUNT - 1
+        elif min == 2:
+            return 11
+        elif min == 3:
+            return self.LED_COUNT - 12
+        elif min == 4:
+            return 0
+
+    def mapMinutesInternalAtBegin(self, min):
+        """
+        This implementation assumes the minutes to be wired as the first four leds of the led-strip
+        """
+        return min - 1
+
+    def mapMinutesInternalLedsAtEnd(self, min):
+        """
+        This implementation assumes the minutes to be wired as the last four leds of the led-strip
+        """
+        return self.LED_COUNT - 5 + min
 
