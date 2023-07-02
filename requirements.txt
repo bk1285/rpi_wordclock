@@ -1,11 +1,4 @@
 # install pygobject as outlined in pyobject.readthedocs.io/en/latest/getting_started.html for ui=based rendering (for development purposes, when no LEDs are attached to PC)
-astral==2.2
-coloredlogs==15.0.1
-feedparser==6.0.5
-flask-restx==0.5.1
-freetype-py==2.2.0
-netifaces==0.11.0
-monotonic==1.6
-pillow==9.3.0
-rpi-ws281x==4.3.0
-svgwrite==1.4.3
+flask-restx~=1.1.0
+rpi-ws281x~=4.3.0
+RPi.GPIO~=0.7.1

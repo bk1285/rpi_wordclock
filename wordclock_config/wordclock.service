@@ -1,0 +1,21 @@
+[Unit]
+Description=Wordclock
+After=network.target
+
+[Service]
+ExecStart=/home/pi/rpi_wordclock/venv/bin/python3 /home/pi/rpi_wordclock/wordclock.py
+WorkingDirectory=/home/pi/rpi_wordclock/
+Restart=always
+RestartSec=5
+KillSignal=SIGTERM
+Type=simple
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=wordclock
+NotifyAccess=all
+User=root
+Group=root
+Nice=1
+
+[Install]
+WantedBy=multi-user.target

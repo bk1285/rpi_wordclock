@@ -1,6 +1,9 @@
 # ignore pyc-files
 *.pyc
 
+# ignore python venv
+venv
+
 # ignore build of documentation (to build latest documentation on your own)
 doc/_build*
 doc/_apidoc/*
@@ -15,4 +18,7 @@ wordclock_config/wordclock_config.cfg
 *.swp
 
 # ignore vscode-files
-.vscode/*
+.vscode
+
+# ignore PyCharm-files
+.idea

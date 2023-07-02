@@ -4,12 +4,12 @@ Software setup
 ==============
 
 
-Setup your raspberry pi 
+Setup your raspberry pi
 +++++++++++
 
 Setup your raspberry pi (e.g. using Raspberry Pi Imager) by downloading and installing latest Raspian on the SD card.
 
-During the installation process, configure the location according to your needs (incl. time zone, etc.) 
+During the installation process, configure the location according to your needs (incl. time zone, etc.)
 
 Set locales
 +++++++++++
@@ -38,7 +38,7 @@ The wordclock software
 
 To install 3rd party dependencies (packages) enter in a terminal/commandline::
 
-    sudo apt-get install git python3-pip python3-scipy swig fonts-freefont-ttf libopenjp2-7
+    sudo apt-get install git python3-full python3-scipy python3-freetype python3-virtualenv python3-pil python3-werkzeug python3-coloredlogs python3-feedparser python3-astral python3-monotonic python3-netifaces python3-svgwrite swig fonts-freefont-ttf libopenjp2-7
 
 .. _download_software:
 
@@ -49,6 +49,25 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
 
     cd ~
     git clone https://github.com/bk1285/rpi_wordclock.git
+
+
+.. _python_venv:
+
+Allow git tags command
+----------------------
+
+Since the code uses the `git --tags` command as root event tough the file belong to the user pi, we have to allow git commands for root::
+
+    sudo git config --global --add safe.directory /home/pi/rpi_wordclock
+
+.. _git_safedir:
+
+Create Python virtual environment
+---------------------------------
+
+Create a python3 virtual environment in the ~/rpi_wordclock/venv folder where all python requirements will be installed in::
+
+    python3 -m venv --system-site-packages ~/rpi_wordclock/venv
 
 .. _temperature_sensor:
 
@@ -61,7 +80,7 @@ These dependencies are http://www.airspayce.com/mikem/bcm2835/index.html
 
 and::
 
-    sudo pip install am2302_rpi
+    ~/rpi_wordclock/venv/bin/pip install am2302_rpi
 
 .. _brightness_sensor:
 
@@ -76,7 +95,7 @@ use the arrow keys to select 'Interfacing Options' and 'I2C' to tell the RasPi t
 
 Install adafruit-circuitpython-tsl2561 lib::
 
-    sudo pip3 install adafruit-circuitpython-tsl2561
+    ~/rpi_wordclock/venv/bin/pip install adafruit-circuitpython-tsl2561
 
 
 Set use_brightness_sensor config value to true and its address::
@@ -93,9 +112,7 @@ Set use_brightness_sensor config value to true and its address::
 
 To install 3rd party python dependencies (packages) run::
 
-    cd ~/rpi_wordclock
-    sudo pip3 install -r requirements.txt
-
+    ~/rpi_wordclock/venv/bin/pip install -r requirements.txt
 
 .. _adopt_software:
 
@@ -119,10 +136,12 @@ Run software
 
 To run the wordclock software (with adapted wiring and config-file) do::
 
-    cd ~/rpi_wordclock
-    sudo python3 wordclock.py
+    sudo ~/rpi_wordclock/venv/bin/python3 wordclock.py
 
-In case, the whole thing is not working as expected: Maybe the section :ref:`trouble-shooting` might help...
+In case the whole thing is not working as expected: Maybe the section :ref:`trouble-shooting` might help...
+
+.. note:: Please be aware, that running the wordclock this way is mainly to ensure it is working. If you close the SSH
+  connection or stop the command, the wordclock will no longer update.
 
 
 .. _run_software_on_startup:
@@ -130,16 +149,29 @@ In case, the whole thing is not working as expected: Maybe the section :ref:`tro
 Make software run on every startup
 ----------------------------------
 
-Add the python-script to crontab by calling the command::
+Link and enable the systemd unit by running the following commands::
+
+    sudo ln -s /home/pi/rpi_wordclock/wordclock_config/wordclock.service /etc/systemd/system
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now wordclock.service
+
+For more information on systemd related operations, please see :ref:`systemd`.
+
+Migration from the former crontab startup solution
+--------------------------------------------------
+
+If you have a working wordclock which was configured with the former `crontab` solution and like to migrate to systemd,
+just run::
 
     sudo crontab -e
 
-Add here::
+And remove the `@reboot python3 /home/pi/rpi_wordclock/wordclock.py` line. Now you can follow the steps above. Remember to do everything concerning the Python virtual environment.
 
-    @reboot sudo python3 /home/pi/rpi_wordclock/wordclock.py
+.. note:: If the wordclock software is currently running, you should either omit the `--now` option from the command above
+or reboot after the `daemon-reload` command. Else the wordclock software will run twice which will result in strange
+behaviour. Just reboot if you run into this.
 
 Access the wordclock via webinterface
 -------------------------------------
 
 Visit the wordclocks webinterface by entering the wordclocks IP to your browers address bar.
-

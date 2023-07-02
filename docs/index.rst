@@ -15,6 +15,7 @@ This is the documentation for rpi_wordclock
     doc_software_setup
     doc_further_reading
     doc_troubleshooting
+    doc_systemd
 
 .. _further_doc:
 Further documentation
