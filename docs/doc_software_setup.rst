@@ -38,7 +38,7 @@ The wordclock software
 
 To install 3rd party dependencies (packages) enter in a terminal/commandline::
 
-    sudo apt-get install git python3-full python3-scipy python3-freetype python3-virtualenv python3-pil swig fonts-freefont-ttf libopenjp2-7
+    sudo apt-get install git python3-full python3-scipy python3-freetype python3-virtualenv python3-pil python3-werkzeug python3-coloredlogs python3-feedparser python3-astral python3-monotonic python3-netifaces python3-svgwrite swig fonts-freefont-ttf libopenjp2-7
 
 .. _download_software:
 
