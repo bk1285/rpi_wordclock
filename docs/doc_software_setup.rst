@@ -53,6 +53,15 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
 
 .. _python_venv:
 
+Allow git tags command
+----------------------
+
+Since the code uses the `git --tags` command as root event tough the file belong to the user pi, we have to allow git commands for root::
+
+    sudo git config --global --add safe.directory /home/pi/rpi_wordclock
+
+.. _git_safedir:
+
 Create Python virtual environment
 ---------------------------------
 
