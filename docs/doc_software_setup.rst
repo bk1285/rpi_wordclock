@@ -38,7 +38,7 @@ The wordclock software
 
 To install 3rd party dependencies (packages) enter in a terminal/commandline::
 
-    sudo apt-get install git python3-full python3-virtualenv swig fonts-freefont-ttf libopenjp2-7
+    sudo apt-get install git python3-full python3-scipy python3-freetype python3-virtualenv swig fonts-freefont-ttf libopenjp2-7
 
 .. _download_software:
 
@@ -58,7 +58,7 @@ Create Python virtual environment
 
 Create a python3 virtual environment in the ~/rpi_wordclock/venv folder where all python requirements will be installed in::
 
-    python3 -m venv ~/rpi_wordclock/venv
+    python3 -m venv --system-site-packages ~/rpi_wordclock/venv
 
 .. _temperature_sensor:
 
