@@ -1,4 +1,4 @@
 # install pygobject as outlined in pyobject.readthedocs.io/en/latest/getting_started.html for ui=based rendering (for development purposes, when no LEDs are attached to PC)
-flask-restx~=0.5.1
+flask-restx~=1.1.0
 rpi-ws281x~=4.3.0
 RPi.GPIO~=0.7.1
