@@ -31,6 +31,15 @@ If not, check this website, to adjust it: http://perlgeek.de/en/article/set-up-a
 The wordclock software
 ++++++++++++++++++++++
 
+.. _3rd_party_deps_packages:
+
+3rd party dependencies (packages)
+---------------------------------
+
+To install 3rd party dependencies (packages) enter in a terminal/commandline::
+
+    sudo apt-get install git python3-pip python3-scipy swig fonts-freefont-ttf libopenjp2-7
+
 .. _download_software:
 
 Download software
@@ -40,16 +49,6 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
 
     cd ~
     git clone https://github.com/bk1285/rpi_wordclock.git
-
-
-.. _3rd_party_deps_packages:
-
-3rd party dependencies (packages)
----------------------------------
-
-To install 3rd party dependencies (packages) enter in a terminal/commandline::
-
-    sudo apt-get install python3-pip python3-scipy scons git swig fonts-freefont-ttf libopenjp2-7
 
 .. _temperature_sensor:
 
@@ -64,6 +63,28 @@ and::
 
     sudo pip install am2302_rpi
 
+.. _brightness_sensor:
+
+(Optional) brightness sensor
+----------------------------
+
+For using brightness sensor (tsl2561) i2c must be activated via raspi-config::
+
+    sudo raspi-config
+
+use the arrow keys to select 'Interfacing Options' and 'I2C' to tell the RasPi to enable the I2C interface. Then select 'Finish' and reboot the RasPi
+
+Install adafruit-circuitpython-tsl2561 lib::
+
+    sudo pip3 install adafruit-circuitpython-tsl2561
+
+
+Set use_brightness_sensor config value to true and its address::
+
+    # Set the brightness of the display (between 1 and 255)
+    brightness = 200
+    use_brightness_sensor = True
+    sensor_address = 0x39
 
 .. _3rd_party_deps_python:
 
