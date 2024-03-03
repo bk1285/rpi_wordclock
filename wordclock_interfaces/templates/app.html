@@ -196,6 +196,92 @@
                                        </v-expansion-panel-content>
                                     </v-expansion-panel>
                                     <v-divider></v-divider>
+<!----------------------------------------------------------------------------------------------------------------------->                                    
+                                    <v-expansion-panel>
+                                       <v-expansion-panel-content>
+                                          <template v-slot:header>
+                                             <div>Sleep timer</div>
+                                          </template>
+                                          <v-card-text>
+                                             <v-container fluid text-xs-center>
+                                                <v-layout row justify-center>
+                                                   <v-flex xs4>
+                                                      <v-dialog
+                                                         ref="menutime_begin"
+                                                         v-model="menu_b"
+                                                         :return-value.sync="sleepbegin"
+                                                         transition="scale-transition"
+                                                         offset-y
+                                                         max-width="290px"
+                                                         min-width="290px"
+                                                         >
+                                                         <template v-slot:activator="{ on, attrs }">
+                                                            <v-text-field
+                                                               v-model="sleepbegin"
+                                                               label="Start time"
+                                                               v-bind="attrs"
+                                                               v-on="on"
+                                                            ></v-text-field>
+                                                         </template>
+                                                         <v-time-picker
+                                                            v-if="menu_b"
+                                                            v-model="sleepbegin"
+                                                            full-width
+                                                            v-on:change="updateSleeptimer"
+                                                            @click:minute="$refs.menutime_begin.save(sleepbegin)"
+                                                         ></v-time-picker>
+                                                      </v-dialog>
+                                                   </v-flex>
+                                                   <v-flex xs4>
+                                                   </v-flex>
+                                                   <v-flex xs4>
+                                                      <v-dialog
+                                                         ref="menutime_end"
+                                                         v-model="menu_e"
+                                                         :nudge-right="40"
+                                                         :return-value.sync="sleepend"
+                                                         transition="scale-transition"
+                                                         offset-y
+                                                         max-width="290px"
+                                                         min-width="290px"
+                                                         >
+                                                         <template v-slot:activator="{ on, attrs }">
+                                                            <v-text-field
+                                                               v-model="sleepend"
+                                                               label="End time"
+                                                               v-bind="attrs"
+                                                               v-on="on"
+                                                            ></v-text-field>
+                                                         </template>
+                                                         <v-time-picker
+                                                            v-if="menu_e"
+                                                            v-model="sleepend"
+                                                            full-width
+                                                            v-on:change="updateSleeptimer"
+                                                            @click:minute="$refs.menutime_begin.save(sleepend)"
+                                                         ></v-time-picker>
+                                                      </v-dialog>
+                                                   </v-flex>
+                                                </v-layout>
+                                                <v-layout row px-0>
+                                                   <v-flex xs4>
+                                                      <v-text-field
+                                                         label="Brightness"
+                                                         type="number"
+                                                         v-model.number="sleepbrightness"
+                                                         v-on:change="updateSleeptimer"
+                                                      ></v-text-field>
+                                                   </v-flex>
+                                                   <v-flex xs4>
+                                                   </v-flex>
+                                                   <v-flex xs4>
+                                                   </v-flex>
+                                                </v-layout>
+                                             </v-container>
+                                          </v-card-text>
+                                       </v-expansion-panel-content>
+                                    </v-expansion-panel>
+                                    <v-divider></v-divider>
                                     <v-card-actions>
                                        <v-container fluid text-xs-center px-0>
                                           <v-layout row px-0>
