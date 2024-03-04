@@ -4,6 +4,7 @@ import os
 import time
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
+import wordclock_interfaces.web_interface as wciweb
 
 
 class plugin:
@@ -36,9 +37,9 @@ class plugin:
         self.play_animation_each_minute = config.getboolean('plugin_time_default', 'play_animation_each_minute')
         self.purist = config.getboolean('plugin_time_default', 'purist')
 
-        self.sleep_begin = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_begin'), '%H:%M').time()
-        self.sleep_end = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_end'), '%H:%M').time()
-        self.sleep_brightness = config.getint('plugin_' + self.name, 'sleep_brightness')
+        wciweb.sleep_begin = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_begin'), '%H:%M').time()
+        wciweb.sleep_end = datetime.datetime.strptime(config.get('plugin_' + self.name, 'sleep_end'), '%H:%M').time()
+        wciweb.sleep_brightness = config.getint('plugin_' + self.name, 'sleep_brightness')
 
         # Choose default fgcolor
         fgcolor = ''.join(config.get('plugin_time_default', 'default_fg_color'))
@@ -115,6 +116,8 @@ class plugin:
         self.color_mode_pos = 0
         self.rb_pos = 0  # index position for "rainbow"-mode
 
+        self.color_cycling = config.getboolean('wordclock_display', 'cycle_color')
+
         self.brightness_mode_pos = config.getint('wordclock_display', 'brightness')
         self.brightness_change = 8
 
@@ -146,6 +149,8 @@ class plugin:
 
             self.brightness_mode_pos = min(((((brightnessMax - brightnessMin) / sensorMax) * sensorCurrent) + brightnessMin),255)
 
+        has_run = False
+
         while True:
             # Get current time
             now = datetime.datetime.now()
@@ -173,11 +178,11 @@ class plugin:
             # Check, if a minute has passed (to render the new time)
             if prev_min < now.minute:
                 sleepActive = \
-                    self.sleep_begin <= now.time() < self.sleep_end or \
-                    self.sleep_end < self.sleep_begin <= now.time() <= datetime.time(23, 59, 59) or \
-                    now.time() < self.sleep_end < self.sleep_begin
+                    wciweb.sleep_begin <= now.time() < wciweb.sleep_end or \
+                    wciweb.sleep_end < wciweb.sleep_begin <= now.time() <= datetime.time(23, 59, 59) or \
+                    now.time() < wciweb.sleep_end < wciweb.sleep_begin
 
-                wcd.setBrightness(self.sleep_brightness if sleepActive else newBrightness)
+                wcd.setBrightness(wciweb.sleep_brightness if sleepActive else newBrightness)
  
                 # Set background color
                 if self.play_animation_each_minute:
@@ -192,6 +197,10 @@ class plugin:
                 self.brightness_mode_pos = newBrightness
                 wcd.setBrightness(newBrightness)
                 self.show_time(wcd, wci, animation='None')
+
+            if not(has_run) and self.color_cycling:
+                self.color_selection(wcd, wci)
+                has_run = True
 
             event = wci.waitForEvent(2)
             # Switch display color, if button_left is pressed
@@ -242,6 +251,11 @@ class plugin:
             wcd.setColorToAll(self.bg_color, includeMinutes=True)
             wcd.setColorBy1DCoordinates(taw_indices, self.word_color)
             wcd.setMinutes(now, self.minute_color)
+            sleepActive = \
+                wciweb.sleep_begin <= now.time() < wciweb.sleep_end or \
+                wciweb.sleep_end < wciweb.sleep_begin <= now.time() <= datetime.time(23, 59, 59) or \
+                now.time() < wciweb.sleep_end < wciweb.sleep_begin
+            wcd.setBrightness(wciweb.sleep_brightness if sleepActive else self.wake_brightness)
             wcd.show()
             self.rb_pos += 1
             if self.rb_pos == 256: self.rb_pos = 0

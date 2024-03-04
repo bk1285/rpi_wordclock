@@ -33,7 +33,12 @@ var vm = new Vue(
         menu_t: false,
         textToScroll: "",
         textRepeat: 0,
-        textEnable: false
+        textEnable: false,
+        menu_b: false,
+        menu_e: false,
+        sleepbegin: "00:00",
+        sleepend: "00:00",
+        sleepbrightness: 10
 	},
 	methods: {
 		loadApi: function () {
@@ -49,6 +54,8 @@ var vm = new Vue(
 			  then(this.successCallbackColorTemperature, this.errorCallback);
 			this.$http.get('/api/scrolltext').
 			  then(this.successCallbackScrolltext, this.errorCallback);
+			this.$http.get('/api/sleeptimer').
+			  then(this.successCallbackSleeptimer, this.errorCallback);
 		},
 		successCallbackPlugins: function(response) {
 			this.apiData = response.data;
@@ -74,6 +81,11 @@ var vm = new Vue(
             this.date = response.data.scrolldate; 
             this.time = response.data.scrolltime;
             this.textRepeat = response.data.scrollrepeat;
+		},
+		successCallbackSleeptimer: function(response) {
+            this.sleepbegin = response.data.sleep_begin; 
+            this.sleepend = response.data.sleep_end;
+            this.sleepbrightness = response.data.sleep_brightness;
 		},
 		errorCallback: function(response) {
 			console.log('errorCallback response:' , response);
@@ -145,6 +157,13 @@ var vm = new Vue(
 			xmlhttp.open("POST", "/api/scrolltext");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 			xmlhttp.send(JSON.stringify({ scrollenable: this.textEnable, scrolltext: this.textToScroll, scrolldate: this.date, scrolltime: this.time, scrollrepeat: this.textRepeat}));
+        },
+       	updateSleeptimer: function() {
+            console.log("updateSleeptimer", this.sleepbegin, this.sleepend, this.sleepbrightness)
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("POST", "/api/sleeptimer");
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify({ sleep_begin: this.sleepbegin, sleep_end: this.sleepend, sleep_brightness: this.sleepbrightness}));
         }
 	},
 	beforeMount(){
