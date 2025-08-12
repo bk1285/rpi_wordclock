@@ -124,6 +124,22 @@ To run the wordclock software (with adapted wiring and config-file) do::
 
 In case, the whole thing is not working as expected: Maybe the section :ref:`trouble-shooting` might help...
 
+Run software without hardware in developer mode with wxPython
+----------------------------
+
+To run the wordclock software in developer mode without wxPython, install wxPython via::
+
+    sudo apt-get install python3-wxgtk4.0
+
+and set the developer_mode to True in the config-file::
+
+    developer_mode = True
+
+and run the software with::
+
+    cd ~/rpi_wordclock
+    sudo python3 wordclock.py
+
 
 .. _run_software_on_startup:
 
