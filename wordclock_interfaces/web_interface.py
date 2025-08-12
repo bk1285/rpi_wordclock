@@ -4,6 +4,7 @@ import logging
 from flask_restx import Api, Resource, fields
 import wordclock_tools.wordclock_colors as wcc
 import wordclock_tools.wordclock_display as wcd
+import wordclock_interfaces.web_interface as wciweb
 import datetime
 
 class web_interface:
@@ -59,6 +60,12 @@ class web_interface:
         'scrolltime': fields.String(required=True, description='Date to start scroll'),
         'scrolldate': fields.String(required=True, description='Time to start scroll'),
         'scrollrepeat': fields.Integer(required=True, description='Repeat of text to scroll')
+    })
+
+    sleeptimer_model = api.model('sleeptimer', {
+        'sleep_begin': fields.String(required=True, description='Sleeptimer begin'),
+        'sleep_end': fields.String(required=True, description='Sleeptimer end'),
+        'sleep_brightness': fields.Integer(required=True, description='Sleeptimer brightness')
     })
 
     def __init__(self, wordclock):
@@ -240,7 +247,7 @@ class scrolltext(Resource):
             400: 'Bad request'})
     def get(self):
         return {
-            'scrollenable': wcc.scrollenable, #web_interface.app.wclk
+            'scrollenable': wcc.scrollenable,
             'scrolltext': wcc.scrolltext,
             'scrolldate': wcc.scrolldate,
             'scrolltime': wcc.scrolltime,
@@ -272,3 +279,36 @@ class scrolltext(Resource):
             pass
         wcc.scrollenable = web_interface.api.payload.get('scrollenable')
         return "Wordclock scrolltext variables updated"
+
+@web_interface.api.route('/sleeptimer')
+class sleeptimer(Resource):
+    @web_interface.api.doc(
+        description='Returns the sleep timer variables',
+        responses={
+            200: 'Success',
+            400: 'Bad request'})
+    def get(self):
+        return {
+            'sleep_begin': (str(wciweb.sleep_begin.hour).zfill(2) + ":" + str(wciweb.sleep_begin.minute).zfill(2)),
+            'sleep_end':   (str(wciweb.sleep_end.hour).zfill(2)   + ":" + str(wciweb.sleep_end.minute).zfill(2)),
+            'sleep_brightness': wciweb.sleep_brightness
+        }
+    @web_interface.api.doc(
+        description='Sleeptimer',
+        responses={
+            200: 'Success',
+            400: 'Bad request'})
+    @web_interface.api.expect(web_interface.sleeptimer_model)
+    def post(self):
+        try:
+            wciweb.sleep_begin = datetime.datetime.strptime(web_interface.api.payload.get('sleep_begin'), '%H:%M').time()
+        except:
+            print("Invalid begin time")
+        #wciweb.sleep_begin = web_interface.api.payload.get('sleep_begin')
+        try:
+            wciweb.sleep_end = datetime.datetime.strptime(web_interface.api.payload.get('sleep_end'), '%H:%M').time()
+        except:
+            print("Invalid end time")
+        #wciweb.sleep_end = web_interface.api.payload.get('sleep_end')
+        wciweb.sleep_brightness = web_interface.api.payload.get('sleep_brightness')
+        return "Sleeptimer variables updated"
