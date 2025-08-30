@@ -3,6 +3,7 @@
 import threading
 import os
 import sys
+import ast
 from wordclock_interfaces import event_handler as weh
 from wordclock_tools.wordclock_colors import Color
 
@@ -40,11 +41,18 @@ class WxStripWindow(wx.Frame):
         self.Update()
 
 class WxStrip():
-    def __init__(self, weh):        
+    def __init__(self, weh, config):        
         self.label = "QTstrip"
         
-        chars = "ESKISTLFÜNFZEHNZWANZIGDREIVIERTELTGNACHVORJMHALBQZWÖLFPZWEINSIEBENKDREIRHFÜNFELFNEUNVIERWACHTZEHNRSBSECHSFMUHR...."
-        
+        language = ''.join(config.get('wordclock_display', 'language'))
+        stencil_content = ast.literal_eval(config.get('language_options', language))
+		
+        height = len(stencil_content)
+        width = len(stencil_content[0]) 
+        chars = ""
+        for i in range(0, height):
+           chars = chars + stencil_content[i]
+        chars = chars + "...."
         self.labels = []
         self.colors = []
         
@@ -60,7 +68,7 @@ class WxStrip():
                 vbox = wx.BoxSizer(wx.VERTICAL)
                 font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT)
                 font.SetPointSize(32)
-                gs = wx.GridSizer(11, 11, 5, 5)
+                gs = wx.GridSizer(height + 1, width, 5, 5)
                 vbox.Add(gs, proportion=1, flag=wx.EXPAND)
                 for i in str(chars):                     
                     self.colors.append(Color(0, 0, 0))
@@ -73,12 +81,12 @@ class WxStrip():
                     self.labels.append(st2)                    
                     
                     x = x + 1;
-                    if x == 11:                                
+                    if x == width:                                
                         x = 0
                         y = y + 1
 
                 self.w.SetSizer(vbox)
-                self.w.SetSize(1024, 1024)    
+                self.w.SetSize(900, 900)
         else:
             print("No Main Thread")        
      
