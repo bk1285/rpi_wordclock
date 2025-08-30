@@ -23,6 +23,10 @@ class plugin:
         self.pretty_name = "The time"
         self.description = "The minimum, you should expect from a wordclock."
 
+        if config.getint('wordclock', 'developer_mode_step_seconds') > 0:
+            self.step_seconds = config.getint('wordclock', 'developer_mode_step_seconds')
+            self.step_count   = 0
+			
         self.animation = ''.join(config.get('plugin_' + self.name, 'animation'))
 
         animations = ["fadeOutIn", "typewriter", "none"]
@@ -171,7 +175,7 @@ class plugin:
                     print("Date and time not set")
 
             # Check, if a minute has passed (to render the new time)
-            if prev_min < now.minute:
+            if prev_min < now.minute or self.step_seconds > 0:
                 sleepActive = \
                     self.sleep_begin <= now.time() < self.sleep_end or \
                     self.sleep_end < self.sleep_begin <= now.time() <= datetime.time(23, 59, 59) or \
@@ -216,7 +220,17 @@ class plugin:
                 self.color_selection(wcd, wci)
 
     def show_time(self, wcd, wci, animation=None, animation_speed=25):
-        now = datetime.datetime.now()
+        now = datetime.datetime.now() 
+        
+        if self.step_seconds > 0: # simulator test
+            if self.step_count == 0: #initialize time tracker
+                self.step_currtime = now
+                self.step_count = 1 # start first cycle
+            if now > self.step_currtime + datetime.timedelta(seconds=self.step_seconds * self.step_count):
+                self.step_count = self.step_count + 1
+            
+            now = now.replace(hour=0,minute=0, second=0, microsecond=0) + datetime.timedelta(minutes=5 * (self.step_count - 1))
+            
         # Set background color
         wcd.setColorToAll(self.bg_color, includeMinutes=True)
         # Returns indices, which represent the current time, when being illuminated
