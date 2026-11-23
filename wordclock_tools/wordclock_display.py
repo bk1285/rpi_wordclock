@@ -3,7 +3,7 @@ import fontdemo
 import itertools
 import logging
 import os
-from copy import deepcopy
+from copy import copy, deepcopy
 from PIL import Image
 from . import wiring
 from time import sleep
@@ -334,13 +334,50 @@ class wordclock_display:
         [r, g, b] = colorsys.hsv_to_rgb(h, s, v * self.brightness/255.0)
         return wcc.Color(int(r*255.0), int(g*255.0), int(b*255.0))
 
-    def render_transition_step(self, transition_cache_step):
+    def render_transition_step(self, transition_cache_step, scale_color=None):
+        if scale_color is None:
+            scale_color = self.apply_brightness
         for x in range(self.get_wca_width()):
             for y in range(self.get_wca_height()):
-                self.wcl.setColorBy2DCoordinates(self.strip, x, y, self.apply_brightness(transition_cache_step.matrix[x][y]))
+                self.wcl.setColorBy2DCoordinates(self.strip, x, y, scale_color(transition_cache_step.matrix[x][y]))
         for m in range(4):
-            self.wcl.setColorToMinute(self.strip, m + 1, self.apply_brightness(transition_cache_step.minutes[m]))
+            self.wcl.setColorToMinute(self.strip, m + 1, scale_color(transition_cache_step.minutes[m]))
         self.strip.show()
+
+    def show_rgb_frame(self, frame):
+        """Show row-major RGB bytes followed by the four minute pixels."""
+        width, height = self.get_wca_width(), self.get_wca_height()
+        if len(frame) != (width * height + 4) * 3:
+            raise ValueError('Unexpected RGB frame size')
+
+        pixels = iter(frame)
+        colors = (wcc.Color(r, g, b) for r, g, b in zip(pixels, pixels, pixels))
+        with self.mutex:
+            screen = self.transition_cache_next
+            for y in range(height):
+                for column in screen.matrix:
+                    column[y] = next(colors)
+            screen.minutes[:] = colors
+
+            # Each incoming frame creates fresh colors. Copy the containers so
+            # edits to the next screen do not replace pixels on the active one.
+            current = copy(screen)
+            current.matrix = [column.copy() for column in screen.matrix]
+            current.minutes = screen.minutes.copy()
+            current.misc = screen.misc.copy()
+            self.transition_cache_curr = current
+
+            brightness = self.getBrightness()
+            if brightness == 255:
+                def scale_color(color):
+                    return color
+            else:
+                levels = bytes(int(channel * brightness / 255) for channel in range(256))
+
+                def scale_color(color):
+                    return wcc.Color(levels[color.r], levels[color.g], levels[color.b])
+
+            self.render_transition_step(current, scale_color)
 
     def show(self, animation = None, animation_speed = 5):
         """
@@ -371,6 +408,7 @@ class wordclock_display:
                     self.render_transition_step(self.transition_cache_curr)
                     sleep(1.0/self.fps)
         else: # no animation
-            self.transition_cache_curr = deepcopy(self.transition_cache_next)
-            self.render_transition_step(self.transition_cache_curr)
+            with self.mutex:
+                self.transition_cache_curr = deepcopy(self.transition_cache_next)
+                self.render_transition_step(self.transition_cache_curr)
 
